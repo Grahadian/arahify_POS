@@ -1,0 +1,17 @@
+Taruh file gambar slide carousel di folder ini.
+Format: PNG, JPG, GIF, WebP
+Ukuran rekomendasi: 800×500px (rasio 16:10)
+
+Contoh nama file:
+  slide-1.png  → slide promosi pertama
+  slide-2.png  → slide kedua
+  slide-3.png  → dst.
+
+Cara daftarkan ke carousel:
+  1. Buka: src/assets/images/imageAssets.js
+  2. Di bagian atas tambahkan:
+       import slide1 from './slides/slide-1.png'
+  3. Di array PROMO_SLIDES, ubah:
+       image: null
+     menjadi:
+       image: slide1

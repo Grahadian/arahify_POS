@@ -1,0 +1,27 @@
+{
+  "name": "msme-grow-pos",
+  "version": "2.0.0",
+  "private": true,
+  "description": "MSME Grow POS — Multi-client SaaS POS system for Indonesian SMEs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .js,.jsx"
+  },
+  "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.6.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "lottie-react": "^2.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-to-print": "^2.14.15"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
+    "supabase": "^2.77.0",
+    "vite": "^5.0.8"
+  }
+}
