@@ -2,7 +2,7 @@
 // MSME GROW POS — POS Register v3.0
 // Fitur baru: Varian produk, Struk WA, Poin loyalty, Stok otomatis
 // ============================================================
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo, useEffect } from 'react'
 import { useApp } from '@/context/AppContext'
 import { useCart } from '@/hooks/useCart'
 import { formatIDR } from '@/utils/format'
@@ -69,6 +69,15 @@ const ONLINE_CH = [
 const RegisterPage = () => {
  const { products, user, settings, addTransaction, members, addMember, activeShift, navigate } = useApp()
  const { cart, subtotal, taxAmount, taxRate, total, totalItems, isEmpty, cartAdd, cartUpdateQty, cartRemove, cartClear } = useCart()
+
+ // Mobile detection
+ const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
+ const [mobileTab, setMobileTab] = useState('products')
+ useEffect(() => {
+   const handler = () => setIsMobile(window.innerWidth < 768)
+   window.addEventListener('resize', handler)
+   return () => window.removeEventListener('resize', handler)
+ }, [])
 
  const [step, setStep] = useState('order')
  const [search, setSearch] = useState('')
@@ -348,10 +357,26 @@ const RegisterPage = () => {
   }
 
  return (
- <div style={{ display:'flex', height:'100%', overflow:'hidden' }}>
+ <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row', height:'100%', overflow:'hidden' }}>
+ {/* Mobile Tab switcher */}
+ {isMobile && (
+   <div style={{ display:'flex', background:'#fff', borderBottom:'1.5px solid #F1F5F9', flexShrink:0, zIndex:10 }}>
+     <button onClick={()=>setMobileTab('products')} style={{ flex:1, padding:'11px 8px', background:'none', border:'none', cursor:'pointer', fontSize:13, fontWeight:700, fontFamily:'inherit', color:mobileTab==='products'?'#2563EB':'#9CA3AF', borderBottom:mobileTab==='products'?'2.5px solid #2563EB':'2.5px solid transparent', transition:'all 0.15s', WebkitTapHighlightColor:'transparent' }}>
+       Produk
+     </button>
+     <button onClick={()=>setMobileTab('cart')} style={{ flex:1, padding:'11px 8px', background:'none', border:'none', cursor:'pointer', fontSize:13, fontWeight:700, fontFamily:'inherit', color:mobileTab==='cart'?'#2563EB':'#9CA3AF', borderBottom:mobileTab==='cart'?'2.5px solid #2563EB':'2.5px solid transparent', transition:'all 0.15s', WebkitTapHighlightColor:'transparent', display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}>
+       Keranjang {!isEmpty && <span style={{ background:'#2563EB', color:'#fff', borderRadius:'50%', width:18, height:18, display:'inline-flex', alignItems:'center', justifyContent:'center', fontSize:10, fontWeight:900 }}>{totalItems}</span>}
+     </button>
+     {!isEmpty && (
+       <div style={{ display:'flex', alignItems:'center', paddingRight:12, flexShrink:0 }}>
+         <span style={{ fontSize:13, fontWeight:900, color:'#2563EB' }}>{formatIDR(grandTotal)}</span>
+       </div>
+     )}
+   </div>
+ )}
 
  {/* LEFT: Product Grid */}
- <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', borderRight:'1px solid #F1F5F9', minWidth:0 }}>
+ <div style={{ flex:1, display: isMobile && mobileTab==='cart' ? 'none' : 'flex', flexDirection:'column', overflow:'hidden', borderRight: isMobile ? 'none' : '1px solid #F1F5F9', minWidth:0 }}>
  <div style={{ padding:'14px 16px 10px', background:'#fff', borderBottom:'1px solid #F1F5F9', flexShrink:0 }}>
  {/* Barcode scan bar */}
  {posScanMode && (
@@ -414,14 +439,14 @@ const RegisterPage = () => {
  <p style={{ margin:'10px 0 0', fontSize:13 }}>Tidak ada produk</p>
  </div>
  ) : (
- <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))', gap:10 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(120px,1fr))', gap:10 }}>
  {filteredProducts.map(p=>{
  const cc = catColors[p.category] || catColors['Lainnya'] || {bg:'#F9FAFB',text:'#374151',accent:'#6B7280'}
  const inCart = cart.filter(i=>i.productId===p.id).reduce((s,i)=>s+i.qty,0)
  const catEmoji = p.category==='Makanan'?'':p.category==='Minuman'?'':p.category==='Fashion'?'':p.category==='Kecantikan'?'':p.category==='Elektronik'?'':p.category==='Kesehatan'?'':''
  return (
  <div key={p.id} onClick={()=>handleProductClick(p)}
- style={{ background:'#fff', borderRadius:14, padding:'14px 12px', border:inCart>0?'2px solid #2563EB':'1.5px solid #F1F5F9', cursor:'pointer', transition:'all 0.15s', position:'relative', boxShadow:inCart>0?'0 0 0 3px rgba(37,99,235,0.1)':'0 1px 4px rgba(0,0,0,0.04)', display:'flex', flexDirection:'column' }}
+ style={{ background:'#fff', borderRadius:12, padding:'12px 10px', border:inCart>0?'2px solid #2563EB':'1.5px solid #F1F5F9', cursor:'pointer', transition:'all 0.15s', position:'relative', boxShadow:inCart>0?'0 0 0 3px rgba(37,99,235,0.1)':'0 1px 4px rgba(0,0,0,0.04)', display:'flex', flexDirection:'column' }}
  onMouseEnter={e=>e.currentTarget.style.transform='translateY(-1px)'}
  onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}>
  {inCart>0&&<div style={{ position:'absolute', top:8, right:8, background:'#2563EB', borderRadius:'50%', width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center' }}><span style={{ fontSize:11, fontWeight:900, color:'#fff' }}>{inCart}</span></div>}
@@ -457,17 +482,27 @@ const RegisterPage = () => {
  )}
  </div>
  </div>
+ {/* Mobile: floating cart button */}
+ {isMobile && !isEmpty && (
+   <div style={{ padding:'10px 12px', background:'#fff', borderTop:'1px solid #F1F5F9', flexShrink:0 }}>
+     <button onClick={()=>setMobileTab('cart')} style={{ width:'100%', padding:'13px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'space-between', WebkitTapHighlightColor:'transparent' }}>
+       <span>Keranjang ({totalItems} item)</span>
+       <span>{formatIDR(grandTotal)} →</span>
+     </button>
+   </div>
+ )}
 
- {/* DRAG DIVIDER */}
+ {/* DRAG DIVIDER - desktop only */}
+ {!isMobile && (
  <div onMouseDown={onDividerDown}
- style={{ width:6, flexShrink:0, cursor:'col-resize', background:'#F1F5F9', borderLeft:'1px solid #E5E7EB', borderRight:'1px solid #E5E7EB', display:'flex', alignItems:'center', justifyContent:'center', userSelect:'none' }}
- onMouseEnter={e=>e.currentTarget.style.background='#BFDBFE'}
- onMouseLeave={e=>e.currentTarget.style.background='#F1F5F9'}>
+  style={{ width:6, flexShrink:0, cursor:'col-resize', background:'#F1F5F9', borderLeft:'1px solid #E5E7EB', borderRight:'1px solid #E5E7EB', display:'flex', alignItems:'center', justifyContent:'center', userSelect:'none' }}
+  onMouseEnter={e=>e.currentTarget.style.background='#BFDBFE'}
+  onMouseLeave={e=>e.currentTarget.style.background='#F1F5F9'}>
  <div style={{ width:2, height:32, background:'#CBD5E1', borderRadius:4 }} />
  </div>
-
+ )}
  {/* RIGHT: 2-step panel */}
- <div style={{ width:cartWidth, flexShrink:0, display:'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
+ <div style={{ width: isMobile ? '100%' : cartWidth, flexShrink:0, display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
 
  {/* Step tabs */}
  <div style={{ display:'flex', flexShrink:0, borderBottom:'1px solid #F1F5F9' }}>
@@ -482,7 +517,12 @@ const RegisterPage = () => {
  {/* PESANAN */}
  {step==='order'&&(
  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden' }}>
- <div style={{ padding:'12px 14px 8px', borderBottom:'1px solid #F9FAFB', flexShrink:0 }}>
+ <div style={{ padding:'10px 12px 8px', borderBottom:'1px solid #F9FAFB', flexShrink:0 }}>
+  {isMobile && (
+    <button onClick={()=>setMobileTab('products')} style={{ display:'flex', alignItems:'center', gap:4, background:'none', border:'none', cursor:'pointer', color:'#6B7280', fontFamily:'inherit', fontSize:12, fontWeight:600, marginBottom:6, padding:0, WebkitTapHighlightColor:'transparent' }}>
+      <Icon name="chevronLeft" size={13} color="#6B7280" /> Kembali ke Produk
+    </button>
+  )}
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
  <div style={{ display:'flex', alignItems:'center', gap:6 }}>
  <Icon name="register" size={15} color="#2563EB" />
@@ -841,7 +881,7 @@ const RegisterPage = () => {
       {confirmModal && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.55)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}
           onClick={()=>setConfirmModal(false)}>
-          <div style={{ background:'#fff', borderRadius:20, padding:'28px 24px', width:'100%', maxWidth:400, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
+          <div style={{ background:'#fff', borderRadius:20, padding:'20px 16px', width:'100%', maxWidth:400, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
             onClick={e=>e.stopPropagation()}>
             {/* Header */}
             <div style={{ textAlign:'center', marginBottom:20 }}>
@@ -942,7 +982,7 @@ const RegisterPage = () => {
  </div>
 
  {/* Action buttons */}
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:6 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:6 }}>
  <button onClick={handlePrint} style={{ padding:'11px 6px', background:'#2563EB', color:'#fff', border:'none', borderRadius:11, fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
  <span>Cetak</span>
  </button>

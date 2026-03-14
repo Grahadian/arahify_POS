@@ -62,7 +62,7 @@ export default function KasirDashboardPage() {
   )
 
   return (
-    <div style={{ padding:'16px 18px', maxWidth:800, margin:'0 auto' }}>
+    <div style={{ padding:'12px 14px', maxWidth:800, margin:'0 auto' }}>
 
       {/* Welcome Banner */}
       <div style={{ background:'#1E293B', borderRadius:16, padding:'18px 20px', marginBottom:16, color:'#F1F5F9', position:'relative', overflow:'hidden' }}>
@@ -122,7 +122,7 @@ export default function KasirDashboardPage() {
       </div>
 
       {/* Payment + Top Products */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:14 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:12, marginBottom:14 }}>
         {/* Payment */}
         <div style={{ background:'#fff', border:'1px solid #E2E8F0', borderRadius:13, padding:'14px 16px' }}>
           <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>

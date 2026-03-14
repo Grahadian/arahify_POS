@@ -771,7 +771,7 @@ ${days.length > 0 ? `
  </div>
 
  {/* Summary stats */}
- <div style={{ marginTop:16, background:'#F9FAFB', borderRadius:10, padding:'12px 14px', display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
+ <div style={{ marginTop:16, background:'#F9FAFB', borderRadius:10, padding:'12px 14px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:8 }}>
  <div style={{ textAlign:'center' }}>
  <p style={{ margin:'0 0 2px', fontSize:11, color:'#6B7280' }}>Total Revenue</p>
  <p style={{ margin:0, fontSize:16, fontWeight:900, color:'#2563EB' }}>{formatIDR(trendData.totalRev)}</p>

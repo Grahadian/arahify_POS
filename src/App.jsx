@@ -103,11 +103,11 @@ const SideBanner = ({ panelIdx = 0 }) => {
 }
 
 const FloatCard = ({ children, banelIdx, wide = false }) => (
-  <div style={{ width:'100%', maxWidth: wide ? 820 : 720, borderRadius:24, boxShadow:'0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)', display:'flex', overflow:'hidden', minHeight:480 }}>
+  <div style={{ width:'100%', maxWidth: wide ? 820 : 720, borderRadius:24, boxShadow:'0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)', display:'flex', overflow:'hidden', minHeight:480, maxHeight:'calc(100dvh - 48px)' }}>
     <div className="auth-banner" style={{ width:'42%', flexShrink:0 }}>
       <SideBanner panelIdx={banelIdx||0} />
     </div>
-    <div style={{ flex:1, background:'#fff', display:'flex', flexDirection:'column', justifyContent:'center', padding:'36px 32px', overflowY:'auto' }}>
+    <div style={{ flex:1, background:'#fff', display:'flex', flexDirection:'column', justifyContent:'center', padding:'24px 20px', overflowY:'auto' }}>
       {children}
     </div>
   </div>
@@ -137,7 +137,7 @@ const AdminLoginScreen = ({ onSuccess, onCancel }) => {
 
   return (
     <AuthBg>
-      <div style={{ width:'100%', maxWidth:420, background:'#fff', borderRadius:24, boxShadow:'0 32px 80px rgba(0,0,0,0.5)', padding:'36px 32px' }}>
+      <div style={{ width:'100%', maxWidth:420, background:'#fff', borderRadius:24, boxShadow:'0 32px 80px rgba(0,0,0,0.5)', padding:'24px 20px' }}>
         <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, marginBottom:24 }}>
           <AppLogo size={44} showText={false} variant="color" />
           <div style={{ textAlign:'center' }}>
@@ -172,7 +172,7 @@ const KasirPinScreen = ({ onSuccess, onCancel, savedPin }) => {
   }
   return (
     <AuthBg>
-      <div style={{ width:'100%', maxWidth:360, background:'#fff', borderRadius:24, padding:'36px 28px', textAlign:'center' }}>
+      <div style={{ width:'100%', maxWidth:360, background:'#fff', borderRadius:24, padding:'24px 20px', textAlign:'center' }}>
         <AppLogo size={44} showText={false} variant="color" />
         <h2 style={{ fontSize:21, margin:'10px 0' }}>Masukkan PIN</h2>
         <div style={{ display:'flex', justifyContent:'center', gap:10, marginBottom:20 }}>
@@ -183,7 +183,7 @@ const KasirPinScreen = ({ onSuccess, onCancel, savedPin }) => {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
           {['1','2','3','4','5','6','7','8','9','C','0','⌫'].map(d => (
             <button key={d} onClick={()=> d==='⌫' ? setPin(p=>p.slice(0,-1)) : d==='C'? setPin('') : handleDigit(d)}
-              style={{ padding:15, fontSize:20, borderRadius:10, border:'1px solid #E2E8F0', cursor:'pointer' }}>{d}</button>
+              style={{ padding:'14px 10px', fontSize:20, borderRadius:10, border:'1px solid #E2E8F0', cursor:'pointer', minHeight:54, WebkitTapHighlightColor:'transparent' }}>{d}</button>
           ))}
         </div>
         <button onClick={onCancel} style={{ marginTop:20, background:'none', border:'none', color:'#64748B', cursor:'pointer' }}>← Kembali</button>
@@ -202,7 +202,7 @@ const RoleSelectScreen = ({ user, onSelectAdmin, onSelectKasir }) => {
           <h3>Halo, {user?.name}!</h3>
           <p style={{ color:'#64748B', fontSize:13 }}>Pilih mode akses untuk sesi ini</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:12 }}>
           <button onClick={onSelectAdmin} style={{ padding:20, borderRadius:16, border:'1.5px solid #BFDBFE', background:'#EFF6FF', cursor:'pointer' }}>
             <p style={{ fontWeight:900, color:'#1E40AF' }}>Admin</p>
             <span style={{ fontSize:10 }}>Dashboard & Laporan</span>

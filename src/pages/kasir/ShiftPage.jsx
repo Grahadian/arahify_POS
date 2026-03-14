@@ -40,7 +40,7 @@ export default function ShiftPage() {
   const focusOff = e => { e.target.style.borderColor='#E2E8F0'; e.target.style.background='#F8FAFC' }
 
   return (
-    <div style={{ padding:'16px 18px', maxWidth:740, margin:'0 auto' }}>
+    <div style={{ padding:'12px 14px', maxWidth:740, margin:'0 auto' }}>
       <div style={{ marginBottom:20 }}>
         <h2 style={{ margin:'0 0 3px', fontSize:20, fontWeight:800, color:'#0F172A', letterSpacing:-0.3 }}>Shift Kasir</h2>
         <p style={{ margin:0, color:'#64748B', fontSize:13 }}>Kelola shift kerja dan rekap kas harian</p>
@@ -64,7 +64,7 @@ export default function ShiftPage() {
                 <p style={{ margin:0, fontSize:11, color:'#64748B' }}>Mulai: {fmt(activeShift.startTime)}</p>
               </div>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(90px,1fr))', gap:8, marginBottom:14 }}>
               {[['Modal Awal',formatIDR(activeShift.modalKas||0),'cash'],['Penjualan',formatIDR(shiftRevenue),'trending'],['Transaksi',`${shiftTrx.length} trx`,'orders']].map(([l,v,ic])=>(
                 <div key={l} style={{ background:'rgba(255,255,255,0.07)', borderRadius:11, padding:'11px 12px' }}>
                   <Icon name={ic} size={13} color="#475569" />
