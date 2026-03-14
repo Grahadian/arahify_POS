@@ -82,45 +82,28 @@ export default function KasirOrdersPage() {
  <p style={{ margin: 0, fontSize: 13, color: '#6B7280' }}>{tanggalStr}</p>
  </div>
 
- {/* Jam Digital Redesign */}
- <div style={{
- background: 'linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%)',
- borderRadius: 16, padding: '18px 24px', marginBottom: 18,
- display: 'flex', alignItems: 'center', justifyContent: 'space-between',
- boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
- }}>
- <div>
- <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: '#93C5FD', textTransform: 'uppercase', letterSpacing: 1.2 }}>
- ⏰ Jam Sekarang (WIB)
- </p>
- <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
- {/* HH */}
- <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', textAlign: 'center' }}>
- <span style={{ fontSize: 34, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{hh}</span>
- </div>
- {/* : */}
- <span style={{ fontSize: 30, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
- {/* MM */}
- <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', textAlign: 'center' }}>
- <span style={{ fontSize: 34, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{mm}</span>
- </div>
- {/* : */}
- <span style={{ fontSize: 30, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
- {/* SS */}
- <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '5px 10px', textAlign: 'center' }}>
- <span style={{ fontSize: 34, fontWeight: 700, color: '#BAE6FD', fontFamily: 'monospace', lineHeight: 1 }}>{ss}</span>
- </div>
- </div>
- </div>
- <div style={{ textAlign: 'right', flexShrink: 0 }}>
- <div style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '10px 16px' }}>
- <p style={{ margin: '0 0 3px', fontSize: 11, color: '#BAE6FD', fontWeight: 600 }}>Reset harian</p>
- <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#fff', fontFamily: 'monospace' }}>00:00 WIB</p>
- <p style={{ margin: '3px 0 0', fontSize: 10, color: '#93C5FD' }}>tengah malam</p>
- </div>
- </div>
- <style>{`@keyframes clkBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }`}</style>
- </div>
+  {/* Jam Digital */}
+  <div style={{
+    background: 'linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%)',
+    borderRadius: 16, padding: '14px 16px', marginBottom: 16,
+    boxShadow: '0 8px 24px rgba(37,99,235,0.3)',
+  }}>
+    <p style={{ margin: '0 0 8px', fontSize: 10, fontWeight: 700, color: '#93C5FD', textTransform: 'uppercase', letterSpacing: 1 }}>Jam Sekarang (WIB)</p>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 13px' }}>
+        <span style={{ fontSize: 36, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{hh}</span>
+      </div>
+      <span style={{ fontSize: 28, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite' }}>:</span>
+      <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 13px' }}>
+        <span style={{ fontSize: 36, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{mm}</span>
+      </div>
+      <span style={{ fontSize: 28, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite' }}>:</span>
+      <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '5px 11px' }}>
+        <span style={{ fontSize: 36, fontWeight: 700, color: '#BAE6FD', fontFamily: 'monospace', lineHeight: 1 }}>{ss}</span>
+      </div>
+    </div>
+    <style>{`@keyframes clkBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }`}</style>
+  </div>
 
  {/* Stats Cards */}
  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 12, marginBottom: 18 }}>

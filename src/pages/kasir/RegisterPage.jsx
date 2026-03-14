@@ -549,7 +549,7 @@ const RegisterPage = () => {
  </div>
 
  {/* Cart items */}
- <div style={{ flex:1, overflowY:'auto', padding:'8px 12px', minHeight:0 }}>
+ <div style={{ flex:1, overflowY:'auto', padding:'8px 12px', minHeight:0, WebkitOverflowScrolling:'touch' }}>
  {isEmpty?(
  <div style={{ textAlign:'center', padding:'40px 20px', color:'#D1D5DB' }}>
  <Icon name="register" size={40} color="#E5E7EB" />
@@ -586,7 +586,7 @@ const RegisterPage = () => {
 
  {/* Footer order */}
  {!isEmpty&&(
- <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0 }}>
+ <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0, overflowY:'auto', maxHeight:'52vh', WebkitOverflowScrolling:'touch' }}>
  {/* Diskon manual */}
  <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
  <span style={{ fontSize:12, color:'#6B7280', flexShrink:0 }}>Diskon (Rp)</span>
@@ -645,100 +645,170 @@ const RegisterPage = () => {
  )}
 
  {/* PEMBAYARAN */}
- {step==='payment'&&(
- <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
- <div style={{ padding:'12px 14px', borderBottom:'1px solid #F9FAFB', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
- <button onClick={goBackToOrder} style={{ background:'#F3F4F6', border:'none', borderRadius:8, width:30, height:30, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name="chevronLeft" size={15} color="#374151" /></button>
- <div style={{ flex:1 }}>
- <p style={{ margin:0, fontSize:13, fontWeight:800, color:'#111827' }}>Konfirmasi Pembayaran</p>
- <p style={{ margin:0, fontSize:11, color:'#6B7280' }}>{cart.length} produk{selectedMember?` · ${selectedMember.name}`:''}</p>
- </div>
- </div>
+  {step==='payment'&&(
+  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
 
- <div style={{ flex:1, overflowY:'auto', padding:'12px 14px', minHeight:0 }}>
- {/* Summary */}
- <div style={{ background:'#F9FAFB', borderRadius:12, padding:'10px 12px', marginBottom:14 }}>
- {cart.map(i=>(<div key={i.variantId?`${i.productId}_${i.variantId}`:i.productId} style={{ display:'flex', justifyContent:'space-between', fontSize:12, marginBottom:3 }}><span style={{ color:'#374151', flex:1, marginRight:8 }}>{i.qty}× {i.name}</span><span style={{ fontWeight:700, flexShrink:0 }}>{formatIDR(i.price*i.qty)}</span></div>))}
- <div style={{ borderTop:'1px dashed #E5E7EB', paddingTop:8, marginTop:6 }}>
- {settings.taxEnabled&&<div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#6B7280', marginBottom:3 }}><span>Pajak ({taxRate}%)</span><span>{formatIDR(taxAmount)}</span></div>}
- {discount>0&&<div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#22C55E', marginBottom:3 }}><span>Diskon</span><span>-{formatIDR(discount)}</span></div>}
- {pointsDiscount>0&&<div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#D97706', marginBottom:3 }}><span> Poin</span><span>-{formatIDR(pointsDiscount)}</span></div>}
- {onlineChannel&&<div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#6B7280', marginBottom:3 }}><span>Via</span><span style={{ fontWeight:700 }}>{onlineChannel}</span></div>}
- <div style={{ display:'flex', justifyContent:'space-between', fontSize:16, fontWeight:900 }}><span>Total</span><span style={{ color:'#2563EB' }}>{formatIDR(grandTotal)}</span></div>
- </div>
- </div>
+    {/* ── Header ── */}
+    <div style={{ padding:'12px 14px', borderBottom:'1px solid #F1F5F9', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
+      <button onClick={goBackToOrder} style={{ background:'#F3F4F6', border:'none', borderRadius:8, width:32, height:32, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, WebkitTapHighlightColor:'transparent' }}>
+        <Icon name="chevronLeft" size={15} color="#374151" />
+      </button>
+      <div style={{ flex:1, minWidth:0 }}>
+        <p style={{ margin:0, fontSize:13, fontWeight:800, color:'#111827' }}>Pembayaran</p>
+        <p style={{ margin:0, fontSize:11, color:'#6B7280' }}>{cart.length} item · <strong style={{ color:'#2563EB' }}>{formatIDR(grandTotal)}</strong></p>
+      </div>
+    </div>
 
- {onlineChannel?(
- <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:14, marginBottom:14, textAlign:'center' }}>
- <p style={{ margin:'0 0 4px', fontSize:24 }}>{ONLINE_CH.find(c=>c.key===onlineChannel)?.icon}</p>
- <p style={{ margin:'0 0 4px', fontSize:14, fontWeight:800, color:'#1D4ED8' }}>Order via {onlineChannel}</p>
- <p style={{ margin:0, fontSize:12, color:'#6B7280' }}>Pembayaran diterima di aplikasi {onlineChannel}</p>
- </div>
- ):(
- <>
- {/* Metode bayar */}
- <div style={{ marginBottom:14 }}>
- <p style={{ margin:'0 0 8px', fontSize:11, fontWeight:700, color:'#6B7280', textTransform:'uppercase', letterSpacing:0.6 }}>Metode Pembayaran</p>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7 }}>
- {Object.values(PAYMENT_METHODS).map(method=>(
- <button key={method} onClick={()=>setPaymentMethod(method)} style={{ padding:'10px 8px', borderRadius:10, border:paymentMethod===method?'2px solid #2563EB':'1.5px solid #E5E7EB', background:paymentMethod===method?'#EFF6FF':'#fff', color:paymentMethod===method?'#2563EB':'#6B7280', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'center', gap:7, transition:'all 0.15s' }}>
- <Icon name={method==='Cash'?'cash':method==='Card'?'card':method==='QRIS'?'qris':'transfer'} size={16} color={paymentMethod===method?'#2563EB':'#9CA3AF'} />
- {method}
- </button>
- ))}
- </div>
- </div>
+    {/* ── Scrollable content ── */}
+    <div style={{ flex:1, overflowY:'auto', minHeight:0, WebkitOverflowScrolling:'touch' }}>
 
- {paymentMethod===PAYMENT_METHODS.CASH&&(
- <div style={{ marginBottom:14 }}>
- <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#374151', marginBottom:7 }}>Uang Diterima (Rp)</label>
- <input type="number" value={cashReceived} onChange={e=>setCashReceived(e.target.value)} placeholder={`Min. ${grandTotal.toLocaleString('id-ID')}`}
- style={{ ...inp, fontSize:16, fontWeight:800, textAlign:'right', border:`2px solid ${notEnoughCash?'#EF4444':'#E5E7EB'}` }} />
- <div style={{ display:'flex', gap:6, marginTop:7 }}>
- {quickCash.map(v=>(
- <button key={v} onClick={()=>setCashReceived(String(v))} style={{ flex:1, padding:'6px 4px', borderRadius:8, border:'1.5px solid #E5E7EB', background:cashNum===v?'#EFF6FF':'#F9FAFB', color:cashNum===v?'#2563EB':'#374151', fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
- {v>=1000000?`${v/1000000}jt`:v>=1000?`${v/1000}rb`:v}
- </button>
- ))}
- </div>
- {cashNum>=grandTotal&&<div style={{ marginTop:10, padding:'10px 14px', background:'#F0FDF4', border:'1.5px solid #BBF7D0', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}><span style={{ fontSize:13, fontWeight:700, color:'#166534' }}> Kembalian</span><span style={{ fontSize:20, fontWeight:900, color:'#16A34A' }}>{formatIDR(changeAmount)}</span></div>}
- {notEnoughCash&&<p style={{ margin:'6px 0 0', fontSize:12, color:'#EF4444', fontWeight:700 }}>Uang kurang {formatIDR(grandTotal-cashNum)}</p>}
- </div>
- )}
+      {/* Total Banner */}
+      <div style={{ background:'linear-gradient(135deg,#1E293B,#334155)', padding:'14px 16px', borderBottom:'1px solid #F1F5F9' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <span style={{ fontSize:13, color:'#94A3B8' }}>Total Tagihan</span>
+          <span style={{ fontSize:24, fontWeight:900, color:'#fff' }}>{formatIDR(grandTotal)}</span>
+        </div>
+        <div style={{ marginTop:8, display:'flex', gap:8, overflowX:'auto', paddingBottom:2 }}>
+          {cart.map(i => (
+            <div key={i.variantId?`${i.productId}_${i.variantId}`:i.productId}
+              style={{ background:'rgba(255,255,255,0.08)', borderRadius:8, padding:'4px 10px', flexShrink:0 }}>
+              <span style={{ fontSize:11, color:'#CBD5E1', fontWeight:600 }}>{i.qty}× {i.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
- {paymentMethod===PAYMENT_METHODS.TRANSFER&&(
- <div style={{ background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:10, padding:'10px 14px', marginBottom:14 }}>
- <p style={{ margin:0, fontSize:12, color:'#1E40AF', fontWeight:600 }}>Detail rekening akan tampil saat konfirmasi pembayaran</p>
- </div>
- )}
+      <div style={{ padding:'14px' }}>
 
- {paymentMethod===PAYMENT_METHODS.QRIS&&(
- <div style={{ marginBottom:14, textAlign:'center' }}>
- {settings?.qrisImageUrl?(
- <div style={{ background:'#F9FAFB', borderRadius:14, padding:12, display:'inline-block', border:'1px solid #E5E7EB' }}>
- <img src={settings.qrisImageUrl} alt="QRIS" style={{ width:180, height:180, objectFit:'contain', display:'block' }} />
- </div>
- ):(
- <div style={{ background:'#F3F4F6', borderRadius:14, padding:16, display:'inline-block' }}>
- <div style={{ width:130, height:130, background:'#E5E7EB', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'#9CA3AF', borderRadius:8 }}>Upload QRIS di Pengaturan</div>
- </div>
- )}
- <p style={{ fontSize:12, color:'#6B7280', marginTop:8 }}>Scan QRIS · GoPay · OVO · Dana · m-Banking</p>
- </div>
- )}
- </>
- )}
- {note&&<div style={{ background:'#FFF7ED', borderRadius:8, padding:'8px 12px', marginBottom:12, fontSize:12, color:'#92400E' }}> {note}</div>}
- </div>
+        {/* Online channel info */}
+        {onlineChannel && (
+          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'12px 14px', marginBottom:14, display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ width:36, height:36, background:'#2563EB', borderRadius:10, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <Icon name="register" size={16} color="#fff" />
+            </div>
+            <div>
+              <p style={{ margin:'0 0 2px', fontSize:13, fontWeight:800, color:'#1D4ED8' }}>Order via {onlineChannel}</p>
+              <p style={{ margin:0, fontSize:11, color:'#6B7280' }}>Pembayaran diterima di aplikasi {onlineChannel}</p>
+            </div>
+          </div>
+        )}
 
- <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0 }}>
- <Button onClick={processPayment} variant="primary" fullWidth size="lg" icon="check" loading={processing}
- disabled={!onlineChannel&&paymentMethod===PAYMENT_METHODS.CASH&&cashReceived&&cashNum<grandTotal}>
- {onlineChannel?`Konfirmasi — ${formatIDR(grandTotal)}`:`Proses Bayar — ${formatIDR(grandTotal)}`}
- </Button>
- </div>
- </div>
- )}
+        {/* Metode bayar */}
+        {!onlineChannel && (
+          <div style={{ marginBottom:14 }}>
+            <p style={{ margin:'0 0 10px', fontSize:12, fontWeight:800, color:'#374151' }}>Metode Pembayaran</p>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+              {Object.values(PAYMENT_METHODS).map(method => {
+                const isActive = paymentMethod === method
+                const icons = { Cash:'cash', Card:'card', QRIS:'qris', Transfer:'transfer' }
+                return (
+                  <button key={method} onClick={()=>setPaymentMethod(method)}
+                    style={{
+                      padding:'12px 8px', borderRadius:12,
+                      border: isActive ? '2px solid #2563EB' : '1.5px solid #E5E7EB',
+                      background: isActive ? '#EFF6FF' : '#F9FAFB',
+                      color: isActive ? '#2563EB' : '#6B7280',
+                      fontSize:13, fontWeight: isActive ? 800 : 600,
+                      cursor:'pointer', fontFamily:'inherit',
+                      display:'flex', alignItems:'center', justifyContent:'center', gap:8,
+                      transition:'all 0.15s', WebkitTapHighlightColor:'transparent',
+                      boxShadow: isActive ? '0 0 0 3px rgba(37,99,235,0.12)' : 'none',
+                    }}>
+                    <Icon name={icons[method]||'cash'} size={18} color={isActive?'#2563EB':'#9CA3AF'} />
+                    {method}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Cash input */}
+        {!onlineChannel && paymentMethod===PAYMENT_METHODS.CASH && (
+          <div style={{ background:'#F9FAFB', borderRadius:12, padding:'14px', marginBottom:14, border:'1px solid #F1F5F9' }}>
+            <p style={{ margin:'0 0 8px', fontSize:12, fontWeight:800, color:'#374151' }}>Uang Diterima</p>
+            <input
+              type="number"
+              value={cashReceived}
+              onChange={e=>setCashReceived(e.target.value)}
+              placeholder="0"
+              style={{ width:'100%', padding:'12px', border:`2px solid ${notEnoughCash?'#EF4444':'#E5E7EB'}`, borderRadius:10, fontSize:22, fontWeight:900, textAlign:'right', fontFamily:'inherit', outline:'none', boxSizing:'border-box', background:'#fff', color:'#111827' }}
+            />
+            {/* Quick cash buttons */}
+            <div style={{ display:'flex', gap:6, marginTop:8 }}>
+              {quickCash.map(v => (
+                <button key={v} onClick={()=>setCashReceived(String(v))}
+                  style={{ flex:1, padding:'8px 4px', borderRadius:8, border:'1.5px solid #E5E7EB', background:cashNum===v?'#EFF6FF':'#fff', color:cashNum===v?'#2563EB':'#374151', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent' }}>
+                  {v>=1000000?`${v/1000000}jt`:v>=1000?`${v/1000}rb`:String(v)}
+                </button>
+              ))}
+            </div>
+            {/* Kembalian */}
+            {cashNum >= grandTotal && (
+              <div style={{ marginTop:10, padding:'12px 14px', background:'#F0FDF4', border:'2px solid #86EFAC', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <span style={{ fontSize:14, fontWeight:700, color:'#166534' }}>Kembalian</span>
+                <span style={{ fontSize:22, fontWeight:900, color:'#16A34A' }}>{formatIDR(changeAmount)}</span>
+              </div>
+            )}
+            {notEnoughCash && (
+              <div style={{ marginTop:8, padding:'8px 12px', background:'#FEF2F2', border:'1px solid #FCA5A5', borderRadius:8 }}>
+                <p style={{ margin:0, fontSize:12, color:'#DC2626', fontWeight:700 }}>Kurang {formatIDR(grandTotal-cashNum)}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* QRIS */}
+        {!onlineChannel && paymentMethod===PAYMENT_METHODS.QRIS && (
+          <div style={{ marginBottom:14, textAlign:'center', padding:'16px 0' }}>
+            {settings?.qrisImageUrl ? (
+              <div style={{ background:'#F9FAFB', borderRadius:16, padding:14, display:'inline-block', border:'1.5px solid #E5E7EB' }}>
+                <img src={settings.qrisImageUrl} alt="QRIS" style={{ width:200, height:200, objectFit:'contain', display:'block' }} />
+              </div>
+            ) : (
+              <div style={{ background:'#F3F4F6', borderRadius:16, padding:20, display:'inline-block' }}>
+                <div style={{ width:160, height:160, background:'#E5E7EB', display:'flex', alignItems:'center', justifyContent:'center', borderRadius:8, fontSize:12, color:'#9CA3AF', textAlign:'center', padding:10 }}>Upload QRIS di Pengaturan</div>
+              </div>
+            )}
+            <p style={{ fontSize:12, color:'#6B7280', marginTop:10 }}>Scan dengan GoPay · OVO · Dana · m-Banking</p>
+          </div>
+        )}
+
+        {/* Transfer info */}
+        {!onlineChannel && paymentMethod===PAYMENT_METHODS.TRANSFER && (
+          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'12px 14px', marginBottom:14 }}>
+            <p style={{ margin:0, fontSize:12, color:'#1E40AF', fontWeight:700 }}>Info rekening akan tampil saat konfirmasi</p>
+          </div>
+        )}
+
+        {/* Note display */}
+        {note && (
+          <div style={{ background:'#FFF7ED', borderRadius:8, padding:'8px 12px', marginBottom:14, fontSize:12, color:'#92400E', border:'1px solid #FED7AA' }}>
+            Catatan: {note}
+          </div>
+        )}
+
+        {/* Extra bottom padding so content clears the sticky button */}
+        <div style={{ height: 80 }} />
+      </div>
+    </div>
+
+    {/* ── Sticky Pay Button ── */}
+    <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0, background:'#fff' }}>
+      <Button
+        onClick={processPayment}
+        variant="primary"
+        fullWidth
+        size="lg"
+        icon="check"
+        loading={processing}
+        disabled={!onlineChannel && paymentMethod===PAYMENT_METHODS.CASH && cashReceived && cashNum < grandTotal}
+      >
+        {onlineChannel ? `Konfirmasi — ${formatIDR(grandTotal)}` : `Proses Bayar — ${formatIDR(grandTotal)}`}
+      </Button>
+    </div>
+  </div>
+  )}
  </div>
 
  {/* MODAL: Pilih Varian */}
