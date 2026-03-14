@@ -97,6 +97,7 @@ const ReportsPage = () => {
 
  // Download Laporan 
  const [downloading, setDownloading] = useState(false)
+ const [selShift, setSelShift] = useState(null)
 
  const downloadReport = () => {
  const biz = settings?.businessName || 'MSME Grow'
@@ -851,13 +852,13 @@ ${days.length > 0 ? `
  <div>
  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:12, marginBottom:18 }}>
  {[
- { label:'Total Pendapatan', value:stats.total, color:'#16A34A', bg:'#F0FDF4', icon:'', desc:'Revenue kotor' },
- { label:'HPP (Modal)', value:stats.totalHPP||0, color:'#D97706', bg:'#FFFBEB', icon:'', desc:'Harga pokok produk' },
- { label:'Laba Kotor', value:stats.grossProfit||0, color:'#2563EB', bg:'#EFF6FF', icon:'', desc:'Pendapatan − HPP' },
- { label:'Total Pengeluaran', value:stats.totalExpInRange||0,color:'#EF4444', bg:'#FEF2F2', icon:'', desc:'Biaya operasional' },
- { label:'LABA BERSIH', value:stats.profit||0, color:(stats.profit||0)>=0?'#16A34A':'#EF4444', bg:(stats.profit||0)>=0?'#F0FDF4':'#FEF2F2', icon:(stats.profit||0)>=0?'':'', desc:'Laba kotor − pengeluaran', bold:true },
+ { label:'Total Pendapatan', value:stats.total, color:'#166534', bg:'#DCFCE7', border:'#86EFAC', desc:'Revenue kotor' },
+ { label:'HPP (Modal)', value:stats.totalHPP||0, color:'#92400E', bg:'#FEF3C7', border:'#FDE68A', desc:'Harga pokok produk' },
+ { label:'Laba Kotor', value:stats.grossProfit||0, color:'#1E40AF', bg:'#DBEAFE', border:'#93C5FD', desc:'Pendapatan − HPP' },
+ { label:'Total Pengeluaran', value:stats.totalExpInRange||0, color:'#991B1B', bg:'#FEE2E2', border:'#FCA5A5', desc:'Biaya operasional' },
+ { label:'LABA BERSIH', value:stats.profit||0, color:(stats.profit||0)>=0?'#166534':'#991B1B', bg:(stats.profit||0)>=0?'#DCFCE7':'#FEE2E2', border:(stats.profit||0)>=0?'#86EFAC':'#FCA5A5', desc:'Laba kotor − pengeluaran', bold:true },
  ].map(s=>(
- <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:'14px 16px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:13, padding:'13px 16px', border:`1.5px solid ${s.border||s.color}` }}>
  <p style={{ margin:'0 0 3px', fontSize:11, color:'#6B7280', fontWeight:700 }}>{s.icon} {s.label}</p>
  <p style={{ margin:'0 0 2px', fontSize:s.bold?19:16, fontWeight:900, color:s.color }}>{'Rp '+(s.value||0).toLocaleString('id-ID')}</p>
  <p style={{ margin:0, fontSize:10, color:'#9CA3AF' }}>{s.desc}</p>
@@ -969,12 +970,12 @@ ${days.length > 0 ? `
  {/* Summary cards */}
  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:12, marginBottom:20 }}>
  {[
- { label:'Total Produk Aktif', value: activeProds.length, color:'#2563EB', bg:'#EFF6FF' },
- { label:'Total Unit Stok', value: totalStock.toLocaleString('id-ID'), color:'#059669', bg:'#F0FDF4' },
- { label:'Stok Menipis', value: lowStock.length + lowVariant.length, color:'#D97706', bg:'#FFFBEB' },
- { label:'Stok Habis', value: outOfStock.length, color:'#EF4444', bg:'#FEF2F2' },
+ { label:'Total Produk Aktif', value: activeProds.length, color:'#1E40AF', bg:'#DBEAFE', border:'#93C5FD' },
+ { label:'Total Unit Stok', value: totalStock.toLocaleString('id-ID'), color:'#166534', bg:'#DCFCE7', border:'#86EFAC' },
+ { label:'Stok Menipis', value: lowStock.length + lowVariant.length, color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
+ { label:'Stok Habis', value: outOfStock.length, color:'#991B1B', bg:'#FEE2E2', border:'#FCA5A5' },
  ].map(s => (
- <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 14px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:13, padding:'13px 15px', border:`1.5px solid ${s.border||s.color}` }}>
  <p style={{ margin:'0 0 4px', fontSize:11, color:'#6B7280', fontWeight:700 }}>{s.label}</p>
  <p style={{ margin:0, fontSize:20, fontWeight:900, color:s.color }}>{s.value}</p>
  </div>
@@ -1112,12 +1113,12 @@ ${days.length > 0 ? `
  <>
  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:12, marginBottom:20 }}>
  {[
- { label:'Total Kasir Aktif', value: kasirList.length, color:'#2563EB', bg:'#EFF6FF' },
- { label:'Total Transaksi', value: completed.length, color:'#059669', bg:'#F0FDF4' },
+ { label:'Total Kasir Aktif', value: kasirList.length, color:'#1E40AF', bg:'#DBEAFE', border:'#93C5FD' },
+ { label:'Total Transaksi', value: completed.length, color:'#166534', bg:'#DCFCE7', border:'#86EFAC' },
  { label:'Total Revenue', value: 'Rp '+(totalRev||0).toLocaleString('id-ID'), color:'#7C3AED', bg:'#F5F3FF' },
- { label:'Avg / Kasir', value: kasirList.length > 0 ? 'Rp '+Math.round(totalRev/kasirList.length).toLocaleString('id-ID') : '-', color:'#D97706', bg:'#FFFBEB' },
+ { label:'Avg / Kasir', value: kasirList.length > 0 ? 'Rp '+Math.round(totalRev/kasirList.length).toLocaleString('id-ID') : '-', color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
  ].map(s => (
- <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 14px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:13, padding:'13px 15px', border:`1.5px solid ${s.border||s.color}` }}>
  <p style={{ margin:'0 0 4px', fontSize:11, color:'#6B7280', fontWeight:700 }}>{s.label}</p>
  <p style={{ margin:0, fontSize:16, fontWeight:900, color:s.color }}>{s.value}</p>
  </div>
@@ -1163,7 +1164,6 @@ ${days.length > 0 ? `
  {activeTab === 'shift' && (() => {
  const closedShifts = (shifts||[]).filter(s => s.status === 'closed' || s.closedAt || s.endTime).sort((a,b)=>
  new Date(b.closedAt||b.endTime||0) - new Date(a.closedAt||a.endTime||0))
- const [selShift, setSelShift] = useState(null)
  const totalCash = closedShifts.reduce((s,sh)=>s+(sh.cashSales||sh.totalCash||0),0)
  const totalSales = closedShifts.reduce((s,sh)=>s+(sh.totalSales||sh.revenue||0),0)
  const avgPerShift = closedShifts.length>0 ? totalSales/closedShifts.length : 0
@@ -1171,12 +1171,12 @@ ${days.length > 0 ? `
  <div>
  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:10, marginBottom:16 }}>
  {[
- { label:'Total Shift', value:closedShifts.length, color:'#2563EB', bg:'#EFF6FF', isNum:true },
- { label:'Total Penjualan', value:formatIDR(totalSales), color:'#22C55E', bg:'#F0FDF4' },
+ { label:'Total Shift', value:closedShifts.length, color:'#1E40AF', bg:'#DBEAFE', border:'#93C5FD', isNum:true },
+ { label:'Total Penjualan', value:formatIDR(totalSales), color:'#166534', bg:'#DCFCE7', border:'#86EFAC' },
  { label:'Total Kas Masuk', value:formatIDR(totalCash), color:'#F97316', bg:'#FFF7ED' },
  { label:'Rata-rata/Shift', value:formatIDR(Math.round(avgPerShift)), color:'#A855F7', bg:'#F5F3FF' },
  ].map(s=>(
- <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:'14px 16px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:13, padding:'13px 16px', border:`1.5px solid ${s.border||s.color}` }}>
  <p style={{ margin:'0 0 4px', fontSize:11, color:s.color, fontWeight:700, textTransform:'uppercase' }}>{s.label}</p>
  <p style={{ margin:0, fontSize:s.isNum?28:18, fontWeight:900, color:s.color }}>{s.value}</p>
  </div>
@@ -1299,7 +1299,7 @@ ${days.length > 0 ? `
  )}
  </div>
  )}
- */}
+ 
  <Modal open={showDetail} onClose={() => setShowDetail(false)} title="Detail Transaksi">
  {selected && (
  <div>

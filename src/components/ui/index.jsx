@@ -1,5 +1,5 @@
 // ============================================================
-// MSME GROW POS - Reusable UI Primitives
+// MSME GROW POS - UI Primitives v4.0
 // ============================================================
 
 // ── Card ─────────────────────────────────────────────────────
@@ -7,23 +7,17 @@ export const Card = ({ children, style = {}, onClick, hover = false }) => (
   <div
     onClick={onClick}
     style={{
-      background: '#fff',
-      borderRadius: 16,
-      padding: 20,
-      boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-      border: '1px solid #F1F5F9',
+      background:'#fff',
+      borderRadius:14,
+      padding:18,
+      boxShadow:'0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+      border:'1px solid #E2E8F0',
       cursor: onClick ? 'pointer' : 'default',
       transition: hover || onClick ? 'all 0.15s' : 'none',
       ...style,
     }}
-    onMouseEnter={hover || onClick ? e => {
-      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'
-      e.currentTarget.style.transform = 'translateY(-1px)'
-    } : undefined}
-    onMouseLeave={hover || onClick ? e => {
-      e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)'
-      e.currentTarget.style.transform = 'translateY(0)'
-    } : undefined}
+    onMouseEnter={hover||onClick ? e=>{e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)';e.currentTarget.style.transform='translateY(-1px)'} : undefined}
+    onMouseLeave={hover||onClick ? e=>{e.currentTarget.style.boxShadow='0 1px 3px rgba(0,0,0,0.06)';e.currentTarget.style.transform='translateY(0)'} : undefined}
   >
     {children}
   </div>
@@ -31,28 +25,24 @@ export const Card = ({ children, style = {}, onClick, hover = false }) => (
 
 // ── Badge ─────────────────────────────────────────────────────
 const BADGE_STYLES = {
-  blue: { background: '#EFF6FF', color: '#1D4ED8', border: '1px solid #BFDBFE' },
-  green: { background: '#F0FDF4', color: '#166534', border: '1px solid #BBF7D0' },
-  red: { background: '#FEF2F2', color: '#991B1B', border: '1px solid #FECACA' },
-  orange: { background: '#FFF7ED', color: '#C2410C', border: '1px solid #FED7AA' },
-  gray: { background: '#F9FAFB', color: '#374151', border: '1px solid #E5E7EB' },
-  purple: { background: '#F5F3FF', color: '#6D28D9', border: '1px solid #DDD6FE' },
-  yellow: { background: '#FEFCE8', color: '#854D0E', border: '1px solid #FEF08A' },
+  blue:   { background:'#DBEAFE', color:'#1D4ED8', border:'1px solid #93C5FD' },
+  green:  { background:'#DCFCE7', color:'#166534', border:'1px solid #86EFAC' },
+  red:    { background:'#FEE2E2', color:'#991B1B', border:'1px solid #FCA5A5' },
+  orange: { background:'#FFEDD5', color:'#C2410C', border:'1px solid #FDBA74' },
+  gray:   { background:'#F1F5F9', color:'#475569', border:'1px solid #CBD5E1' },
+  purple: { background:'#EDE9FE', color:'#6D28D9', border:'1px solid #C4B5FD' },
+  yellow: { background:'#FEF9C3', color:'#854D0E', border:'1px solid #FDE047' },
 }
 
-export const Badge = ({ color = 'gray', children, size = 'sm' }) => {
+export const Badge = ({ color='gray', children, size='sm' }) => {
   const s = BADGE_STYLES[color] || BADGE_STYLES.gray
-  const fontSize = size === 'sm' ? 11 : size === 'md' ? 12 : 13
-  const padding = size === 'sm' ? '2px 8px' : '4px 10px'
   return (
     <span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      fontSize,
-      fontWeight: 700,
-      padding,
-      borderRadius: 20,
-      whiteSpace: 'nowrap',
+      display:'inline-flex', alignItems:'center',
+      fontSize: size==='sm' ? 11 : size==='md' ? 12 : 13,
+      fontWeight:700,
+      padding: size==='sm' ? '2px 8px' : '4px 10px',
+      borderRadius:20, whiteSpace:'nowrap',
       ...s,
     }}>
       {children}
@@ -61,138 +51,84 @@ export const Badge = ({ color = 'gray', children, size = 'sm' }) => {
 }
 
 // ── Spinner ───────────────────────────────────────────────────
-export const Spinner = ({ size = 20, color = '#2563EB' }) => (
+export const Spinner = ({ size=20, color='#2563EB' }) => (
   <span style={{
-    display: 'inline-block',
-    width: size,
-    height: size,
-    border: `2px solid ${color}30`,
-    borderTopColor: color,
-    borderRadius: '50%',
-    animation: 'spin 0.7s linear infinite',
-    flexShrink: 0,
+    display:'inline-block', width:size, height:size,
+    border:`2.5px solid ${color}30`, borderTopColor:color,
+    borderRadius:'50%', animation:'spin 0.7s linear infinite', flexShrink:0,
   }} />
 )
 
 // ── Divider ───────────────────────────────────────────────────
-export const Divider = ({ label, style = {} }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '8px 0', ...style }}>
-    <div style={{ flex: 1, height: 1, background: '#E5E7EB' }} />
-    {label && <span style={{ fontSize: 12, color: '#9CA3AF', whiteSpace: 'nowrap' }}>{label}</span>}
-    <div style={{ flex: 1, height: 1, background: '#E5E7EB' }} />
+export const Divider = ({ label, style={} }) => (
+  <div style={{ display:'flex', alignItems:'center', gap:12, margin:'8px 0', ...style }}>
+    <div style={{ flex:1, height:1, background:'#E2E8F0' }} />
+    {label && <span style={{ fontSize:12, color:'#94A3B8', whiteSpace:'nowrap' }}>{label}</span>}
+    <div style={{ flex:1, height:1, background:'#E2E8F0' }} />
   </div>
 )
 
-// ── Stat Card ─────────────────────────────────────────────────
-export const StatCard = ({
-  label,
-  value,
-  subValue,
-  subColor = '#22C55E',
-  icon,
-  iconBg = '#EFF6FF',
-  iconColor = '#2563EB',
-  style = {},
-}) => {
-  const Icon = ({ name }) => {
-    // Inline minimal icon for stat cards
-    return null // Will be replaced by actual Icon component usage
-  }
+// ── Alert ─────────────────────────────────────────────────────
+const ALERT_STYLES = {
+  warning: { bg:'#FFFBEB', border:'#FDE68A', text:'#92400E', iconColor:'#D97706' },
+  error:   { bg:'#FEF2F2', border:'#FECACA', text:'#991B1B', iconColor:'#DC2626' },
+  success: { bg:'#F0FDF4', border:'#BBF7D0', text:'#166534', iconColor:'#16A34A' },
+  info:    { bg:'#EFF6FF', border:'#BFDBFE', text:'#1E40AF', iconColor:'#2563EB' },
+}
 
+export const Alert = ({ type='info', children, style={} }) => {
+  const s = ALERT_STYLES[type] || ALERT_STYLES.info
   return (
-    <div style={{
-      background: '#fff',
-      borderRadius: 16,
-      padding: 18,
-      boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-      border: '1px solid #F1F5F9',
-      ...style,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ margin: '0 0 4px', fontSize: 12, color: '#6B7280', fontWeight: 500 }}>{label}</p>
-          <p style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 800, color: '#111827', lineHeight: 1.2 }}>
-            {value}
-          </p>
-          {subValue && (
-            <p style={{ margin: 0, fontSize: 12, color: subColor, fontWeight: 600 }}>{subValue}</p>
-          )}
-        </div>
-        {icon && (
-          <div style={{
-            background: iconBg,
-            borderRadius: 12,
-            padding: 10,
-            flexShrink: 0,
-            marginLeft: 12,
-          }}>
-            {icon}
-          </div>
-        )}
-      </div>
+    <div style={{ background:s.bg, border:`1.5px solid ${s.border}`, borderRadius:12, padding:'12px 16px', ...style }}>
+      <p style={{ margin:0, fontSize:13, color:s.text, lineHeight:1.5 }}>{children}</p>
     </div>
   )
 }
 
 // ── Empty State ───────────────────────────────────────────────
-export const EmptyState = ({ icon, title, description, action }) => (
-  <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '60px 20px',
-    textAlign: 'center',
-  }}>
-    {icon && (
-      <div style={{
-        width: 72,
-        height: 72,
-        background: '#F3F4F6',
-        borderRadius: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 16,
-      }}>
-        {icon}
-      </div>
-    )}
-    <p style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 700, color: '#374151' }}>{title}</p>
-    {description && (
-      <p style={{ margin: '0 0 20px', fontSize: 13, color: '#9CA3AF', maxWidth: 300 }}>{description}</p>
-    )}
+export const EmptyState = ({ title, description, action }) => (
+  <div style={{ textAlign:'center', padding:'44px 20px', color:'#94A3B8' }}>
+    <p style={{ margin:'0 0 6px', fontSize:14, fontWeight:700, color:'#334155' }}>{title}</p>
+    {description && <p style={{ margin:'0 0 16px', fontSize:13, lineHeight:1.5 }}>{description}</p>}
     {action}
   </div>
 )
 
-// ── Alert ─────────────────────────────────────────────────────
-export const Alert = ({ type = 'info', children, onClose }) => {
-  const types = {
-    info: { bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8', icon: 'info' },
-    success: { bg: '#F0FDF4', border: '#BBF7D0', color: '#166534', icon: 'check' },
-    warning: { bg: '#FFF7ED', border: '#FED7AA', color: '#C2410C', icon: 'warning' },
-    error: { bg: '#FEF2F2', border: '#FECACA', color: '#991B1B', icon: 'x' },
-  }
-  const t = types[type] || types.info
-  return (
-    <div style={{
-      background: t.bg,
-      border: `1px solid ${t.border}`,
-      borderRadius: 10,
-      padding: '12px 14px',
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: 10,
-      color: t.color,
-      fontSize: 13,
-      marginBottom: 16,
-    }}>
-      <span style={{ flexShrink: 0, marginTop: 1 }}>●</span>
-      <span style={{ flex: 1 }}>{children}</span>
-      {onClose && (
-        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: t.color, padding: 2, display: 'flex' }}>✕</button>
-      )}
+// ── Section Header ────────────────────────────────────────────
+export const SectionHeader = ({ title, subtitle, action, style={} }) => (
+  <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:16, gap:10, ...style }}>
+    <div>
+      <h2 style={{ margin:'0 0 3px', fontSize:18, fontWeight:800, color:'#0F172A', letterSpacing:-0.3 }}>{title}</h2>
+      {subtitle && <p style={{ margin:0, fontSize:13, color:'#64748B' }}>{subtitle}</p>}
     </div>
-  )
-}
+    {action}
+  </div>
+)
+
+// ── StatCard (used by SuperAdminDashboard) ────────────────────
+import Icon from '@/components/ui/Icon'
+export const StatCard = ({ label, value, icon, color = '#2563EB', style = {} }) => (
+  <div style={{
+    background: '#fff',
+    borderRadius: 14,
+    padding: '16px 18px',
+    border: '1px solid #E2E8F0',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 14,
+    ...style,
+  }}>
+    <div style={{
+      width: 44, height: 44, borderRadius: 12,
+      background: color + '18',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexShrink: 0,
+    }}>
+      <Icon name={icon} size={20} color={color} />
+    </div>
+    <div>
+      <p style={{ margin: '0 0 3px', fontSize: 12, color: '#64748B', fontWeight: 500 }}>{label}</p>
+      <p style={{ margin: 0, fontSize: 22, fontWeight: 900, color: '#0F172A' }}>{value}</p>
+    </div>
+  </div>
+)

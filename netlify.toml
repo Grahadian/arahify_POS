@@ -1,0 +1,62 @@
+[build]
+  command     = "npm run build"
+  publish     = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# SPA routing
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Cache: assets (hashed filenames) — immutable
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache: HTML, SW, manifest — always revalidate
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Security headers — semua route
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Cegah clickjacking
+    X-Frame-Options             = "DENY"
+    # Cegah MIME sniffing
+    X-Content-Type-Options      = "nosniff"
+    # Referrer minimal
+    Referrer-Policy             = "strict-origin-when-cross-origin"
+    # Batasi browser features
+    Permissions-Policy          = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()"
+    # Paksa HTTPS 1 tahun + subdomains
+    Strict-Transport-Security   = "max-age=31536000; includeSubDomains; preload"
+    # XSS protection lama (IE/Edge lama)
+    X-XSS-Protection            = "1; mode=block"
+    # Isolasi cross-origin
+    Cross-Origin-Opener-Policy  = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+    # Content Security Policy
+    # - default-src 'self': hanya izinkan resource dari domain sendiri
+    # - script-src: izinkan inline script React (unsafe-inline diperlukan untuk Vite dev; di prod pakai nonce jika bisa)
+    # - style-src: Google Fonts + inline styles
+    # - img-src: self + data: untuk base64 foto produk
+    # - connect-src: izinkan Supabase API
+    # - frame-ancestors 'none': tidak bisa di-embed di iframe
+    Content-Security-Policy     = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.midtrans.com https://app.midtrans.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"

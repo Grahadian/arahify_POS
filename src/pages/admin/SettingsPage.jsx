@@ -171,7 +171,7 @@ const SettingsPage = () => {
  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
  <p style={{ margin:0, color:'#6B7280', fontSize:13 }}>Kelola integrasi dan preferensi aplikasi</p>
  {user?.clientId && (
- <span style={{ fontSize:11, fontWeight:700, color:'#2563EB', background:'#EFF6FF', padding:'2px 8px', borderRadius:6, border:'1px solid #BFDBFE' }}>
+ <span style={{ fontSize:11, fontWeight:700, color:'#1D4ED8', background:'#EFF6FF', padding:'2px 8px', borderRadius:6, border:'1px solid #BFDBFE' }}>
  Client: {user.clientId}
  </span>
  )}
@@ -259,7 +259,7 @@ const SettingsPage = () => {
  {/* URL Input */}
  <div style={{ marginBottom:14 }}>
  <label style={{ display:'block', fontSize:13, fontWeight:700, color:'#374151', marginBottom:7 }}>
- Google Apps Script Web App URL <span style={{ color:'#EF4444' }}>*</span>
+ Google Apps Script Web App URL <span style={{ color:'#DC2626' }}>*</span>
  </label>
  <div style={{ position:'relative' }}>
  <span style={{ position:'absolute', left:12, top:'50%', transform:'translateY(-50%)', zIndex:1 }}>
@@ -312,10 +312,10 @@ const SettingsPage = () => {
  Data yang Disinkronisasi
  </h3>
  {[
- { icon:'orders', color:'#2563EB', bg:'#EFF6FF', label:'Transaksi', desc:'Otomatis setiap checkout. Tab: Transaksi' },
- { icon:'inventory', color:'#22C55E', bg:'#F0FDF4', label:'Produk & Inventori', desc:'Manual via tombol Push. Tab: Produk' },
+ { icon:'orders', color:'#1D4ED8', bg:'#DBEAFE', label:'Transaksi', desc:'Otomatis setiap checkout. Tab: Transaksi' },
+ { icon:'inventory', color:'#166534', bg:'#DCFCE7', label:'Produk & Inventori', desc:'Manual via tombol Push. Tab: Produk' },
  { icon:'settings', color:'#F97316', bg:'#FFF7ED', label:'Pengaturan Bisnis', desc:'Manual via tombol Push. Tab: Pengaturan' },
- { icon:'reports', color:'#A855F7', bg:'#F5F3FF', label:'Laporan Otomatis', desc:'Dibangun ulang tiap transaksi baru. Tab: Laporan' },
+ { icon:'reports', color:'#A855F7', bg:'#EDE9FE', label:'Laporan Otomatis', desc:'Dibangun ulang tiap transaksi baru. Tab: Laporan' },
  ].map(item => (
  <div key={item.label} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'9px 0', borderBottom:'1px solid #F9FAFB' }}>
  <div style={{ width:36, height:36, background:item.bg, borderRadius:9, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
@@ -395,7 +395,7 @@ const SettingsPage = () => {
  {/* PROFILE TAB */}
  {activeTab === 'profile' && (
  <Card>
- <h3 style={{ margin:'0 0 18px', fontSize:12, fontWeight:800, color:'#2563EB', textTransform:'uppercase', letterSpacing:1 }}>
+ <h3 style={{ margin:'0 0 18px', fontSize:12, fontWeight:800, color:'#1D4ED8', textTransform:'uppercase', letterSpacing:1 }}>
  Informasi Bisnis
  </h3>
  {profileSaved && <Alert type="success">Perubahan berhasil disimpan!</Alert>}
@@ -430,7 +430,7 @@ const SettingsPage = () => {
  {/* TAX TAB */}
  {activeTab === 'tax' && (
  <Card>
- <h3 style={{ margin:'0 0 18px', fontSize:12, fontWeight:800, color:'#2563EB', textTransform:'uppercase', letterSpacing:1 }}>
+ <h3 style={{ margin:'0 0 18px', fontSize:12, fontWeight:800, color:'#1D4ED8', textTransform:'uppercase', letterSpacing:1 }}>
  Pengaturan Pajak & Kasir
  </h3>
 
@@ -500,7 +500,7 @@ const SettingsPage = () => {
  e.target.value = ''
  }} />
  <p style={{ margin:'0 0 4px', fontSize:20 }}></p>
- <p style={{ margin:'0 0 3px', fontSize:13, fontWeight:700, color:'#2563EB' }}>Klik untuk upload foto QRIS</p>
+ <p style={{ margin:'0 0 3px', fontSize:13, fontWeight:700, color:'#1D4ED8' }}>Klik untuk upload foto QRIS</p>
  <p style={{ margin:0, fontSize:11, color:'#9CA3AF' }}>PNG, JPG, JPEG — Max 5MB</p>
  </label>
  )}
@@ -519,10 +519,10 @@ const SettingsPage = () => {
  style={{ width:160, padding:'10px 14px', border:'1.5px solid #E5E7EB', borderRadius:10, fontSize:20, fontWeight:700, letterSpacing:6, fontFamily:'monospace', textAlign:'center', outline:'none' }}
  />
  {kasirPin.length > 0 && kasirPin.length < 6 && (
- <span style={{ fontSize:12, color:'#EF4444', fontWeight:600 }}>PIN harus 6 digit</span>
+ <span style={{ fontSize:12, color:'#DC2626', fontWeight:600 }}>PIN harus 6 digit</span>
  )}
  {kasirPin.length === 6 && (
- <span style={{ fontSize:12, color:'#059669', fontWeight:600 }}> PIN valid</span>
+ <span style={{ fontSize:12, color:'#166534', fontWeight:600 }}> PIN valid</span>
  )}
  </div>
 
@@ -740,7 +740,7 @@ const SettingsPage = () => {
  </div>
  </div>
  <button onClick={()=>removeKasir(k.id)}
- style={{ padding:'5px 10px', background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:8, color:'#EF4444', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
+ style={{ padding:'5px 10px', background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:8, color:'#DC2626', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
  Hapus
  </button>
  </div>
@@ -753,7 +753,7 @@ const SettingsPage = () => {
  <input value={kasirForm.name} onChange={e=>setKasirForm(p=>({...p,name:e.target.value}))} placeholder="Nama lengkap" style={inp2} />
  <input value={kasirForm.username} onChange={e=>setKasirForm(p=>({...p,username:e.target.value.toLowerCase().replace(/\s/g,'')}))} placeholder="Username (contoh: budi)" style={inp2} />
  <input value={kasirForm.pin} onChange={e=>setKasirForm(p=>({...p,pin:e.target.value.replace(/\D/g,'').slice(0,8)}))} placeholder="PIN (min 4 digit)" type="password" inputMode="numeric" style={inp2} />
- {kasirErr && <p style={{ margin:'0 0 8px', fontSize:12, color:'#EF4444', fontWeight:600 }}> {kasirErr}</p>}
+ {kasirErr && <p style={{ margin:'0 0 8px', fontSize:12, color:'#DC2626', fontWeight:600 }}> {kasirErr}</p>}
  <div style={{ display:'flex', gap:8 }}>
  <button onClick={()=>{setShowAddKasir(false);setKasirErr('')}} style={{ flex:1, padding:'9px', background:'#F9FAFB', border:'1.5px solid #E5E7EB', borderRadius:9, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', color:'#374151' }}>Batal</button>
  <button onClick={addKasir} style={{ flex:1, padding:'9px', background:'#2563EB', border:'none', borderRadius:9, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', color:'#fff' }}>Simpan</button>
@@ -768,7 +768,7 @@ const SettingsPage = () => {
  {activeTab === 'account' && (
  <div>
  <Card style={{ marginBottom:16 }}>
- <h3 style={{ margin:'0 0 16px', fontSize:12, fontWeight:800, color:'#2563EB', textTransform:'uppercase', letterSpacing:1 }}>
+ <h3 style={{ margin:'0 0 16px', fontSize:12, fontWeight:800, color:'#1D4ED8', textTransform:'uppercase', letterSpacing:1 }}>
  Informasi Akun
  </h3>
  <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 16px', background:'#F9FAFB', borderRadius:12, marginBottom:16 }}>
@@ -811,7 +811,7 @@ const SettingsPage = () => {
 
  {/* Permissions */}
  <Card style={{ marginBottom:16 }}>
- <h3 style={{ margin:'0 0 14px', fontSize:12, fontWeight:800, color:'#2563EB', textTransform:'uppercase', letterSpacing:1 }}>
+ <h3 style={{ margin:'0 0 14px', fontSize:12, fontWeight:800, color:'#1D4ED8', textTransform:'uppercase', letterSpacing:1 }}>
  Hak Akses
  </h3>
  {[

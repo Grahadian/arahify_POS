@@ -70,10 +70,10 @@ export default function MembersPage() {
 
  // Member tier system
  const getMemberTier = (totalSpent) => {
- if (totalSpent >= 5000000) return { name:'Gold', color:'#D97706', bg:'#FFFBEB', border:'#FCD34D', emoji:'' }
+ if (totalSpent >= 5000000) return { name:'Gold', color:'#92400E', bg:'#FEF3C7', border:'#FCD34D', emoji:'' }
  if (totalSpent >= 1000000) return { name:'Silver', color:'#6B7280', bg:'#F9FAFB', border:'#D1D5DB', emoji:'' }
  if (totalSpent >= 200000) return { name:'Bronze', color:'#B45309', bg:'#FEF3C7', border:'#FDE68A', emoji:'' }
- return { name:'Regular', color:'#2563EB', bg:'#EFF6FF', border:'#BFDBFE', emoji:'' }
+ return { name:'Regular', color:'#1D4ED8', bg:'#DBEAFE', border:'#BFDBFE', emoji:'' }
  }
 
  return (
@@ -91,11 +91,11 @@ export default function MembersPage() {
  {/* Stats */}
  <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:18 }}>
  {[
- { label:'Total Member', value: members.length, color:'#2563EB', bg:'#EFF6FF' },
- { label:'Member Aktif', value: activeMembersCount, color:'#22C55E', bg:'#F0FDF4' },
- { label:'Total Revenue', value: formatIDR(totalMemberRevenue), color:'#A855F7', bg:'#F5F3FF' },
+ { label:'Total Member', value: members.length, color:'#1D4ED8', bg:'#DBEAFE' },
+ { label:'Member Aktif', value: activeMembersCount, color:'#166534', bg:'#DCFCE7' },
+ { label:'Total Revenue', value: formatIDR(totalMemberRevenue), color:'#A855F7', bg:'#EDE9FE' },
  ].map(s => (
- <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 16px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 16px', border:`1.5px solid ${s.color}` }}>
  <p style={{ margin:'0 0 3px', fontSize:11, color:s.color, fontWeight:700, textTransform:'uppercase', letterSpacing:0.5 }}>{s.label}</p>
  <p style={{ margin:0, fontSize:20, fontWeight:900, color:s.color }}>{s.value}</p>
  </div>
@@ -116,7 +116,7 @@ export default function MembersPage() {
  <EmptyState
  title={search ? 'Member tidak ditemukan' : 'Belum ada member'}
  description={search ? 'Coba ubah kata kunci pencarian.' : 'Klik "Tambah Member" untuk mendaftarkan pelanggan pertama Anda.'}
- action={!search && <Button onClick={openNew} variant="primary" icon="plus">Tambah Member Pertama</Button>}
+ 
  />
  ) : (
  filtered.map(m => {
@@ -149,12 +149,12 @@ export default function MembersPage() {
  </div>
  {/* Stats */}
  <div style={{ textAlign:'right', flexShrink:0 }}>
- <p style={{ margin:'0 0 2px', fontSize:15, fontWeight:900, color:'#2563EB' }}>{formatIDR(totalSpent)}</p>
+ <p style={{ margin:'0 0 2px', fontSize:15, fontWeight:900, color:'#1D4ED8' }}>{formatIDR(totalSpent)}</p>
  <p style={{ margin:0, fontSize:11, color:'#9CA3AF' }}>total belanja</p>
  </div>
  {/* Actions */}
  <div style={{ display:'flex', gap:6, flexShrink:0 }}>
- <button onClick={() => openDetail(m)} style={{ padding:'7px 12px', background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:8, color:'#2563EB', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
+ <button onClick={() => openDetail(m)} style={{ padding:'7px 12px', background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:8, color:'#1D4ED8', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
  Detail
  </button>
  <button onClick={() => openEdit(m)} style={{ padding:'7px 12px', background:'#F9FAFB', border:'1px solid #E5E7EB', borderRadius:8, color:'#374151', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
@@ -232,8 +232,8 @@ export default function MembersPage() {
  {/* Stats */}
  <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
  {[
- { label:'Total Transaksi', value: memberTrx.length, color:'#2563EB' },
- { label:'Total Belanja', value: formatIDR(totalSpent), color:'#22C55E' },
+ { label:'Total Transaksi', value: memberTrx.length, color:'#1D4ED8' },
+ { label:'Total Belanja', value: formatIDR(totalSpent), color:'#166534' },
  { label:'Rata-rata', value: formatIDR(Math.round(avgSpend)), color:'#A855F7' },
  ].map(s => (
  <div key={s.label} style={{ background:'#F9FAFB', borderRadius:10, padding:'10px 12px', textAlign:'center' }}>

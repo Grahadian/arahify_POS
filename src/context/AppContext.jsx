@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 import { DEFAULT_SETTINGS, INITIAL_PRODUCTS, INITIAL_TRANSACTIONS } from '@/config/constants'
-import { getStorage, setStorage, saveSession, getSession, clearSession } from '@/utils/storage'
+import { getStorage, getProductsWithImages, setStorage, saveSession, getSession, clearSession } from '@/utils/storage'
 import { generateTrxId } from '@/utils/format'
 import { useUsers } from '@/hooks/useUsers'
 import {
@@ -11,7 +11,7 @@ import {
 const clientKey = (clientId, type) => `msme_${clientId}_${type}`
 
 const loadClientData = (clientId) => ({
-  products      : getStorage(clientKey(clientId, 'products'),     INITIAL_PRODUCTS),
+  products      : getProductsWithImages(clientKey(clientId, 'products'), INITIAL_PRODUCTS),
   transactions  : getStorage(clientKey(clientId, 'transactions'), INITIAL_TRANSACTIONS),
   settings      : getStorage(clientKey(clientId, 'settings'),     DEFAULT_SETTINGS),
   members       : getStorage(clientKey(clientId, 'members'),      []),

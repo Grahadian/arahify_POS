@@ -1,11 +1,18 @@
 // ============================================================
-// MSME GROW POS - useUsers Hook
-// ============================================================
-// Jika VITE_SUPABASE_URL sudah diisi di .env → pakai Supabase
-// Jika belum → pakai DEMO_USERS (mode offline/development)
+// MSME GROW POS - useUsers Hook (+ Security Layer)
 // ============================================================
 
 import { useCallback } from 'react'
+import {
+  checkLoginRateLimit,
+  recordLoginFailure,
+  clearLoginAttempts,
+  getRemainingAttempts,
+  sanitizeIdentifier,
+  validatePassword,
+  bindSessionFingerprint,
+  secLog,
+} from '@/utils/security'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || ''
 const USE_SUPABASE = SUPABASE_URL && !SUPABASE_URL.includes('YOUR_PROJECT')
@@ -27,7 +34,7 @@ const demoAuthenticate = (username, password) => {
   return safe
 }
 
-// ── Supabase authenticate (lazy import agar tidak crash jika belum setup) ──
+// ── Supabase authenticate ─────────────────────────────────────
 const supabaseAuthenticate = async (username, password) => {
   const { loginUser } = await import('@/services/supabase')
   const user = await loginUser(username, password)
@@ -77,18 +84,49 @@ const supabaseRefreshUser = async (userId) => {
 // ── Hook ──────────────────────────────────────────────────────
 export const useUsers = () => {
 
-  const authenticate = useCallback(async (username, password) => {
-    if (USE_SUPABASE) {
-      return await supabaseAuthenticate(username, password)
+  const authenticate = useCallback(async (rawUsername, rawPassword) => {
+    // 1. Sanitize input
+    const username = sanitizeIdentifier(rawUsername)
+    const password = typeof rawPassword === 'string' ? rawPassword.slice(0, 128) : ''
+
+    if (!username) throw new Error('Username tidak boleh kosong.')
+    const pwErr = validatePassword(password)
+    if (pwErr)    throw new Error(pwErr)
+
+    // 2. Rate limit check
+    const rateCheck = checkLoginRateLimit(username)
+    if (!rateCheck.allowed) {
+      secLog('LOGIN_BLOCKED', { username })
+      throw new Error(rateCheck.reason)
     }
-    return demoAuthenticate(username, password)
+
+    // 3. Attempt authentication
+    try {
+      const user = USE_SUPABASE
+        ? await supabaseAuthenticate(username, password)
+        : demoAuthenticate(username, password)
+
+      // 4. Success — clear attempts, bind session
+      clearLoginAttempts(username)
+      bindSessionFingerprint()
+      secLog('LOGIN_SUCCESS', { username, role: user.role })
+      return user
+
+    } catch (err) {
+      // 5. Failure — record attempt
+      recordLoginFailure(username)
+      const remaining = getRemainingAttempts(username)
+      secLog('LOGIN_FAILED', { username, remaining })
+
+      if (remaining <= 2 && remaining > 0) {
+        throw new Error(`${err.message} Sisa percobaan: ${remaining}.`)
+      }
+      throw err
+    }
   }, [])
 
   const refreshUser = useCallback(async (userId) => {
-    if (USE_SUPABASE) {
-      return await supabaseRefreshUser(userId)
-    }
-    // Demo mode: kembalikan dari session storage saja
+    if (USE_SUPABASE) return await supabaseRefreshUser(userId)
     return null
   }, [])
 

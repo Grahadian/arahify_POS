@@ -53,11 +53,11 @@ export default function KasirSettingsPage() {
  </div>
  <div style={{ flex:1 }}>
  <p style={{ margin:'0 0 2px', fontSize:16, fontWeight:800, color:'#111827' }}>{user?.name || user?.username}</p>
- <p style={{ margin:'0 0 2px', fontSize:12, color:'#059669', fontWeight:700, textTransform:'uppercase', letterSpacing:0.5 }}>Kasir</p>
+ <p style={{ margin:'0 0 2px', fontSize:12, color:'#166534', fontWeight:700, textTransform:'uppercase', letterSpacing:0.5 }}>Kasir</p>
  {user?.username && user?.name && <p style={{ margin:0, fontSize:11, color:'#9CA3AF' }}>@{user.username}</p>}
  </div>
  <div style={{ background:'#ECFDF5', border:'1px solid #A7F3D0', borderRadius:8, padding:'4px 10px' }}>
- <p style={{ margin:0, fontSize:11, fontWeight:700, color:'#059669' }}>Aktif</p>
+ <p style={{ margin:0, fontSize:11, fontWeight:700, color:'#166534' }}>Aktif</p>
  </div>
  </div>
 
@@ -97,7 +97,7 @@ export default function KasirSettingsPage() {
  {settings?.shiftEnabled && !activeShift && (
  <div style={{ background:'#FFFBEB', border:'1px solid #FCD34D', borderRadius:12, padding:'10px 14px', marginBottom:14, display:'flex', gap:8, alignItems:'center' }}>
  <span style={{ fontSize:14 }}></span>
- <p style={{ margin:0, fontSize:12, color:'#D97706', fontWeight:600 }}>Shift belum dibuka. Buka shift terlebih dahulu sebelum mulai transaksi.</p>
+ <p style={{ margin:0, fontSize:12, color:'#92400E', fontWeight:600 }}>Shift belum dibuka. Buka shift terlebih dahulu sebelum mulai transaksi.</p>
  </div>
  )}
 
@@ -131,7 +131,7 @@ export default function KasirSettingsPage() {
  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
  </div>
  <div style={{ flex:1 }}>
- <p style={{ margin:'0 0 2px', fontSize:13, fontWeight:700, color:'#EF4444' }}>Logout</p>
+ <p style={{ margin:'0 0 2px', fontSize:13, fontWeight:700, color:'#DC2626' }}>Logout</p>
  <p style={{ margin:0, fontSize:11, color:'#9CA3AF' }}>Keluar dari sesi kasir ini</p>
  </div>
  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -204,7 +204,7 @@ export default function KasirSettingsPage() {
  }}
  onKeyDown={e=>e.key==='Enter'&&handlePinChange()}
  style={{ ...pinInput }} autoFocus />
- {pinError && <p style={{ margin:'0 0 12px', fontSize:12, color:'#EF4444', textAlign:'center', fontWeight:600 }}> {pinError}</p>}
+ {pinError && <p style={{ margin:'0 0 12px', fontSize:12, color:'#DC2626', textAlign:'center', fontWeight:600 }}> {pinError}</p>}
  <div style={{ display:'flex', gap:10, marginTop:8 }}>
  <button onClick={closePinModal}
  style={{ flex:1, padding:'12px', background:'#F9FAFB', border:'1.5px solid #E5E7EB', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', color:'#374151' }}>

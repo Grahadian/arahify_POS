@@ -39,9 +39,9 @@ export default function MemberPointsPage() {
       {settings?.loyaltyEnabled && (
         <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
           {[
-            { label:'Total Member',    value: members.length,                                          color:'#2563EB', bg:'#EFF6FF', icon:'members' },
-            { label:'Total Poin Aktif',value: members.reduce((s,m)=>s+(m.points||0),0).toLocaleString(), color:'#D97706', bg:'#FFFBEB', icon:'loyalty' },
-            { label:'Nilai Poin',      value: formatIDR(members.reduce((s,m)=>s+(m.points||0),0) * (settings?.pointsRedeemRate||1)), color:'#059669', bg:'#F0FDF4', icon:'profit' },
+            { label:'Total Member',    value: members.length,                                          color:'#1D4ED8', bg:'#DBEAFE', icon:'members' },
+            { label:'Total Poin Aktif',value: members.reduce((s,m)=>s+(m.points||0),0).toLocaleString(), color:'#92400E', bg:'#FEF3C7', icon:'loyalty' },
+            { label:'Nilai Poin',      value: formatIDR(members.reduce((s,m)=>s+(m.points||0),0) * (settings?.pointsRedeemRate||1)), color:'#166534', bg:'#DCFCE7', icon:'profit' },
           ].map(s => (
             <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 14px', display:'flex', alignItems:'center', gap:10 }}>
               <div style={{ background:'#fff', borderRadius:8, padding:7, flexShrink:0 }}><Icon name={s.icon} size={16} color={s.color} /></div>
@@ -91,7 +91,7 @@ export default function MemberPointsPage() {
                   </div>
                 </div>
                 <div style={{ textAlign:'right' }}>
-                  <p style={{ margin:'0 0 2px', fontSize:18, fontWeight:900, color:'#D97706' }}>{(m.currentPoints||0).toLocaleString()}</p>
+                  <p style={{ margin:'0 0 2px', fontSize:18, fontWeight:900, color:'#92400E' }}>{(m.currentPoints||0).toLocaleString()}</p>
                   <p style={{ margin:0, fontSize:10, color:'#94A3B8', fontWeight:600 }}>POIN AKTIF</p>
                 </div>
               </div>
@@ -101,9 +101,9 @@ export default function MemberPointsPage() {
                   {/* Stats */}
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginBottom:14 }}>
                     {[
-                      { label:'Total Belanja', value:formatIDR(m.totalSpend), color:'#2563EB', bg:'#EFF6FF' },
-                      { label:'Poin Diperoleh', value:m.totalEarned.toLocaleString(), color:'#059669', bg:'#F0FDF4' },
-                      { label:'Poin Ditukar', value:m.totalRedeemed.toLocaleString(), color:'#7C3AED', bg:'#F5F3FF' },
+                      { label:'Total Belanja', value:formatIDR(m.totalSpend), color:'#1D4ED8', bg:'#DBEAFE' },
+                      { label:'Poin Diperoleh', value:m.totalEarned.toLocaleString(), color:'#166534', bg:'#DCFCE7' },
+                      { label:'Poin Ditukar', value:m.totalRedeemed.toLocaleString(), color:'#7C3AED', bg:'#EDE9FE' },
                     ].map(s => (
                       <div key={s.label} style={{ background:s.bg, borderRadius:10, padding:'9px 10px', textAlign:'center' }}>
                         <p style={{ margin:'0 0 2px', fontSize:10, color:s.color, fontWeight:700, textTransform:'uppercase' }}>{s.label}</p>

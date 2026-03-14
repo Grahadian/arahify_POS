@@ -20,14 +20,51 @@ export const getStorage = (key, fallback = null) => {
 
 /**
  * Set item in localStorage, stringify JSON
+ * Handles QuotaExceededError: strip images into separate key, retry
  */
 export const setStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value))
     return true
   } catch (error) {
+    if (error.name === 'QuotaExceededError' || error.code === 22) {
+      console.warn(`[Storage] Quota exceeded for "${key}". Stripping images...`)
+      try {
+        if (Array.isArray(value)) {
+          // Pisahkan images ke key terpisah agar tidak bloat produk
+          const images = {}
+          const stripped = value.map(item => {
+            if (item?.id && item?.image) images[item.id] = item.image
+            return item && typeof item === 'object' ? { ...item, image: '' } : item
+          })
+          localStorage.setItem(key, JSON.stringify(stripped))
+          if (Object.keys(images).length > 0) {
+            try { localStorage.setItem(key + '_img', JSON.stringify(images)) } catch {}
+          }
+          return true
+        }
+      } catch (e2) {
+        console.error(`[Storage] Still failed after strip:`, e2)
+      }
+    }
     console.error(`[Storage] Failed to set "${key}":`, error)
     return false
+  }
+}
+
+/**
+ * Get products and merge split images back in
+ */
+export const getProductsWithImages = (key, fallback = []) => {
+  const products = getStorage(key, fallback)
+  if (!Array.isArray(products)) return products
+  try {
+    const raw = localStorage.getItem(key + '_img')
+    if (!raw) return products
+    const images = JSON.parse(raw)
+    return products.map(p => ({ ...p, image: images[p.id] || p.image || '' }))
+  } catch {
+    return products
   }
 }
 
@@ -37,6 +74,7 @@ export const setStorage = (key, value) => {
 export const removeStorage = (key) => {
   try {
     localStorage.removeItem(key)
+    localStorage.removeItem(key + '_img')
     return true
   } catch (error) {
     console.error(`[Storage] Failed to remove "${key}":`, error)
@@ -50,56 +88,26 @@ export const removeStorage = (key) => {
 export const clearAllStorage = () => {
   Object.values(STORAGE_KEYS).forEach(key => {
     localStorage.removeItem(key)
+    localStorage.removeItem(key + '_img')
   })
 }
 
-/**
- * Save current user session
- */
-export const saveSession = (user) => {
-  setStorage(STORAGE_KEYS.USER, {
-    ...user,
-    sessionAt: new Date().toISOString(),
-  })
-}
+export const saveSession = (user) =>
+  setStorage(STORAGE_KEYS.USER, { ...user, sessionAt: new Date().toISOString() })
 
-/**
- * Get current session
- */
-export const getSession = () => {
-  return getStorage(STORAGE_KEYS.USER, null)
-}
+export const getSession = () => getStorage(STORAGE_KEYS.USER, null)
 
-/**
- * Clear session
- */
-export const clearSession = () => {
-  removeStorage(STORAGE_KEYS.USER)
-}
+export const clearSession = () => removeStorage(STORAGE_KEYS.USER)
 
-/**
- * Get GS Config from storage
- */
-export const getGSConfig = () => {
-  return getStorage(STORAGE_KEYS.GS_CONFIG, null)
-}
+export const getGSConfig = () => getStorage(STORAGE_KEYS.GS_CONFIG, null)
 
-/**
- * Save GS Config (per client, keyed by clientId)
- */
 export const saveGSConfig = (clientId, config) => {
-  const allConfigs = getStorage(STORAGE_KEYS.GS_CONFIG, {})
-  allConfigs[clientId] = {
-    ...config,
-    updatedAt: new Date().toISOString(),
-  }
-  setStorage(STORAGE_KEYS.GS_CONFIG, allConfigs)
+  const all = getStorage(STORAGE_KEYS.GS_CONFIG, {})
+  all[clientId] = { ...config, updatedAt: new Date().toISOString() }
+  setStorage(STORAGE_KEYS.GS_CONFIG, all)
 }
 
-/**
- * Get GS Config for a specific client
- */
 export const getGSConfigForClient = (clientId) => {
-  const allConfigs = getStorage(STORAGE_KEYS.GS_CONFIG, {})
-  return allConfigs[clientId] || null
+  const all = getStorage(STORAGE_KEYS.GS_CONFIG, {})
+  return all[clientId] || null
 }

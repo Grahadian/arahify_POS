@@ -2,7 +2,7 @@
 // MSME GROW POS - Inventory Page v3.0
 // Fitur: HPP, Varian Produk, Satuan UOM, Barcode Scanner
 // ============================================================
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useApp } from '@/context/AppContext'
 import { formatIDR, generateProductId } from '@/utils/format'
 import { CATEGORIES, CATEGORY_COLORS, PRODUCT_UNITS, ROLES } from '@/config/constants'
@@ -18,7 +18,7 @@ const EMPTY_FORM = {
  name: '', description: '', price: '', hpp: '',
  category: 'Makanan', unit: 'pcs', sku: '', stock: '50',
  active: true, hasVariants: false, variants: [],
- barcodeInput: '',
+ barcodeInput: '', image: '',
 }
 
 const InventoryPage = () => {
@@ -58,6 +58,12 @@ const InventoryPage = () => {
  return matchSearch && matchCat && matchActive
  })
 
+  // Categories that actually have products
+  const availableCategories = useMemo(() => {
+    const used = new Set(products.map(p => p.category).filter(Boolean))
+    return ['Semua', ...Array.from(used)]
+  }, [products])
+
  const openAdd = () => {
  setEditTarget(null)
  setForm(EMPTY_FORM)
@@ -82,6 +88,7 @@ const InventoryPage = () => {
  hasVariants: product.hasVariants || false,
  variants : (product.variants || []).map(v => ({ ...v, price: String(v.price), hpp: String(v.hpp || ''), stock: String(v.stock) })),
  barcodeInput: '',
+    image: product.image || '',
  })
  setFormErrors({})
  setVariantError('')
@@ -154,6 +161,7 @@ const InventoryPage = () => {
  const data = {
  name : form.name.trim(),
  description: form.description.trim(),
+   image        : form.image || '',
  price : basePrice,
  hpp : form.hasVariants ? 0 : (Number(form.hpp) || 0),
  category : form.category,
@@ -246,7 +254,7 @@ const InventoryPage = () => {
  />
  </div>
  <div style={{ display: 'flex', gap: 7, overflowX: 'auto', alignItems: 'center', paddingBottom: 4 }}>
- {CATEGORIES.map(c => (
+ {availableCategories.map(c => (
  <button key={c} onClick={() => setCategory(c)} style={{ padding: '5px 13px', borderRadius: 20, border: category === c ? '1.5px solid #2563EB' : '1.5px solid #E5E7EB', background: category === c ? '#EFF6FF' : '#fff', color: category === c ? '#2563EB' : '#6B7280', fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: 'inherit' }}>
  {c}
  </button>
@@ -266,7 +274,7 @@ const InventoryPage = () => {
  <div style={{ fontSize: 40, marginBottom: 12 }}></div>
  <p style={{ margin: '0 0 6px', fontSize: 15, fontWeight: 700, color: '#374151' }}>Tidak ada produk</p>
  <p style={{ margin: 0, fontSize: 13 }}>{search ? `Tidak ada produk "${search}"` : 'Belum ada produk ditambahkan.'}</p>
- {isAdmin && <Button onClick={openAdd} variant="primary" size="sm" icon="plus" style={{ marginTop: 14 }}>Tambah Produk</Button>}
+                {/* Duplicate Tambah button removed — use top-right button */}
  </div>
  ) : filtered.map(product => {
  const cc = clr[product.category] || clr['Lainnya']
@@ -277,11 +285,16 @@ const InventoryPage = () => {
  return (
  <div key={product.id} style={{ background: '#fff', borderRadius: 14, padding: '14px 16px', border: isLow || varLow ? '1.5px solid #FED7AA' : '1px solid #F1F5F9', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', opacity: product.active ? 1 : 0.6, transition: 'all 0.15s' }}>
  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
- {/* Icon */}
- <div style={{ width: 48, height: 48, background: cc.bg, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 22 }}>
- {product.category === 'Makanan' ? '' : product.category === 'Minuman' ? '' : product.category === 'Fashion' ? '' : product.category === 'Kecantikan' ? '' : product.category === 'Elektronik' ? '' : product.category === 'Kesehatan' ? '' : ''}
- </div>
-
+            {/* Icon / Photo */}
+            {product.image ? (
+              <div style={{ width:48, height:48, borderRadius:12, overflow:'hidden', flexShrink:0 }}>
+                <img src={product.image} alt={product.name} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} onError={e=>{e.currentTarget.parentElement.style.display='none'}} />
+              </div>
+            ) : (
+              <div style={{ width: 48, height: 48, background: cc.bg, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 22 }}>
+                {product.category === 'Makanan' ? '🍔' : product.category === 'Minuman' ? '🥤' : product.category === 'Fashion' ? '👕' : product.category === 'Kecantikan' ? '💄' : product.category === 'Elektronik' ? '📱' : product.category === 'Kesehatan' ? '💊' : '📦'}
+              </div>
+            )}
  {/* Info */}
  <div style={{ flex: 1, minWidth: 0 }}>
  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2, flexWrap: 'wrap' }}>
@@ -344,8 +357,8 @@ const InventoryPage = () => {
  </button>
  {product.stock != null && (
  <button onClick={() => { setOpnameTarget(product); setOpnameQty(String(product.stock)); setOpnameNotes(''); setOpnameModal(true) }}
- style={{ width: 32, height: 32, borderRadius: 8, border: '1.5px solid #BFDBFE', background: '#EFF6FF', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Adjust Stok">
- <span style={{ fontSize: 13 }}></span>
+ style={{ width: 32, height: 32, borderRadius: 8, border: '1.5px solid #BBF7D0', background: '#F0FDF4', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Adjust Stok">
+ <Icon name="stock" size={14} color="#16A34A" />
  </button>
  )}
  <button onClick={() => toggleActive(product)} style={{ width: 32, height: 32, borderRadius: 8, border: '1.5px solid #E5E7EB', background: product.active ? '#FEF2F2' : '#F0FDF4', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title={product.active ? 'Nonaktifkan' : 'Aktifkan'}>
@@ -446,6 +459,59 @@ const InventoryPage = () => {
  <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Deskripsi</label>
  <textarea value={form.description} onChange={e => setF('description')(e.target.value)} placeholder="Deskripsi singkat produk..." rows={2} style={{ ...inp, resize: 'none' }} onFocus={focusIn} onBlur={focusOut} />
  </div>
+
+
+        {/* Foto Produk */}
+        <div style={{ marginBottom: 14 }}>
+          <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            Foto Produk <span style={{ color:'#9CA3AF', fontWeight:400, textTransform:'none', letterSpacing:0 }}>(opsional)</span>
+          </label>
+          <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+            <div style={{ width:72, height:72, borderRadius:12, border:'1.5px solid #E2E8F0', background:'#F8FAFC', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, overflow:'hidden' }}>
+              {form.image ? (
+                <img src={form.image} alt="preview" style={{ width:'100%', height:'100%', objectFit:'cover' }} onError={e => { e.target.style.display='none' }} />
+              ) : (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              )}
+            </div>
+            <div style={{ flex:1 }}>
+              <label style={{ display:'block', background:'#F8FAFC', border:'1.5px dashed #CBD5E1', borderRadius:10, padding:'10px 14px', cursor:'pointer', textAlign:'center', transition:'all 0.15s' }}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor='#3B82F6';e.currentTarget.style.background='#EFF6FF'}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor='#CBD5E1';e.currentTarget.style.background='#F8FAFC'}}>
+                <input type="file" accept="image/*" style={{ display:'none' }}
+                  onChange={e => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+                    if (file.size > 2 * 1024 * 1024) { alert('Ukuran foto maksimal 2MB'); return }
+                    // Kompres otomatis ke max 300x300 JPEG quality 0.7
+                    const img = new Image()
+                    const url = URL.createObjectURL(file)
+                    img.onload = () => {
+                      const MAX = 300
+                      const ratio = Math.min(MAX / img.width, MAX / img.height, 1)
+                      const canvas = document.createElement('canvas')
+                      canvas.width  = Math.round(img.width * ratio)
+                      canvas.height = Math.round(img.height * ratio)
+                      const ctx = canvas.getContext('2d')
+                      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+                      setF('image')(canvas.toDataURL('image/jpeg', 0.7))
+                      URL.revokeObjectURL(url)
+                    }
+                    img.src = url
+                    e.target.value = ''
+                  }} />
+                <p style={{ margin:0, fontSize:12, fontWeight:700, color:'#475569' }}>Klik untuk upload foto</p>
+                <p style={{ margin:'2px 0 0', fontSize:11, color:'#94A3B8' }}>JPG, PNG · Maks 500KB</p>
+              </label>
+              {form.image && (
+                <button onClick={() => setF('image')('')}
+                  style={{ marginTop:6, width:'100%', padding:'5px', background:'#FEE2E2', border:'1px solid #FCA5A5', borderRadius:8, color:'#DC2626', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
+                  Hapus Foto
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
 
  {/* Status aktif */}
  <div onClick={() => setF('active')(!form.active)} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20, cursor: 'pointer', userSelect: 'none' }}>

@@ -1,260 +1,354 @@
 // ============================================================
-// MSME GROW POS - Login Page — White Design + Carousel
+// MSME GROW POS - Login Page — Floating card, split layout
+// Tema konsisten dengan AppLayout (#1E293B navy + #3B82F6 blue)
 // ============================================================
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from '@/context/AppContext'
 import { useUsers } from '@/hooks/useUsers'
 import AppLogo from '@/assets/AppLogo'
-import { PROMO_SLIDES } from '@/assets/images/imageAssets'
 
-// Edit kontak di sini 
 const CONTACT = {
- wa: 'https://wa.me/6281234567890',
- ig: 'https://instagram.com/msmegrow.id',
- email: 'mailto:hello@msmegrow.id',
+  wa:    'https://wa.me/6281234567890',
+  ig:    'https://instagram.com/msmegrow.id',
+  email: 'mailto:hello@msmegrow.id',
 }
 
-// WhatsApp SVG 
-const WaIcon = () => (
- <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
- <circle cx="16" cy="16" r="16" fill="#25D366"/>
- <path d="M22.9 9.1A9.6 9.6 0 0 0 7.2 20.4L6 26l5.8-1.5a9.6 9.6 0 0 0 11.1-15.4z" fill="#fff"/>
- <path d="M20.5 18.5c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1a8 8 0 0 1-2.3-1.4 8.5 8.5 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.6c.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5-.1-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4A3 3 0 0 0 10 13c0 1.8 1.3 3.5 1.5 3.7.2.2 2.5 3.9 6.1 5.4 2.1.9 3 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.5-.4z" fill="#25D366"/>
- </svg>
-)
+// ── Slide data dengan warna tema app ──────────────────────────
+const SLIDES = [
+  {
+    gradient: 'linear-gradient(145deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%)',
+    badge: 'POS & Kasir',
+    title: 'Transaksi Cepat\ndi Ujung Jari',
+    desc: 'Proses penjualan, struk digital, dan laporan shift kasir dalam satu layar.',
+    color: '#60A5FA',
+    visual: (
+      <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',maxWidth:260}}>
+        <rect x="20" y="20" width="220" height="140" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        <rect x="36" y="38" width="90" height="8" rx="4" fill="rgba(255,255,255,0.25)"/>
+        <rect x="36" y="54" width="55" height="6" rx="3" fill="rgba(96,165,250,0.4)"/>
+        {[0,1,2,3].map(i => (
+          <rect key={i} x={36+i*52} y={78} width={44} height={44} rx="10"
+            fill={`rgba(96,165,250,${0.08+i*0.04})`}
+            stroke="rgba(96,165,250,0.25)" strokeWidth="1.2"/>
+        ))}
+        {[0,1,2,3].map(i => (
+          <rect key={i} x={46+i*52} y={94} width={24} height={5} rx="2.5" fill="rgba(255,255,255,0.3)"/>
+        ))}
+        {[0,1,2,3].map(i => (
+          <rect key={i} x={46+i*52} y={104} width={16} height={4} rx="2" fill="rgba(255,255,255,0.15)"/>
+        ))}
+        <rect x="36" y="140" width="188" height="8" rx="4" fill="rgba(37,99,235,0.5)"/>
+      </svg>
+    ),
+  },
+  {
+    gradient: 'linear-gradient(145deg, #0F172A 0%, #064E3B 60%, #059669 100%)',
+    badge: 'Laporan Bisnis',
+    title: 'Pantau Omset\nReal-Time',
+    desc: 'Dashboard laporan harian, mingguan, bulanan — profit & loss langsung terlihat.',
+    color: '#34D399',
+    visual: (
+      <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',maxWidth:260}}>
+        <rect x="20" y="20" width="220" height="140" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        <rect x="36" y="38" width="80" height="8" rx="4" fill="rgba(255,255,255,0.25)"/>
+        <rect x="36" y="54" width="50" height="6" rx="3" fill="rgba(52,211,153,0.4)"/>
+        {[0,1,2,3,4,5].map((i) => (
+          <rect key={i} x={40+i*30} y={170-[55,80,45,100,65,88][i]} width={20} height={[55,80,45,100,65,88][i]-30}
+            rx="5" fill={`rgba(52,211,153,${0.2+i*0.06})`} stroke="rgba(52,211,153,0.4)" strokeWidth="1"/>
+        ))}
+        <polyline points="50,115 80,90 110,105 140,65 170,88 200,72"
+          stroke="rgba(255,255,255,0.5)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        {[50,80,110,140,170,200].map((x,i) => (
+          <circle key={i} cx={x} cy={[115,90,105,65,88,72][i]} r="3.5" fill="rgba(52,211,153,0.9)"/>
+        ))}
+      </svg>
+    ),
+  },
+  {
+    gradient: 'linear-gradient(145deg, #0F172A 0%, #1E1B4B 60%, #7C3AED 100%)',
+    badge: 'Inventori Cerdas',
+    title: 'Stok Terkontrol\nOtomatis',
+    desc: 'Alert stok menipis, purchase order, dan stock opname — semua terintegrasi.',
+    color: '#A78BFA',
+    visual: (
+      <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',maxWidth:260}}>
+        <rect x="20" y="20" width="100" height="65" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(167,139,250,0.2)" strokeWidth="1.2"/>
+        <rect x="140" y="20" width="100" height="65" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(167,139,250,0.2)" strokeWidth="1.2"/>
+        <rect x="20" y="100" width="100" height="60" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(167,139,250,0.2)" strokeWidth="1.2"/>
+        <rect x="140" y="100" width="100" height="60" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(167,139,250,0.2)" strokeWidth="1.2"/>
+        <rect x="32" y="34" width="50" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+        <rect x="32" y="48" width="35" height="14" rx="5" fill="rgba(167,139,250,0.35)"/>
+        <rect x="32" y="68" width="70" height="4" rx="2" fill="rgba(255,255,255,0.1)"/>
+        <rect x="152" y="34" width="50" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+        <rect x="152" y="48" width="35" height="14" rx="5" fill="rgba(52,211,153,0.3)"/>
+        <rect x="152" y="68" width="70" height="4" rx="2" fill="rgba(255,255,255,0.1)"/>
+        <rect x="32" y="114" width="50" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+        <rect x="32" y="126" width="76" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+        <rect x="32" y="126" width="50" height="4" rx="2" fill="rgba(167,139,250,0.5)"/>
+        <rect x="32" y="136" width="76" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+        <rect x="32" y="136" width="35" height="4" rx="2" fill="rgba(239,68,68,0.6)"/>
+        <rect x="152" y="114" width="50" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+        <rect x="152" y="128" width="76" height="26" rx="8" fill="rgba(167,139,250,0.15)" stroke="rgba(167,139,250,0.3)" strokeWidth="1"/>
+        <rect x="160" y="137" width="48" height="4" rx="2" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+    ),
+  },
+]
 
-// Instagram SVG 
-const IgIcon = () => (
- <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
- <defs>
- <radialGradient id="igGrad" cx="30%" cy="107%" r="150%">
- <stop offset="0%" stopColor="#fdf497"/>
- <stop offset="5%" stopColor="#fdf497"/>
- <stop offset="45%" stopColor="#fd5949"/>
- <stop offset="60%" stopColor="#d6249f"/>
- <stop offset="90%" stopColor="#285AEB"/>
- </radialGradient>
- </defs>
- <rect width="32" height="32" rx="8" fill="url(#igGrad)"/>
- <circle cx="16" cy="16" r="5.5" stroke="#fff" strokeWidth="2" fill="none"/>
- <circle cx="22.5" cy="9.5" r="1.5" fill="#fff"/>
- <rect x="5" y="5" width="22" height="22" rx="6" stroke="#fff" strokeWidth="2" fill="none"/>
- </svg>
-)
+// ── Banner Carousel ────────────────────────────────────────────
+const BannerCarousel = () => {
+  const [idx, setIdx] = useState(0)
+  const [fading, setFading] = useState(false)
 
-// Email SVG 
-const EmailIcon = () => (
- <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
- <rect width="32" height="32" rx="8" fill="#EA4335"/>
- <path d="M6 10h20v14H6z" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
- <path d="M6 10l10 9 10-9" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
- </svg>
-)
+  useEffect(() => {
+    const t = setInterval(() => {
+      setFading(true)
+      setTimeout(() => { setIdx(i => (i + 1) % SLIDES.length); setFading(false) }, 300)
+    }, 4000)
+    return () => clearInterval(t)
+  }, [])
 
-// Carousel 
-const PromoCarousel = () => {
- const [active, setActive] = useState(0)
- const [animating, setAnimating] = useState(false)
- const total = PROMO_SLIDES.length
+  const s = SLIDES[idx]
+  return (
+    <div style={{ width:'100%', height:'100%', background: s.gradient, borderRadius:'20px 0 0 20px', display:'flex', flexDirection:'column', padding:'36px 32px', position:'relative', overflow:'hidden', transition:'background 0.6s ease' }}>
 
- const goTo = useCallback((idx) => {
- if (animating) return
- setAnimating(true)
- setTimeout(() => { setActive(idx); setAnimating(false) }, 250)
- }, [animating])
+      {/* decorative circles */}
+      <div style={{ position:'absolute', top:-60, right:-60, width:200, height:200, borderRadius:'50%', background:'rgba(255,255,255,0.03)', pointerEvents:'none' }}/>
+      <div style={{ position:'absolute', bottom:-40, left:-40, width:160, height:160, borderRadius:'50%', background:'rgba(255,255,255,0.03)', pointerEvents:'none' }}/>
 
- useEffect(() => {
- const t = setInterval(() => goTo((active + 1) % total), 4500)
- return () => clearInterval(t)
- }, [active, total, goTo])
+      {/* badge */}
+      <div style={{ alignSelf:'flex-start', background:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.15)', borderRadius:20, padding:'4px 12px', marginBottom:28 }}>
+        <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.8)', textTransform:'uppercase', letterSpacing:1 }}>{s.badge}</span>
+      </div>
 
- const slide = PROMO_SLIDES[active]
+      {/* illustration */}
+      <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', opacity: fading ? 0 : 1, transform: fading ? 'translateY(8px)' : 'translateY(0)', transition:'all 0.3s ease' }}>
+        {s.visual}
+      </div>
 
- return (
- <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
- <div style={{
- height: '100%', display: 'flex', flexDirection: 'column',
- alignItems: 'center', justifyContent: 'center', padding: '80px 32px 60px',
- background: slide.bg,
- opacity: animating ? 0 : 1, transform: animating ? 'translateY(8px)' : 'translateY(0)',
- transition: animating ? 'opacity 0.2s,transform 0.2s' : 'opacity 0.35s,transform 0.35s,background 0.5s',
- }}>
- {slide.image ? (
- <img src={slide.image} alt={slide.title}
- style={{ width: '100%', maxWidth: 320, height: 210, objectFit: 'cover', borderRadius: 20, marginBottom: 28, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }} />
- ) : (
- <div style={{ width: 160, height: 160, borderRadius: 28, background: 'rgba(255,255,255,0.75)', border: `2px solid ${slide.accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28, fontSize: 72, boxShadow: `0 12px 40px ${slide.accent}18`, backdropFilter: 'blur(8px)' }}>
- {slide.icon}
- </div>
- )}
- <div style={{ background: `${slide.accent}15`, border: `1px solid ${slide.accent}30`, borderRadius: 100, padding: '5px 14px', marginBottom: 14, fontSize: 12, fontWeight: 700, color: slide.accent }}>
- {slide.badge}
- </div>
- <h2 style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 900, color: '#111827', textAlign: 'center', lineHeight: 1.25, letterSpacing: -0.5, whiteSpace: 'pre-line' }}>
- {slide.title}
- </h2>
- <p style={{ margin: 0, fontSize: 13, color: '#6B7280', textAlign: 'center', lineHeight: 1.65, maxWidth: 300 }}>
- {slide.subtitle}
- </p>
- </div>
+      {/* text */}
+      <div style={{ opacity: fading ? 0 : 1, transition:'opacity 0.3s ease' }}>
+        <h3 style={{ margin:'0 0 8px', fontSize:22, fontWeight:900, color:'#fff', letterSpacing:-0.5, lineHeight:1.3, whiteSpace:'pre-line' }}>{s.title}</h3>
+        <p style={{ margin:'0 0 20px', fontSize:12.5, color:'rgba(255,255,255,0.55)', lineHeight:1.6 }}>{s.desc}</p>
+      </div>
 
- {/* Dots */}
- <div style={{ position: 'absolute', bottom: 24, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 8 }}>
- {PROMO_SLIDES.map((_, i) => (
- <button key={i} onClick={() => goTo(i)} style={{ width: i === active ? 24 : 8, height: 8, borderRadius: 100, border: 'none', cursor: 'pointer', background: i === active ? slide.accent : `${slide.accent}35`, transition: 'all 0.3s', padding: 0 }} />
- ))}
- </div>
-
- {/* Arrows */}
- {['←', '→'].map((arrow, di) => (
- <button key={arrow} onClick={() => goTo((active + (di === 0 ? -1 : 1) + total) % total)}
- style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', [di === 0 ? 'left' : 'right']: 14, width: 34, height: 34, borderRadius: '50%', background: 'rgba(255,255,255,0.9)', border: `1px solid ${slide.accent}20`, boxShadow: '0 2px 10px rgba(0,0,0,0.1)', cursor: 'pointer', fontSize: 14, color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
- {arrow}
- </button>
- ))}
- </div>
- )
+      {/* dots */}
+      <div style={{ display:'flex', gap:6 }}>
+        {SLIDES.map((_, i) => (
+          <button key={i} onClick={() => setIdx(i)}
+            style={{ width: i===idx ? 20 : 6, height:6, borderRadius:3, border:'none', padding:0, cursor:'pointer', transition:'all 0.3s', background: i===idx ? '#fff' : 'rgba(255,255,255,0.25)' }}/>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-// Main 
+// ── Main LoginPage ─────────────────────────────────────────────
 const LoginPage = ({ onGoRegister }) => {
- const { login } = useApp()
- const { authenticate } = useUsers()
- const [identifier, setIdentifier] = useState('')
- const [password, setPassword] = useState('')
- const [showPass, setShowPass] = useState(false)
- const [error, setError] = useState('')
- const [loading, setLoading] = useState(false)
+  const { login } = useApp()
+  const { authenticate } = useUsers()
+  const [identifier, setIdentifier] = useState('')
+  const [password,   setPassword]   = useState('')
+  const [showPass,   setShowPass]   = useState(false)
+  const [error,      setError]      = useState('')
+  const [loading,    setLoading]    = useState(false)
+  const [isLocked,   setIsLocked]   = useState(false)
 
- const handleLogin = async () => {
- setError('')
- if (!identifier.trim()) { setError('Email atau username wajib diisi.'); return }
- if (!password) { setError('Password wajib diisi.'); return }
- setLoading(true)
- try { const u = await authenticate(identifier.trim(), password); login(u) }
- catch (e) { setError(e.message || 'Email/username atau password salah.') }
- finally { setLoading(false) }
- }
+  const handleLogin = async () => {
+    setError(''); setIsLocked(false); setLoading(true)
+    try {
+      const u = await authenticate(identifier.trim(), password)
+      login(u)
+    } catch (e) {
+      const msg = e.message || 'Username atau password salah.'
+      if (msg.includes('terkunci') || msg.includes('Terlalu banyak')) setIsLocked(true)
+      setError(msg)
+    } finally { setLoading(false) }
+  }
 
- const inp = {
- width: '100%', padding: '13px 16px', border: '1.5px solid #E5E7EB',
- borderRadius: 12, fontSize: 14, fontFamily: 'inherit', outline: 'none',
- background: '#FAFAFA', color: '#111827', boxSizing: 'border-box', transition: 'all 0.2s',
- }
- const onFocus = e => { e.target.style.borderColor='#2563EB'; e.target.style.background='#fff'; e.target.style.boxShadow='0 0 0 3px rgba(37,99,235,0.08)' }
- const onBlur = e => { e.target.style.borderColor='#E5E7EB'; e.target.style.background='#FAFAFA'; e.target.style.boxShadow='none' }
+  const inp = {
+    width:'100%', padding:'11px 14px', border:'1.5px solid #E2E8F0',
+    borderRadius:10, fontSize:14, fontFamily:'inherit', outline:'none',
+    background:'#F8FAFC', color:'#0F172A', boxSizing:'border-box', transition:'all 0.18s',
+  }
+  const onFocus = e => { e.target.style.borderColor='#3B82F6'; e.target.style.background='#fff'; e.target.style.boxShadow='0 0 0 3px rgba(59,130,246,0.12)' }
+  const onBlur  = e => { e.target.style.borderColor='#E2E8F0'; e.target.style.background='#F8FAFC'; e.target.style.boxShadow='none' }
 
- return (
- <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', fontFamily: "'DM Sans','Segoe UI',system-ui,sans-serif" }}>
+  return (
+    <div style={{
+      minHeight:'100vh',
+      background:'#0F172A',
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
+      padding:'24px 16px',
+      fontFamily:"'DM Sans','Segoe UI',system-ui,sans-serif",
+      position:'relative',
+      overflow:'hidden',
+    }}>
 
- {/* LEFT — Carousel */}
- <div className="login-left-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden', borderRight: '1px solid #F1F5F9', minHeight: '100vh' }}>
- <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, padding: '18px 24px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: 10 }}>
- <AppLogo size={32} showText={false} variant="color" />
- <div>
- <p style={{ margin: 0, fontWeight: 900, fontSize: 14, color: '#111827', lineHeight: 1.1 }}>MSME Grow</p>
- <p style={{ margin: 0, fontSize: 10, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: 0.8 }}>Point of Sale</p>
- </div>
- </div>
- <PromoCarousel />
- </div>
+      {/* background glow effects */}
+      <div style={{ position:'absolute', top:-200, left:-200, width:500, height:500, borderRadius:'50%', background:'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', pointerEvents:'none' }}/>
+      <div style={{ position:'absolute', bottom:-150, right:-150, width:400, height:400, borderRadius:'50%', background:'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)', pointerEvents:'none' }}/>
 
- {/* RIGHT — Form */}
- <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '40px 44px', overflowY: 'auto', minHeight: '100vh', boxSizing: 'border-box' }}>
+      {/* ── FLOATING CARD ── */}
+      <div style={{
+        width:'100%',
+        maxWidth:860,
+        height:540,
+        borderRadius:24,
+        boxShadow:'0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)',
+        display:'flex',
+        overflow:'hidden',
+        position:'relative',
+        zIndex:1,
+      }}>
 
- {/* Mobile brand */}
- <div className="login-mobile-brand" style={{ display: 'none', alignItems: 'center', gap: 10, marginBottom: 28 }}>
- <AppLogo size={36} showText={false} variant="color" />
- <div>
- <p style={{ margin: 0, fontWeight: 900, fontSize: 16, color: '#111827' }}>MSME Grow</p>
- <p style={{ margin: 0, fontSize: 11, color: '#9CA3AF' }}>Point of Sale System</p>
- </div>
- </div>
+        {/* LEFT — Banner carousel */}
+        <div className="login-banner" style={{ width:'48%', flexShrink:0, height:'100%' }}>
+          <BannerCarousel />
+        </div>
 
- <div style={{ marginBottom: 28 }}>
- <h1 style={{ margin: '0 0 6px', fontSize: 26, fontWeight: 900, color: '#111827', letterSpacing: -0.5 }}>Selamat Datang </h1>
- <p style={{ margin: 0, fontSize: 14, color: '#6B7280' }}>Masuk untuk mengelola bisnis Anda</p>
- </div>
+        {/* RIGHT — Login form */}
+        <div style={{
+          flex:1,
+          background:'#fff',
+          display:'flex',
+          flexDirection:'column',
+          justifyContent:'center',
+          padding:'36px 32px',
+          overflowY:'auto',
+        }}>
 
- {/* Error */}
- {error && (
- <div style={{ background: '#FEF2F2', border: '1.5px solid #FECACA', borderRadius: 10, padding: '10px 14px', marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
- <span></span>
- <span style={{ color: '#DC2626', fontSize: 13, flex: 1 }}>{error}</span>
- <button onClick={() => setError('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', fontSize: 18, padding: 0, lineHeight: 1 }}>×</button>
- </div>
- )}
+          {/* Logo + brand — CENTER */}
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, marginBottom:28 }}>
+            <AppLogo size={44} showText={false} variant="color" />
+            <div style={{ textAlign:'center' }}>
+              <p style={{ margin:0, fontSize:15, fontWeight:900, color:'#0F172A', letterSpacing:-0.3 }}>MSME Grow</p>
+              <p style={{ margin:0, fontSize:10.5, fontWeight:700, color:'#64748B', textTransform:'uppercase', letterSpacing:0.8 }}>Point of Sale</p>
+            </div>
+          </div>
 
- {/* Email / Username */}
- <div style={{ marginBottom: 16 }}>
- <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 7, textTransform: 'uppercase', letterSpacing: 0.6 }}>Email</label>
- <input
- type="email"
- value={identifier}
- onChange={e => setIdentifier(e.target.value)}
- onKeyDown={e => e.key==='Enter'&&handleLogin()}
- placeholder="email@bisnis.com"
- autoComplete="email"
- style={inp} onFocus={onFocus} onBlur={onBlur}
- />
- <p style={{ margin: '4px 0 0', fontSize: 11, color: '#9CA3AF' }}>
- Admin: gunakan email · Superadmin: gunakan username
- </p>
- </div>
+          {/* Heading */}
+          <div style={{ marginBottom:22 }}>
+            <h1 style={{ margin:'0 0 4px', fontSize:22, fontWeight:900, color:'#0F172A', letterSpacing:-0.5 }}>Masuk Akun</h1>
+            <p style={{ margin:0, fontSize:13, color:'#64748B' }}>Selamat datang kembali 👋</p>
+          </div>
 
- {/* Password */}
- <div style={{ marginBottom: 24 }}>
- <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 7, textTransform: 'uppercase', letterSpacing: 0.6 }}>Password</label>
- <div style={{ position: 'relative' }}>
- <input type={showPass?'text':'password'} value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key==='Enter'&&handleLogin()} placeholder="Masukkan password" autoComplete="current-password" style={{ ...inp, paddingRight: 46 }} onFocus={onFocus} onBlur={onBlur} />
- <button onClick={() => setShowPass(!showPass)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#9CA3AF', display: 'flex', alignItems: 'center' }}>
- {showPass
- ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
- : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
- }
- </button>
- </div>
- </div>
+          {/* Error */}
+          {error && (
+            <div style={{ background:isLocked?'#FFF7ED':'#FEF2F2', border:`1.5px solid ${isLocked?'#FED7AA':'#FECACA'}`, borderRadius:10, padding:'9px 12px', marginBottom:16, display:'flex', gap:8, alignItems:'flex-start' }}>
+              <span style={{ fontSize:14, flexShrink:0 }}>{isLocked?'🔒':'⚠️'}</span>
+              <span style={{ color:isLocked?'#C2410C':'#DC2626', fontSize:12.5, flex:1, lineHeight:1.5 }}>{error}</span>
+              <button onClick={() => { setError(''); setIsLocked(false) }} style={{ background:'none', border:'none', cursor:'pointer', color:'#9CA3AF', fontSize:16, padding:0, lineHeight:1 }}>×</button>
+            </div>
+          )}
 
- {/* 1⃣ LOGIN BUTTON */}
- <button onClick={handleLogin} disabled={loading}
- style={{ width: '100%', padding: '14px', background: loading ? '#93C5FD' : '#2563EB', color: '#fff', border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'all 0.2s', boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 12 }}
- onMouseEnter={e => !loading && (e.currentTarget.style.background='#1D4ED8')}
- onMouseLeave={e => !loading && (e.currentTarget.style.background='#2563EB')}>
- {loading ? <><span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', display: 'inline-block', animation: 'lSpin 0.8s linear infinite' }} />Memverifikasi...</> : 'Masuk ke Dashboard →'}
- </button>
+          {/* Username */}
+          <div style={{ marginBottom:13 }}>
+            <label style={{ display:'block', fontSize:11.5, fontWeight:700, color:'#374151', marginBottom:6, textTransform:'uppercase', letterSpacing:0.5 }}>Username / Email</label>
+            <input
+              type="text"
+              value={identifier}
+              onChange={e => setIdentifier(e.target.value)}
+              onKeyDown={e => e.key==='Enter' && handleLogin()}
+              placeholder="admin atau admin@toko.com"
+              autoComplete="username"
+              style={inp} onFocus={onFocus} onBlur={onBlur}
+            />
+          </div>
 
- {/* 2⃣ REGISTER BUTTON */}
- {onGoRegister && (
- <button onClick={onGoRegister}
- style={{ width: '100%', padding: '13px', background: '#fff', border: '2px solid #E5E7EB', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, color: '#374151', transition: 'all 0.15s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 28 }}
- onMouseEnter={e => { e.currentTarget.style.borderColor='#2563EB'; e.currentTarget.style.color='#2563EB'; e.currentTarget.style.background='#EFF6FF' }}
- onMouseLeave={e => { e.currentTarget.style.borderColor='#E5E7EB'; e.currentTarget.style.color='#374151'; e.currentTarget.style.background='#fff' }}>
- Daftar Sekarang — Rp 149.000/bulan
- </button>
- )}
+          {/* Password */}
+          <div style={{ marginBottom:6 }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
+              <label style={{ fontSize:11.5, fontWeight:700, color:'#374151', textTransform:'uppercase', letterSpacing:0.5 }}>Password</label>
+              <button style={{ background:'none', border:'none', cursor:'pointer', color:'#3B82F6', fontSize:12, fontWeight:600, fontFamily:'inherit', padding:0 }}>
+                Lupa Password?
+              </button>
+            </div>
+            <div style={{ position:'relative' }}>
+              <input
+                type={showPass?'text':'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                onKeyDown={e => e.key==='Enter' && handleLogin()}
+                placeholder="Masukkan password"
+                autoComplete="current-password"
+                style={{ ...inp, paddingRight:82 }}
+                onFocus={onFocus} onBlur={onBlur}
+              />
+              <button onClick={() => setShowPass(v=>!v)}
+                style={{ position:'absolute', right:12, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', cursor:'pointer', color:'#64748B', fontSize:11.5, fontWeight:700, fontFamily:'inherit', padding:'3px 0' }}>
+                {showPass?'Sembunyikan':'Tampilkan'}
+              </button>
+            </div>
+          </div>
 
- {/* 3⃣ CONTACT — icon only, no text */}
- <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: 20 }}>
- <p style={{ margin: '0 0 14px', fontSize: 11, color: '#9CA3AF', textAlign: 'center', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.8 }}>Hubungi Kami</p>
- <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
- <a href={CONTACT.wa} target="_blank" rel="noreferrer" title="WhatsApp" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: 12, background: '#F0FDF4', border: '1.5px solid #BBF7D0', transition: 'all 0.15s', textDecoration: 'none' }} onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'} onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}><WaIcon /></a>
- <a href={CONTACT.ig} target="_blank" rel="noreferrer" title="Instagram" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: 12, background: '#FDF4FF', border: '1.5px solid #E9D5FF', transition: 'all 0.15s', textDecoration: 'none' }} onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'} onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}><IgIcon /></a>
- <a href={CONTACT.email} target="_blank" rel="noreferrer" title="Email" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: 12, background: '#FEF2F2', border: '1.5px solid #FECACA', transition: 'all 0.15s', textDecoration: 'none' }} onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'} onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}><EmailIcon /></a>
- </div>
- </div>
- </div>
+          {/* Login button — warna brand #1E293B seperti topbar */}
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            style={{ width:'100%', marginTop:18, padding:'12px', background:loading?'#94A3B8':'#1E293B', color:'#fff', border:'none', borderRadius:11, fontSize:14, fontWeight:800, cursor:loading?'not-allowed':'pointer', fontFamily:'inherit', transition:'background 0.2s', display:'flex', alignItems:'center', justifyContent:'center', gap:8, letterSpacing:-0.1 }}
+            onMouseEnter={e => { if(!loading) e.currentTarget.style.background='#0F172A' }}
+            onMouseLeave={e => { if(!loading) e.currentTarget.style.background='#1E293B' }}>
+            {loading
+              ? <><span style={{ width:15, height:15, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'lspin 0.75s linear infinite', display:'inline-block' }}/> Masuk...</>
+              : 'Masuk →'}
+          </button>
 
- <style>{`
- @keyframes lSpin { to { transform: rotate(360deg); } }
- input::placeholder { color: #D1D5DB; }
- @media (max-width: 768px) {
- .login-left-panel { display: none !important; }
- .login-mobile-brand { display: flex !important; }
- }
- `}</style>
- </div>
- )
+          {/* Divider */}
+          <div style={{ display:'flex', alignItems:'center', gap:10, margin:'18px 0 14px' }}>
+            <div style={{ flex:1, height:1, background:'#F1F5F9' }}/>
+            <span style={{ fontSize:11, color:'#CBD5E1', whiteSpace:'nowrap', textTransform:'uppercase', letterSpacing:0.6 }}>Hubungi kami</span>
+            <div style={{ flex:1, height:1, background:'#F1F5F9' }}/>
+          </div>
+
+          {/* Contact — icon only, ganti src dengan link Imgur Anda */}
+          {/* 📌 GANTI ICON: ubah nilai `icon` di bawah dengan URL gambar dari Imgur */}
+          {/* Contoh: icon: 'https://i.imgur.com/XXXXX.png' */}
+          <div style={{ display:'flex', gap:10 }}>
+            {[
+              { href:CONTACT.wa,    icon:'https://i.imgur.com/PLACEHOLDER_WA.png',  bg:'#F0FDF4', border:'#BBF7D0', fallback:'💬' },
+              { href:CONTACT.ig,    icon:'https://i.imgur.com/PLACEHOLDER_IG.png',  bg:'#FDF4FF', border:'#E9D5FF', fallback:'📸' },
+              { href:CONTACT.email, icon:'https://i.imgur.com/PLACEHOLDER_EM.png',  bg:'#FEF2F2', border:'#FECACA', fallback:'✉️' },
+            ].map((s,i) => (
+              <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
+                style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:'10px', background:s.bg, border:`1px solid ${s.border}`, borderRadius:10, textDecoration:'none', transition:'transform 0.15s' }}
+                onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
+                onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}>
+                <img src={s.icon} alt="" width={24} height={24} style={{ objectFit:'contain' }}
+                  onError={e => { e.currentTarget.style.display='none'; e.currentTarget.nextSibling.style.display='block' }}/>
+                <span style={{ fontSize:20, display:'none' }}>{s.fallback}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Register */}
+          {onGoRegister && (
+            <p style={{ textAlign:'center', marginTop:16, fontSize:12.5, color:'#94A3B8', marginBottom:0 }}>
+              Bisnis baru?{' '}
+              <button onClick={onGoRegister} style={{ background:'none', border:'none', cursor:'pointer', color:'#3B82F6', fontWeight:700, fontFamily:'inherit', fontSize:12.5, padding:0 }}>
+                Daftar Sekarang
+              </button>
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <p style={{ position:'absolute', bottom:16, left:0, right:0, textAlign:'center', fontSize:11, color:'rgba(255,255,255,0.18)', margin:0 }}>
+        © 2026 MSME Grow · Point of Sale System
+      </p>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .login-banner { display: none !important; }
+        }
+        .login-banner { height: 100%; }
+        @keyframes lspin { to { transform: rotate(360deg) } }
+      `}</style>
+    </div>
+  )
 }
 
 export default LoginPage

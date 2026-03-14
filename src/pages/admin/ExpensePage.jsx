@@ -103,11 +103,11 @@ const ExpensePage = () => {
  {/* Laba Rugi Summary */}
  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:10, marginBottom:16 }}>
  {[
- { label:'Total Pendapatan', value:totalRevenue, color:'#16A34A', bg:'#F0FDF4', icon:'' },
- { label:'HPP', value:totalHPP, color:'#D97706', bg:'#FFFBEB', icon:'' },
- { label:'Laba Kotor', value:grossProfit, color:'#2563EB', bg:'#EFF6FF', icon:'' },
- { label:'Total Pengeluaran',value:totalExpense, color:'#EF4444', bg:'#FEF2F2', icon:'' },
- { label:'LABA BERSIH', value:netProfit, color:netProfit>=0?'#16A34A':'#EF4444', bg:netProfit>=0?'#F0FDF4':'#FEF2F2', icon:netProfit>=0?'':'', bold:true },
+ { label:'Total Pendapatan', value:totalRevenue, color:'#166534', bg:'#DCFCE7', border:'#86EFAC' },
+ { label:'HPP', value:totalHPP, color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
+ { label:'Laba Kotor', value:grossProfit, color:'#1E40AF', bg:'#DBEAFE', border:'#93C5FD' },
+ { label:'Total Pengeluaran',value:totalExpense, color:'#991B1B', bg:'#FEE2E2', border:'#FCA5A5' },
+ { label:'LABA BERSIH', value:netProfit, color:netProfit>=0?'#166534':'#991B1B', bg:netProfit>=0?'#DCFCE7':'#FEE2E2', border:netProfit>=0?'#86EFAC':'#FCA5A5', bold:true },
  ].map(s=>(
  <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:'12px 14px', border:`1px solid ${s.color}22` }}>
  <p style={{ margin:'0 0 4px', fontSize:11, color:'#6B7280', fontWeight:700 }}>{s.icon} {s.label}</p>
@@ -175,18 +175,16 @@ const ExpensePage = () => {
  {/* List */}
  <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
  {filtered.length === 0 ? (
- <div style={{ textAlign:'center', padding:'48px 24px', color:'#9CA3AF' }}>
- <div style={{ fontSize:40, marginBottom:12 }}></div>
- <p style={{ margin:'0 0 6px', fontSize:15, fontWeight:700, color:'#374151' }}>Belum ada pengeluaran</p>
- <p style={{ margin:'0 0 16px', fontSize:13 }}>Catat pengeluaran untuk menghitung laba rugi yang akurat.</p>
- <Button onClick={openAdd} variant="primary" size="sm" icon="plus">Tambah Pengeluaran</Button>
+ <div style={{ textAlign:'center', padding:'40px 24px', color:'#9CA3AF' }}>
+ <p style={{ margin:'0 0 4px', fontSize:14, fontWeight:700, color:'#374151' }}>Belum ada pengeluaran</p>
+ <p style={{ margin:0, fontSize:12 }}>Catat pengeluaran menggunakan tombol di atas.</p>
  </div>
  ) : filtered.map(e => {
  const catColor = CAT_COLORS[e.category] || '#6B7280'
  return (
  <div key={e.id} style={{ background:'#fff', borderRadius:14, padding:'14px 16px', border:'1px solid #F1F5F9', boxShadow:'0 1px 4px rgba(0,0,0,0.04)', display:'flex', alignItems:'center', gap:12 }}>
- <div style={{ width:44, height:44, borderRadius:12, background:catColor+'15', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:20 }}>
- {e.category==='Bahan Baku'?'':e.category==='Gaji Karyawan'?'':e.category==='Sewa Tempat'?'':e.category==='Listrik & Air'?'':e.category==='Peralatan'?'':e.category==='Transportasi'?'':e.category==='Marketing'?'':e.category==='Pajak'?'':''}
+ <div style={{ width:44, height:44, borderRadius:12, background:catColor+'20', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, border:`1.5px solid ${catColor}30` }}>
+ <Icon name="expense" size={18} color={catColor} />
  </div>
  <div style={{ flex:1, minWidth:0 }}>
  <p style={{ margin:'0 0 3px', fontSize:14, fontWeight:700, color:'#111827' }}>{e.description}</p>
@@ -244,7 +242,7 @@ const ExpensePage = () => {
  {/* Delete confirm */}
  <Modal open={!!delConfirm} onClose={()=>setDelConfirm(null)} title="Hapus Pengeluaran">
  <div style={{ textAlign:'center', marginBottom:20 }}>
- <div style={{ fontSize:48, marginBottom:10 }}></div>
+ <div style={{ width:52, height:52, background:'#FEE2E2', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 12px', border:'1.5px solid #FCA5A5' }}><Icon name="trash" size={22} color="#DC2626" /></div>
  <h3 style={{ margin:'0 0 8px', fontSize:16, fontWeight:800, color:'#111827' }}>Hapus "{delConfirm?.description}"?</h3>
  <p style={{ margin:0, fontSize:13, color:'#6B7280' }}>Tindakan ini tidak dapat dibatalkan.</p>
  </div>

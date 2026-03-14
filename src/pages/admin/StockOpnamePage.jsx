@@ -38,19 +38,56 @@ export default function StockOpnamePage() {
  return list
  }, [activeProducts, catFilter, search])
 
- const differences = useMemo(() =>
- filtered.map(p => ({...p, actual:counts[p.id]!==undefined?Number(counts[p.id]):p.stock, diff:counts[p.id]!==undefined?Number(counts[p.id])-(p.stock||0):0})).filter(p=>counts[p.id]!==undefined)
- , [filtered, counts])
+  const differences = useMemo(() =>
+    filtered
+      .filter(p => counts[p.id] !== undefined && counts[p.id] !== '')
+      .map(p => {
+        const actual    = Number(counts[p.id])
+        const system    = p.stock || 0
+        const diff      = actual - system
+        const hpp       = p.hpp  || 0
+        const lossValue = diff < 0 ? Math.abs(diff) * hpp : 0
+        const gainValue = diff > 0 ? diff * hpp : 0
+        return { ...p, actual, system, diff, hpp, lossValue, gainValue }
+      })
+  , [filtered, counts])
 
- const totalLoss = differences.filter(d=>d.diff<0).reduce((s,d)=>s+Math.abs(d.diff)*(d.hpp||0),0)
- const counted = Object.keys(counts).length
+  const totalLoss = differences.filter(d => d.diff < 0).reduce((s, d) => s + d.lossValue, 0)
+  const totalGain = differences.filter(d => d.diff > 0).reduce((s, d) => s + d.gainValue, 0)
+  const counted   = Object.keys(counts).filter(k => counts[k] !== '').length
 
- const handleSave = () => {
- const adjs = differences.map(d => ({ productId:d.id, productName:d.name, before:d.stock, actual:d.actual, diff:d.diff, hpp:d.hpp||0, lossValue:d.diff<0?Math.abs(d.diff)*(d.hpp||0):0 }))
- adjs.forEach(adj => { const prod = products.find(p=>p.id===adj.productId); if(prod) updateProduct({...prod,stock:adj.actual}) })
- addStockOpname({ date:new Date().toISOString(), note, adjustments:adjs, totalProducts:counted, totalLoss })
- setCounts({}); setNote(''); setShowConfirm(false); setTab('history')
- }
+  const handleSave = () => {
+    const adjs = differences.map(d => ({
+      productId  : d.id,
+      productName: d.name,
+      before     : d.system,
+      actual     : d.actual,
+      diff       : d.diff,
+      hpp        : d.hpp,
+      lossValue  : d.lossValue,
+      gainValue  : d.gainValue,
+    }))
+    adjs.forEach(adj => {
+      const prod = products.find(p => p.id === adj.productId)
+      if (prod) updateProduct({ ...prod, stock: adj.actual })
+    })
+    const diffCount = adjs.filter(a => a.diff !== 0).length
+    const lossItems = adjs.filter(a => a.diff < 0).length
+    const gainItems = adjs.filter(a => a.diff > 0).length
+    const autoNote  = note.trim() ||
+      (diffCount === 0 ? 'Tidak ada selisih — stok sesuai' :
+      `${diffCount} produk selisih: ${lossItems} kurang (rugi ${formatIDR(totalLoss)}), ${gainItems} lebih`)
+    addStockOpname({
+      date         : new Date().toISOString(),
+      note         : autoNote,
+      adjustments  : adjs,
+      totalProducts: counted,
+      totalLoss,
+      totalGain,
+      diffCount,
+    })
+    setCounts({}); setNote(''); setShowConfirm(false); setTab('history')
+  }
 
  return (
  <div style={S.page}>
@@ -74,7 +111,7 @@ export default function StockOpnamePage() {
  {counted > 0 && (
  <div style={{ background:'linear-gradient(135deg, #EFF6FF, #DBEAFE)', border:'1px solid #BFDBFE', borderRadius:14, padding:'14px 18px', marginBottom:18, display:'flex', flexWrap:'wrap', alignItems:'center', justifyContent:'space-between', gap:12 }}>
  <div style={{ display:'flex', gap:20, flexWrap:'wrap' }}>
- {[['Dihitung',counted,'#1D4ED8'],['Selisih Nilai',formatIDR(totalLoss),'#DC2626'],['Stok Lebih',differences.filter(d=>d.diff>0).length,'#059669'],['Stok Kurang',differences.filter(d=>d.diff<0).length,'#EF4444']].map(([l,v,c])=>(
+ {[['Dihitung',counted,'#1D4ED8'],['Stok Kurang',differences.filter(d=>d.diff<0).length,'#EF4444'],['Stok Lebih',differences.filter(d=>d.diff>0).length,'#059669'],['Nilai Selisih Kurang',totalLoss>0?`-${formatIDR(totalLoss)}`:'Rp 0','#DC2626']].map(([l,v,c])=>(
  <div key={l}><span style={{ fontSize:12, color:'#6B7280' }}>{l}: </span><strong style={{ color:c }}>{v}</strong></div>
  ))}
  </div>
@@ -117,12 +154,25 @@ export default function StockOpnamePage() {
  style={{ ...S.inp, width:80, textAlign:'center', fontSize:15, fontWeight:800, ...(actual!==''&&diff!==0?{borderColor:'#F97316',background:'#FFFBEB'}:{}) }}
  onFocus={fi} onBlur={fo}/>
  </td>
- <td style={{ padding:'11px 14px', textAlign:'center', fontWeight:900, fontSize:15 }}>
- {diff!==null ? <span style={{ color:diff>0?'#059669':diff<0?'#EF4444':'#9CA3AF' }}>{diff>0?'+':''}{diff}</span> : <span style={{ color:'#E5E7EB' }}>-</span>}
- </td>
- <td style={{ padding:'11px 14px', fontWeight:700 }}>
- {diff!==null&&diff!==0 ? <span style={{ color:diff<0?'#EF4444':'#059669' }}>{diff<0?'-':'+'}{formatIDR(Math.abs(diff)*(p.hpp||0))}</span> : <span style={{ color:'#E5E7EB' }}>-</span>}
- </td>
+              <td style={{ padding:'11px 14px', textAlign:'center', fontWeight:900, fontSize:15 }}>
+                {diff !== null
+                  ? <span style={{ color:diff>0?'#059669':diff<0?'#EF4444':'#9CA3AF', background:diff!==0?(diff<0?'#FFF1F2':'#F0FDF4'):'transparent', borderRadius:6, padding:'2px 8px', display:'inline-block' }}>
+                      {diff > 0 ? '+' : ''}{diff}
+                    </span>
+                  : <span style={{ color:'#E5E7EB' }}>—</span>}
+              </td>
+              <td style={{ padding:'11px 14px', fontWeight:700 }}>
+                {diff !== null && diff !== 0 ? (
+                  <div>
+                    <span style={{ color:diff<0?'#EF4444':'#059669', fontWeight:800 }}>
+                      {diff < 0 ? '−' : '+'}Rp {Math.abs(diff * (p.hpp||0)).toLocaleString('id-ID')}
+                    </span>
+                    {(p.hpp||0) === 0 && (
+                      <span style={{ fontSize:10, color:'#F59E0B', display:'block' }}>HPP belum diisi</span>
+                    )}
+                  </div>
+                ) : <span style={{ color:'#E5E7EB' }}>—</span>}
+              </td>
  </tr>
  )
  })}
@@ -152,7 +202,9 @@ export default function StockOpnamePage() {
  <div style={{ fontSize:12, color:'#9CA3AF', marginTop:3 }}>{op.totalProducts} produk dihitung {op.note?`• ${op.note}`:''}</div>
  </div>
  <div style={{ textAlign:'right' }}>
- <div style={{ fontWeight:900, fontSize:15, color:op.totalLoss>0?'#EF4444':'#059669' }}>{op.totalLoss>0?`-${formatIDR(op.totalLoss)}`:'Tidak ada selisih'}</div>
+                <div style={{ fontWeight:900, fontSize:15, color:op.totalLoss>0?'#EF4444':'#059669' }}>
+                  {op.diffCount === 0 ? '✓ Stok Sesuai' : op.totalLoss > 0 ? `-${formatIDR(op.totalLoss)}` : `+${formatIDR(op.totalGain||0)}`}
+                </div>
  <div style={{ fontSize:12, color:'#9CA3AF' }}>{op.adjustments?.length||0} penyesuaian</div>
  </div>
  </div>
@@ -208,7 +260,7 @@ export default function StockOpnamePage() {
  <span>{detailOpname.totalProducts} produk</span>
  {detailOpname.note && <span style={{ color:'#6B7280' }}>• {detailOpname.note}</span>}
  <span style={{ fontWeight:700, color:detailOpname.totalLoss>0?'#EF4444':'#059669', marginLeft:'auto' }}>
- {detailOpname.totalLoss>0?`-${formatIDR(detailOpname.totalLoss)}`:'Tidak ada selisih'}
+              {detailOpname.diffCount === 0 ? '✓ Stok Sesuai' : detailOpname.totalLoss > 0 ? `-${formatIDR(detailOpname.totalLoss)}` : `+${formatIDR(detailOpname.totalGain||0)}`}
  </span>
  </div>
  <div style={{ maxHeight:280, overflowY:'auto', borderRadius:10, overflow:'hidden', border:'1px solid #F1F5F9' }}>
