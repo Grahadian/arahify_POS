@@ -122,11 +122,14 @@ const AppLayout = ({ children, isAdminMode = false }) => {
       {/* ── Main Content ── */}
       <main style={{
         flex: 1,
-        overflow: 'auto',
+        // POS Register needs overflow:hidden so internal flex scroll works
+        // All other pages use overflow:auto for normal scroll
+        overflow: currentPage === 'register' ? 'hidden' : 'auto',
         overflowX: 'hidden',
+        minHeight: 0,
         scrollbarWidth: 'thin',
         scrollbarColor: '#CBD5E1 transparent',
-        WebkitOverflowScrolling: 'touch', // smooth scroll on iOS
+        WebkitOverflowScrolling: 'touch',
       }}>
         {children}
       </main>

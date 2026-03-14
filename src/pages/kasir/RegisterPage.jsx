@@ -357,7 +357,7 @@ const RegisterPage = () => {
   }
 
  return (
- <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row', height:'100%', overflow:'hidden' }}>
+ <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row', height:'100%', overflow:'hidden', maxHeight:'100%' }}>
  {/* Mobile Tab switcher */}
  {isMobile && (
    <div style={{ display:'flex', background:'#fff', borderBottom:'1.5px solid #F1F5F9', flexShrink:0, zIndex:10 }}>
@@ -502,7 +502,7 @@ const RegisterPage = () => {
  </div>
  )}
  {/* RIGHT: 2-step panel */}
- <div style={{ width: isMobile ? '100%' : cartWidth, flex: isMobile ? '1' : 'none', flexShrink: isMobile ? 1 : 0, minHeight:0, display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
+ <div style={{ width: isMobile ? '100%' : cartWidth, flex: isMobile ? '1' : 'none', flexShrink: isMobile ? 1 : 0, minHeight:0, maxHeight:'100%', display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
 
  {/* Step tabs */}
  <div style={{ display:'flex', flexShrink:0, borderBottom:'1px solid #F1F5F9' }}>
@@ -651,7 +651,7 @@ const RegisterPage = () => {
 
  {/* PEMBAYARAN */}
   {step==='payment'&&(
-  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
+  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0, maxHeight:'100%' }}>
 
     {/* ── Header ── */}
     <div style={{ padding:'12px 14px', borderBottom:'1px solid #F1F5F9', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
@@ -665,7 +665,15 @@ const RegisterPage = () => {
     </div>
 
     {/* ── Scrollable content ── */}
-    <div style={{ flex:1, overflowY:'auto', minHeight:0, WebkitOverflowScrolling:'touch' }}>
+    <div style={{
+      flex: 1,
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      minHeight: 0,
+      WebkitOverflowScrolling: 'touch',
+      // Fallback for when flex height chain breaks (inside overflow:auto parent)
+      maxHeight: 'calc(100dvh - 220px)',
+    }}>
 
       {/* Total Banner */}
       <div style={{ background:'linear-gradient(135deg,#1E293B,#334155)', padding:'14px 16px', borderBottom:'1px solid #F1F5F9' }}>
