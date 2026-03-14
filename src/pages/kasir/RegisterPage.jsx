@@ -586,7 +586,8 @@ const RegisterPage = () => {
 
  {/* Footer order */}
  {!isEmpty&&(
- <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0, overflowY:'auto', maxHeight:'52vh', WebkitOverflowScrolling:'touch' }}>
+ <div style={{ display:'flex', flexDirection:'column', flexShrink:0 }}>
+  <div style={{ padding:'12px 14px 0', overflowY:'auto', maxHeight:'35vh', WebkitOverflowScrolling:'touch', borderTop:'1px solid #F1F5F9' }}>
  {/* Diskon manual */}
  <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
  <span style={{ fontSize:12, color:'#6B7280', flexShrink:0 }}>Diskon (Rp)</span>
@@ -631,6 +632,9 @@ const RegisterPage = () => {
  </div>
  </div>
 
+  </div>
+  {/* Sticky CTA */}
+  <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0 }}>
  <button onClick={goToPayment} style={{ width:'100%', padding:'13px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:'inherit', boxShadow:'0 4px 14px rgba(37,99,235,0.3)', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
  Lanjut ke Pembayaran →
  </button>
@@ -639,6 +643,7 @@ const RegisterPage = () => {
  style={{ width:'100%', marginTop:6, padding:'9px', background:'#FFFBEB', color:'#D97706', border:'1.5px solid #FCD34D', borderRadius:12, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
  ⏸ Tahan Pesanan
  </button>
+  </div>
  </div>
  )}
  </div>
@@ -1027,14 +1032,14 @@ const RegisterPage = () => {
 
  <Modal open={successModal} onClose={()=>setSuccessModal(false)} title="Pembayaran Berhasil">
  {lastTrx&&(
- <div>
+ <div style={{ display:'flex', flexDirection:'column' }}>
  <div style={{ textAlign:'center', marginBottom:16 }}>
- <div style={{ width:64, height:64, background:'#DCFCE7', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 12px' }}><Icon name="check" size={28} color="#16A34A" strokeWidth={3} /></div>
- <h3 style={{ margin:'0 0 4px', fontSize:20, fontWeight:900, color:'#111827' }}>Pembayaran Berhasil!</h3>
- <p style={{ margin:'0 0 2px', color:'#6B7280', fontSize:12 }}>ID: <strong>{lastTrx.id}</strong></p>
- <p style={{ fontSize:27, fontWeight:900, color:'#111827', margin:'0 0 3px' }}>{formatIDR(lastTrx.total)}</p>
- {lastTrx.memberName&&<p style={{ margin:0, fontSize:13, color:'#6B7280' }}> {lastTrx.memberName}</p>}
- {settings?.loyaltyEnabled&&lastTrx.pointsEarned>0&&<p style={{ margin:'4px 0 0', fontSize:12, color:'#D97706', fontWeight:700 }}> +{lastTrx.pointsEarned} poin diterima member</p>}
+ <div style={{ width:56, height:56, background:'#DCFCE7', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 10px' }}><Icon name="check" size={24} color="#16A34A" strokeWidth={3} /></div>
+ <h3 style={{ margin:'0 0 3px', fontSize:18, fontWeight:900, color:'#111827' }}>Pembayaran Berhasil!</h3>
+ <p style={{ margin:'0 0 2px', color:'#6B7280', fontSize:11 }}>ID: <strong>{lastTrx.id}</strong></p>
+ <p style={{ fontSize:24, fontWeight:900, color:'#111827', margin:'0 0 2px' }}>{formatIDR(lastTrx.total)}</p>
+ {lastTrx.memberName&&<p style={{ margin:0, fontSize:12, color:'#6B7280' }}> {lastTrx.memberName}</p>}
+ {settings?.loyaltyEnabled&&lastTrx.pointsEarned>0&&<p style={{ margin:'3px 0 0', fontSize:11, color:'#D97706', fontWeight:700 }}> +{lastTrx.pointsEarned} poin</p>}
  </div>
 
  <div style={{ background:'#F9FAFB', borderRadius:12, padding:'10px 14px', marginBottom:12 }}>
@@ -1056,18 +1061,18 @@ const RegisterPage = () => {
  </div>
 
  {/* Action buttons */}
- <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:6 }}>
- <button onClick={handlePrint} style={{ padding:'11px 6px', background:'#2563EB', color:'#fff', border:'none', borderRadius:11, fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
- <span>Cetak</span>
+ <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+ <button onClick={handlePrint} style={{ padding:'13px 8px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
+ Cetak Struk
  </button>
- <button onClick={handleSavePDF} style={{ padding:'11px 6px', background:'#fff', color:'#374151', border:'1.5px solid #E5E7EB', borderRadius:11, fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
- <span>PDF</span>
+ <button onClick={handleSavePDF} style={{ padding:'13px 8px', background:'#fff', color:'#374151', border:'1.5px solid #E5E7EB', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
+ Simpan PDF
  </button>
- <button onClick={handleSendWA} style={{ padding:'11px 6px', background:'#ECFDF5', color:'#059669', border:'1.5px solid #A7F3D0', borderRadius:11, fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
- <span>WA</span>
+ <button onClick={handleSendWA} style={{ padding:'13px 8px', background:'#ECFDF5', color:'#059669', border:'1.5px solid #A7F3D0', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
+ Kirim WA
  </button>
- <button onClick={()=>{setSuccessModal(false)}} style={{ padding:'11px 6px', background:'#F8FAFC', color:'#374151', border:'1.5px solid #E5E7EB', borderRadius:11, fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'inherit', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
- <span>Baru</span>
+ <button onClick={()=>{setSuccessModal(false)}} style={{ padding:'13px 8px', background:'#1E293B', color:'#fff', border:'none', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
+ Transaksi Baru
  </button>
  </div>
  </div>

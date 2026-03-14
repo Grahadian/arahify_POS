@@ -65,6 +65,8 @@ body {
   line-height: 1.5;
   /* CRITICAL FIX: allow body scroll */
   overflow: auto;
+  /* Prevent pull-to-refresh */
+  overscroll-behavior-y: none;
 }
 
 #root {
@@ -175,4 +177,9 @@ input[type="number"]::-webkit-outer-spin-button {
   .auth-banner + div {
     border-radius: 20px !important;
   }
+}
+
+/* Prevent double-tap zoom on buttons and interactive elements */
+button, a, [role="button"] {
+  touch-action: manipulation;
 }
