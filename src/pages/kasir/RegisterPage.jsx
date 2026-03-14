@@ -376,7 +376,7 @@ const RegisterPage = () => {
  )}
 
  {/* LEFT: Product Grid */}
- <div style={{ flex:1, display: isMobile && mobileTab==='cart' ? 'none' : 'flex', flexDirection:'column', overflow:'hidden', borderRight: isMobile ? 'none' : '1px solid #F1F5F9', minWidth:0 }}>
+ <div style={{ flex:1, minHeight:0, display: isMobile && mobileTab==='cart' ? 'none' : 'flex', flexDirection:'column', overflow:'hidden', borderRight: isMobile ? 'none' : '1px solid #F1F5F9', minWidth:0 }}>
  <div style={{ padding:'14px 16px 10px', background:'#fff', borderBottom:'1px solid #F1F5F9', flexShrink:0 }}>
  {/* Barcode scan bar */}
  {posScanMode && (
@@ -502,7 +502,7 @@ const RegisterPage = () => {
  </div>
  )}
  {/* RIGHT: 2-step panel */}
- <div style={{ width: isMobile ? '100%' : cartWidth, flexShrink:0, display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
+ <div style={{ width: isMobile ? '100%' : cartWidth, flex: isMobile ? '1' : 'none', flexShrink: isMobile ? 1 : 0, minHeight:0, display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
 
  {/* Step tabs */}
  <div style={{ display:'flex', flexShrink:0, borderBottom:'1px solid #F1F5F9' }}>
@@ -516,7 +516,7 @@ const RegisterPage = () => {
 
  {/* PESANAN */}
  {step==='order'&&(
- <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden' }}>
+ <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
  <div style={{ padding:'10px 12px 8px', borderBottom:'1px solid #F9FAFB', flexShrink:0 }}>
   {isMobile && (
     <button onClick={()=>setMobileTab('products')} style={{ display:'flex', alignItems:'center', gap:4, background:'none', border:'none', cursor:'pointer', color:'#6B7280', fontFamily:'inherit', fontSize:12, fontWeight:600, marginBottom:6, padding:0, WebkitTapHighlightColor:'transparent' }}>
@@ -646,7 +646,7 @@ const RegisterPage = () => {
 
  {/* PEMBAYARAN */}
  {step==='payment'&&(
- <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden' }}>
+ <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
  <div style={{ padding:'12px 14px', borderBottom:'1px solid #F9FAFB', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
  <button onClick={goBackToOrder} style={{ background:'#F3F4F6', border:'none', borderRadius:8, width:30, height:30, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon name="chevronLeft" size={15} color="#374151" /></button>
  <div style={{ flex:1 }}>
@@ -879,12 +879,16 @@ const RegisterPage = () => {
 
       {/* ── CONFIRM MODAL ─────────────────────────── */}
       {confirmModal && (
-        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.55)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.55)', zIndex:9999, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 }}
           onClick={()=>setConfirmModal(false)}>
-          <div style={{ background:'#fff', borderRadius:20, padding:'20px 16px', width:'100%', maxWidth:400, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
+          <div style={{ background:'#fff', borderRadius:'20px 20px 0 0', padding:'16px 20px', width:'100%', maxWidth:520, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
             onClick={e=>e.stopPropagation()}>
+            {/* Drag handle */}
+            <div style={{ display:'flex', justifyContent:'center', marginBottom:12 }}>
+              <div style={{ width:36, height:4, background:'#E5E7EB', borderRadius:2 }} />
+            </div>
             {/* Header */}
-            <div style={{ textAlign:'center', marginBottom:20 }}>
+            <div style={{ textAlign:'center', marginBottom:16 }}>
               <div style={{ width:60, height:60, background:'#DBEAFE', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 12px' }}>
                 <svg width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='#2563EB' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'><polyline points='9 11 12 14 22 4'/><path d='M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'/></svg>
               </div>
@@ -893,7 +897,7 @@ const RegisterPage = () => {
             </div>
 
             {/* Detail */}
-            <div style={{ background:'#F8FAFC', borderRadius:14, padding:'14px 16px', marginBottom:16, display:'flex', flexDirection:'column', gap:10 }}>
+            <div style={{ background:'#F8FAFC', borderRadius:14, padding:'12px 14px', marginBottom:14, display:'flex', flexDirection:'column', gap:10 }}>
               {/* Items */}
               <div style={{ maxHeight:140, overflowY:'auto', display:'flex', flexDirection:'column', gap:6 }}>
                 {cart.map(item => (

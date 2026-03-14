@@ -170,4 +170,9 @@ input[type="number"]::-webkit-outer-spin-button {
   .auth-banner {
     display: none !important;
   }
+  /* When banner is hidden, the sibling flex div takes full width automatically via flex:1 */
+  /* Also fix FloatCard to be full-screen card on mobile */
+  .auth-banner + div {
+    border-radius: 20px !important;
+  }
 }

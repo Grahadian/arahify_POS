@@ -95,24 +95,24 @@ export default function KasirOrdersPage() {
  </p>
  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
  {/* HH */}
- <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '6px 16px', textAlign: 'center' }}>
- <span style={{ fontSize: 40, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{hh}</span>
+ <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', textAlign: 'center' }}>
+ <span style={{ fontSize: 34, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{hh}</span>
  </div>
  {/* : */}
- <span style={{ fontSize: 36, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
+ <span style={{ fontSize: 30, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
  {/* MM */}
- <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '6px 16px', textAlign: 'center' }}>
- <span style={{ fontSize: 40, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{mm}</span>
+ <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', textAlign: 'center' }}>
+ <span style={{ fontSize: 34, fontWeight: 900, color: '#fff', fontFamily: 'monospace', lineHeight: 1 }}>{mm}</span>
  </div>
  {/* : */}
- <span style={{ fontSize: 36, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
+ <span style={{ fontSize: 30, fontWeight: 900, color: '#60A5FA', fontFamily: 'monospace', animation: 'clkBlink 1s step-end infinite', marginBottom: 2 }}>:</span>
  {/* SS */}
- <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '6px 12px', textAlign: 'center' }}>
- <span style={{ fontSize: 40, fontWeight: 700, color: '#BAE6FD', fontFamily: 'monospace', lineHeight: 1 }}>{ss}</span>
+ <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 10, padding: '5px 10px', textAlign: 'center' }}>
+ <span style={{ fontSize: 34, fontWeight: 700, color: '#BAE6FD', fontFamily: 'monospace', lineHeight: 1 }}>{ss}</span>
  </div>
  </div>
  </div>
- <div style={{ textAlign: 'right' }}>
+ <div style={{ textAlign: 'right', flexShrink: 0 }}>
  <div style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '10px 16px' }}>
  <p style={{ margin: '0 0 3px', fontSize: 11, color: '#BAE6FD', fontWeight: 600 }}>Reset harian</p>
  <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#fff', fontFamily: 'monospace' }}>00:00 WIB</p>

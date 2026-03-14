@@ -107,7 +107,7 @@ const FloatCard = ({ children, banelIdx, wide = false }) => (
     <div className="auth-banner" style={{ width:'42%', flexShrink:0 }}>
       <SideBanner panelIdx={banelIdx||0} />
     </div>
-    <div style={{ flex:1, background:'#fff', display:'flex', flexDirection:'column', justifyContent:'center', padding:'24px 20px', overflowY:'auto' }}>
+    <div style={{ flex:1, background:'#fff', display:'flex', flexDirection:'column', justifyContent:'center', padding:'24px 20px', overflowY:'auto', minWidth:0 }}>
       {children}
     </div>
   </div>
@@ -193,26 +193,45 @@ const KasirPinScreen = ({ onSuccess, onCancel, savedPin }) => {
 }
 
 const RoleSelectScreen = ({ user, onSelectAdmin, onSelectKasir }) => {
-  const initials = (user?.name || user?.username || '?').slice(0,2).toUpperCase()
   return (
     <AuthBg>
-      <FloatCard wide>
-        <div style={{ textAlign:'center', marginBottom:20 }}>
-          <AppLogo size={44} showText={false} variant="color" />
-          <h3>Halo, {user?.name}!</h3>
-          <p style={{ color:'#64748B', fontSize:13 }}>Pilih mode akses untuk sesi ini</p>
+      <div style={{ width:'100%', maxWidth:460, background:'#fff', borderRadius:24, boxShadow:'0 32px 80px rgba(0,0,0,0.45)', padding:'32px 28px', margin:'0 16px' }}>
+        <div style={{ textAlign:'center', marginBottom:24 }}>
+          <AppLogo size={48} showText={false} variant="color" />
+          <h2 style={{ margin:'12px 0 4px', fontSize:20, fontWeight:900, color:'#0F172A' }}>Halo, {user?.name?.split(' ')[0]}!</h2>
+          <p style={{ margin:0, color:'#64748B', fontSize:13 }}>Pilih mode akses untuk sesi ini</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:12 }}>
-          <button onClick={onSelectAdmin} style={{ padding:20, borderRadius:16, border:'1.5px solid #BFDBFE', background:'#EFF6FF', cursor:'pointer' }}>
-            <p style={{ fontWeight:900, color:'#1E40AF' }}>Admin</p>
-            <span style={{ fontSize:10 }}>Dashboard & Laporan</span>
+        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          <button onClick={onSelectAdmin} style={{
+            padding:'18px 20px', borderRadius:14, border:'2px solid #BFDBFE',
+            background:'#EFF6FF', cursor:'pointer', textAlign:'left', fontFamily:'inherit',
+            WebkitTapHighlightColor:'transparent', touchAction:'manipulation',
+            display:'flex', alignItems:'center', gap:14,
+          }}>
+            <div style={{ width:44, height:44, borderRadius:12, background:'linear-gradient(135deg,#2563EB,#7C3AED)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <p style={{ margin:'0 0 2px', fontWeight:900, color:'#1E40AF', fontSize:15 }}>Admin / Manajer</p>
+              <p style={{ margin:0, fontSize:11, color:'#3B82F6' }}>Dashboard, Laporan, Pengaturan</p>
+            </div>
           </button>
-          <button onClick={onSelectKasir} style={{ padding:20, borderRadius:16, border:'1.5px solid #A7F3D0', background:'#ECFDF5', cursor:'pointer' }}>
-            <p style={{ fontWeight:900, color:'#065F46' }}>Kasir</p>
-            <span style={{ fontSize:10 }}>Transaksi & POS</span>
+          <button onClick={onSelectKasir} style={{
+            padding:'18px 20px', borderRadius:14, border:'2px solid #A7F3D0',
+            background:'#ECFDF5', cursor:'pointer', textAlign:'left', fontFamily:'inherit',
+            WebkitTapHighlightColor:'transparent', touchAction:'manipulation',
+            display:'flex', alignItems:'center', gap:14,
+          }}>
+            <div style={{ width:44, height:44, borderRadius:12, background:'linear-gradient(135deg,#059669,#10B981)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <p style={{ margin:'0 0 2px', fontWeight:900, color:'#065F46', fontSize:15 }}>Kasir</p>
+              <p style={{ margin:0, fontSize:11, color:'#059669' }}>Transaksi & POS Register</p>
+            </div>
           </button>
         </div>
-      </FloatCard>
+      </div>
     </AuthBg>
   )
 }

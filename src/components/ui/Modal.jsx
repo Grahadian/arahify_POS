@@ -6,16 +6,28 @@ const Modal = ({
   onClose,
   title,
   children,
-  maxWidth = 480,
+  maxWidth = 520,
   showClose = true,
 }) => {
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden'
+      // iOS-safe scroll lock
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+      document.body.style.top = `-${scrollY}px`
     } else {
-      document.body.style.overflow = ''
+      const top = document.body.style.top
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+      if (top) window.scrollTo(0, parseInt(top || '0') * -1)
     }
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+    }
   }, [open])
 
   if (!open) return null
@@ -24,13 +36,13 @@ const Modal = ({
     <div
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.5)',
+        background: 'rgba(0,0,0,0.55)',
         backdropFilter: 'blur(4px)',
-        zIndex: 1000,
+        WebkitBackdropFilter: 'blur(4px)',
+        zIndex: 9000,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-end',   // bottom-sheet on all screens
         justifyContent: 'center',
-        padding: 16,
         animation: 'fadeIn 0.15s ease',
       }}
       onClick={onClose}
@@ -38,19 +50,26 @@ const Modal = ({
       <div
         style={{
           background: '#fff',
-          borderRadius: 20,
+          borderRadius: '20px 20px 0 0',
           width: '100%',
           maxWidth,
-          maxHeight: '90vh',
+          maxHeight: '92dvh',
           overflow: 'auto',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.2)',
-          animation: 'scaleIn 0.2s ease',
+          overflowX: 'hidden',
+          boxShadow: '0 -8px 40px rgba(0,0,0,0.25)',
+          animation: 'slideUp 0.25s ease',
+          WebkitOverflowScrolling: 'touch',
         }}
         onClick={e => e.stopPropagation()}
       >
+        {/* Drag handle */}
+        <div style={{ display:'flex', justifyContent:'center', paddingTop:10, paddingBottom:2 }}>
+          <div style={{ width:36, height:4, background:'#E5E7EB', borderRadius:2 }} />
+        </div>
+
         {(title || showClose) && (
           <div style={{
-            padding: '18px 24px',
+            padding: '10px 20px 12px',
             borderBottom: '1px solid #F1F5F9',
             display: 'flex',
             alignItems: 'center',
@@ -58,7 +77,7 @@ const Modal = ({
             flexShrink: 0,
           }}>
             {title && (
-              <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: '#111827' }}>
+              <h3 style={{ margin:0, fontSize:16, fontWeight:800, color:'#111827' }}>
                 {title}
               </h3>
             )}
@@ -75,6 +94,9 @@ const Modal = ({
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginLeft: 'auto',
+                  flexShrink: 0,
+                  WebkitTapHighlightColor: 'transparent',
+                  touchAction: 'manipulation',
                 }}
               >
                 <Icon name="x" size={16} color="#6B7280" />
@@ -82,7 +104,9 @@ const Modal = ({
             )}
           </div>
         )}
-        <div style={{ padding: 24 }}>{children}</div>
+        <div style={{ padding:'16px 20px 20px' }}>{children}</div>
+        {/* iPhone home bar safe area */}
+        <div style={{ height:'env(safe-area-inset-bottom, 8px)' }} />
       </div>
     </div>
   )
