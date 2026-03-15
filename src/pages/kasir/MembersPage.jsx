@@ -77,7 +77,7 @@ export default function MembersPage() {
  }
 
  return (
- <div style={{ padding:'14px', margin:'0 auto' }}>
+ <div style={{ padding:'12px 12px', margin:'0 auto' }}>
 
  {/* Header */}
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
@@ -124,7 +124,7 @@ export default function MembersPage() {
  const totalSpent = memberTrx.filter(t => t.status==='completed').reduce((s,t) => s+(t.total||0), 0)
  const tier = getMemberTier(totalSpent)
  return (
- <div key={m.id} style={{ background:'#fff', borderRadius:14, padding:'14px 18px', marginBottom:10, border:'1.5px solid #F1F5F9', cursor:'pointer', transition:'all 0.15s' }}
+ <div key={m.id} style={{ background:'#fff', borderRadius:14, padding:'14px 16px', marginBottom:10, border:'1px solid #E2E8F0', overflow:'hidden', cursor:'pointer', transition:'all 0.15s' }}
  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'}
  onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
  >
@@ -206,7 +206,7 @@ export default function MembersPage() {
  </div>
 
  {/* Contact info */}
- <div style={{ background:'#F9FAFB', borderRadius:12, padding:'14px', marginBottom:16 }}>
+ <div style={{ background:'#F9FAFB', borderRadius:12, padding:'12px 12px', marginBottom:16 }}>
  {[
  [' Telepon', selected.phone || '-'],
  [' Email', selected.email || '-'],

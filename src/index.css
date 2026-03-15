@@ -360,3 +360,26 @@ input, select, textarea {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ============================================================
+   REPORTS PAGE MOBILE
+   ============================================================ */
+@media (max-width: 639px) {
+  .reports-sidebar { display: none !important; }
+  .reports-mobile-tabs { display: flex !important; }
+  .reports-layout { flex-direction: column !important; }
+}
+@media (min-width: 640px) {
+  .reports-mobile-tabs { display: none !important; }
+  .reports-sidebar { display: flex !important; flex-direction: column; }
+}
+.reports-mobile-tabs::-webkit-scrollbar { display: none; }
+
+/* ============================================================
+   DASHBOARD MOBILE
+   ============================================================ */
+@media (max-width: 639px) {
+  .dash-stats-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
