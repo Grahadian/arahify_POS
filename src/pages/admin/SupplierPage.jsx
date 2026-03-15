@@ -6,10 +6,10 @@ import { useApp } from '@/context/AppContext'
 import { formatIDR } from '@/utils/format'
 
 const S = {
- page: { padding: '16px 20px', maxWidth: 900, margin: '0 auto' },
+ page: { padding: '14px', margin: '0 auto' },
  card: { background: '#fff', border: '1px solid #F1F5F9', borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.04)' },
- overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 },
- modal: { background: '#fff', borderRadius: 20, padding: 28, width: '100%', maxWidth: 560, boxShadow: '0 20px 60px rgba(0,0,0,0.25)', maxHeight: '90vh', overflowY: 'auto' },
+ overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: 0 },
+ modal: { background: '#fff', borderRadius: '20px 20px 0 0', padding: '16px 20px 20px', width: '100%', maxWidth: 560, boxShadow: '0 -8px 40px rgba(0,0,0,0.2)', maxHeight: '92dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch' },
  label: { display: 'block', fontSize: 11, fontWeight: 700, color: '#6B7280', marginBottom: 5, textTransform: 'uppercase', letterSpacing: 0.5 },
  inp: { width: '100%', padding: '11px 14px', border: '1.5px solid #E5E7EB', borderRadius: 10, fontSize: 14, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box', background: '#FAFAFA' },
  btn: (v) => ({ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 18px', borderRadius:10, fontSize:13, fontWeight:800, fontFamily:'inherit', cursor:'pointer', border:'none', ...(v==='primary'?{background:'#2563EB',color:'#fff'}:v==='danger'?{background:'#FEF2F2',color:'#DC2626',border:'1px solid #FECACA'}:{background:'#F3F4F6',color:'#374151',border:'1px solid #E5E7EB'}) }),
@@ -68,13 +68,13 @@ export default function SupplierPage() {
  </div>
 
  {/* Stats */}
- <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:20 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:12, marginBottom:20 }}>
  {[
  ['Total Supplier', suppliers.length, '#2563EB', '#EFF6FF'],
  ['Transaksi Aktif', purchaseOrders.filter(p=>p.status==='ordered').length, '#D97706', '#FFFBEB'],
  ['PO Diterima', purchaseOrders.filter(p=>p.status==='received').length, '#059669', '#F0FDF4'],
  ].map(([label, val, color, bg]) => (
- <div key={label} style={{ ...S.card, padding:'16px 18px', background:bg }}>
+ <div key={label} style={{ ...S.card, padding:'14px', background:bg }}>
  <div style={{ fontSize:24, fontWeight:900, color }}>{val}</div>
  <div style={{ fontSize:12, color:'#6B7280', marginTop:3 }}>{label}</div>
  </div>
@@ -138,8 +138,9 @@ export default function SupplierPage() {
  {showForm && (
  <div style={S.overlay} onClick={()=>setShowForm(false)}>
  <div style={S.modal} onClick={e=>e.stopPropagation()}>
+  <div style={{ display:'flex', justifyContent:'center', paddingBottom:10 }}><div style={{ width:36, height:4, background:'#E5E7EB', borderRadius:2 }} /></div>
  <h3 style={{ margin:'0 0 20px', fontSize:18, fontWeight:900, color:'#111827' }}>{editing?'Edit':'Tambah'} Supplier</h3>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
+  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:12 }}>
  {[['Nama Supplier *','name','text','PT. Maju Bersama'],['Nama Kontak','contact','text','Budi Santoso'],['No. Telepon','phone','tel','08123456789'],['Email','email','email','budi@supplier.com'],['Kategori Barang','category','text','Bahan Baku'],['NPWP','npwp','text','12.345.678.9']].map(([label,key,type,ph])=>(
  <div key={key}>
  <label style={S.label}>{label}</label>
@@ -153,7 +154,7 @@ export default function SupplierPage() {
  </div>
  <div style={{ gridColumn:'1/-1', background:'#F8FAFC', borderRadius:12, padding:'14px 16px' }}>
  <div style={{ fontSize:12, fontWeight:800, color:'#374151', marginBottom:12 }}> Informasi Bank</div>
- <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:10 }}>
  {[['Nama Bank','bankName','BCA / BRI'],['No. Rekening','bankNo','1234567890'],['Atas Nama','bankHolder','PT Maju']].map(([l,k,p])=>(
  <div key={k}>
  <label style={S.label}>{l}</label>
@@ -187,7 +188,7 @@ export default function SupplierPage() {
  </div>
  <button style={{ background:'none', border:'none', fontSize:22, cursor:'pointer', color:'#9CA3AF' }} onClick={()=>setDetailId(null)}>×</button>
  </div>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:16 }}>
+  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(140px, 1fr))', gap:10, marginBottom:16 }}>
  {[[' Kontak',detail.contact],[' Telepon',detail.phone],[' Email',detail.email],[' Alamat',detail.address],[' NPWP',detail.npwp]].filter(([,v])=>v).map(([l,v])=>(
  <div key={l} style={{ background:'#F8FAFC', borderRadius:10, padding:'10px 12px' }}>
  <div style={{ fontSize:11, color:'#9CA3AF', marginBottom:3 }}>{l}</div>
@@ -196,7 +197,7 @@ export default function SupplierPage() {
  ))}
  </div>
  {detail.bankName && (
- <div style={{ background:'#EFF6FF', borderRadius:12, padding:'12px 14px', marginBottom:16 }}>
+ <div style={{ background:'#EFF6FF', borderRadius:12, padding:'14px', marginBottom:16 }}>
  <div style={{ fontSize:12, fontWeight:800, color:'#1D4ED8', marginBottom:6 }}> Rekening Bank</div>
  <div style={{ fontSize:13, color:'#1E40AF' }}>{detail.bankName} — {detail.bankNo} <span style={{ color:'#6B7280' }}>a/n</span> {detail.bankHolder}</div>
  </div>
@@ -207,7 +208,7 @@ export default function SupplierPage() {
  <div style={{ fontSize:13, color:'#059669', fontWeight:700 }}>Total: {formatIDR(totalBeli)}</div>
  </div>
  {detailPOs.length === 0 ? (
- <div style={{ textAlign:'center', padding:'20px', color:'#9CA3AF', background:'#F9FAFB', borderRadius:12, fontSize:13 }}>Belum ada PO untuk supplier ini</div>
+ <div style={{ textAlign:'center', padding:'14px', color:'#9CA3AF', background:'#F9FAFB', borderRadius:12, fontSize:13 }}>Belum ada PO untuk supplier ini</div>
  ) : (
  <div style={{ maxHeight:180, overflowY:'auto', display:'flex', flexDirection:'column', gap:8 }}>
  {detailPOs.map(po=>(

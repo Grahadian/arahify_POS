@@ -6,10 +6,10 @@ import { useApp } from '@/context/AppContext'
 import { formatIDR } from '@/utils/format'
 
 const S = {
- page: { padding:'16px 20px', maxWidth:960, margin:'0 auto' },
+ page: { padding:'14px', margin:'0 auto' },
  card: { background:'#fff', border:'1px solid #F1F5F9', borderRadius:16, boxShadow:'0 1px 4px rgba(0,0,0,0.04)' },
- overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:20 },
- modal: { background:'#fff', borderRadius:20, padding:28, width:'100%', maxWidth:560, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'90vh', overflowY:'auto' },
+ overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 },
+ modal: { background:'#fff', borderRadius:'20px 20px 0 0', padding:'16px 20px 20px', width:'100%', maxWidth:560, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'92dvh', overflowY:'auto', WebkitOverflowScrolling:'touch' },
  label: { display:'block', fontSize:11, fontWeight:700, color:'#6B7280', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5 },
  inp: { width:'100%', padding:'10px 12px', border:'1.5px solid #E5E7EB', borderRadius:9, fontSize:13, fontFamily:'inherit', outline:'none', boxSizing:'border-box', background:'#FAFAFA' },
  btn: (v) => ({ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 18px', borderRadius:10, fontSize:13, fontWeight:800, fontFamily:'inherit', cursor:'pointer', border:'none', ...(v==='primary'?{background:'#2563EB',color:'#fff'}:v==='green'?{background:'#059669',color:'#fff'}:v==='danger'?{background:'#FEF2F2',color:'#DC2626',border:'1px solid #FECACA'}:{background:'#F3F4F6',color:'#374151',border:'1px solid #E5E7EB'}) }),
@@ -247,7 +247,7 @@ export default function PurchaseOrderPage() {
  </div>
  <button style={{ background:'none', border:'none', fontSize:22, cursor:'pointer', color:'#9CA3AF' }} onClick={()=>setDetailPO(null)}>×</button>
  </div>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:14 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:8, marginBottom:14 }}>
  {[['Supplier',detailPO.supplierName],['Status',STATUS[detailPO.status]?.label],['Dibuat',new Date(detailPO.createdAt).toLocaleDateString('id-ID')],['Est. Tiba',detailPO.expectedDate||'-']].map(([l,v])=>(
  <div key={l} style={{ background:'#F8FAFC', borderRadius:8, padding:'8px 12px' }}>
  <div style={{ fontSize:11, color:'#9CA3AF' }}>{l}</div>

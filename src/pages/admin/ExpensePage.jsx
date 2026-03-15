@@ -89,7 +89,7 @@ const ExpensePage = () => {
  }
 
  return (
- <div style={{ padding:'16px 20px', maxWidth:960, margin:'0 auto' }}>
+ <div style={{ padding:'14px', margin:'0 auto' }}>
 
  {/* Header */}
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16, flexWrap:'wrap', gap:10 }}>
@@ -109,7 +109,7 @@ const ExpensePage = () => {
  { label:'Total Pengeluaran',value:totalExpense, color:'#991B1B', bg:'#FEE2E2', border:'#FCA5A5' },
  { label:'LABA BERSIH', value:netProfit, color:netProfit>=0?'#166534':'#991B1B', bg:netProfit>=0?'#DCFCE7':'#FEE2E2', border:netProfit>=0?'#86EFAC':'#FCA5A5', bold:true },
  ].map(s=>(
- <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:'12px 14px', border:`1px solid ${s.color}22` }}>
+ <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:'14px', border:`1px solid ${s.color}22` }}>
  <p style={{ margin:'0 0 4px', fontSize:11, color:'#6B7280', fontWeight:700 }}>{s.icon} {s.label}</p>
  <p style={{ margin:0, fontSize:s.bold?17:15, fontWeight:900, color:s.color }}>{formatIDR(s.value)}</p>
  </div>
@@ -117,7 +117,7 @@ const ExpensePage = () => {
  </div>
 
  {/* Filter Bar */}
- <div style={{ background:'#fff', borderRadius:12, padding:'12px 14px', border:'1px solid #F1F5F9', marginBottom:14, display:'flex', flexWrap:'wrap', gap:10, alignItems:'center' }}>
+ <div style={{ background:'#fff', borderRadius:12, padding:'14px', border:'1px solid #F1F5F9', marginBottom:14, display:'flex', flexWrap:'wrap', gap:10, alignItems:'center' }}>
  <div style={{ display:'flex', gap:6, alignItems:'center' }}>
  <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)} style={{ ...inp, width:130, padding:'7px 10px' }} />
  <span style={{ color:'#9CA3AF', fontSize:13 }}>–</span>
@@ -137,7 +137,7 @@ const ExpensePage = () => {
  const maxCat = Math.max(...catTotals.map(x=>x.total), 1)
  if (!catTotals.length) return null
  return (
- <div style={{ background:'#fff', borderRadius:14, padding:'16px 18px', border:'1px solid #F1F5F9', marginBottom:14 }}>
+ <div style={{ background:'#fff', borderRadius:14, padding:'14px', border:'1px solid #F1F5F9', marginBottom:14 }}>
  <h3 style={{ margin:'0 0 14px', fontSize:14, fontWeight:800, color:'#111827' }}> Grafik Per Kategori</h3>
  {catTotals.map(({cat,total,color}) => (
  <div key={cat} style={{ marginBottom:10 }}>
@@ -216,7 +216,7 @@ const ExpensePage = () => {
  <input type="number" value={form.amount} onChange={e=>setForm(f=>({...f,amount:e.target.value}))} placeholder="50000" style={inp} onFocus={focusIn} onBlur={focusOut} />
  {errors.amount&&<p style={{ margin:'4px 0 0', fontSize:11, color:'#EF4444' }}>{errors.amount}</p>}
  </div>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:12, marginBottom:12 }}>
  <div>
  <label style={{ display:'block', fontSize:11, fontWeight:700, color:'#374151', marginBottom:6, textTransform:'uppercase', letterSpacing:0.5 }}>Kategori</label>
  <select value={form.category} onChange={e=>setForm(f=>({...f,category:e.target.value}))} style={{ ...inp, cursor:'pointer' }} onFocus={focusIn} onBlur={focusOut}>

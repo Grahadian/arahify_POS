@@ -165,7 +165,7 @@ const SettingsPage = () => {
  )
 
  return (
- <div style={{ padding:'16px 20px', maxWidth:720, margin:'0 auto' }}>
+ <div style={{ padding:'14px' }}>
  <div style={{ marginBottom:18 }}>
  <h2 style={{ margin:'0 0 4px', fontSize:20, fontWeight:800, color:'#111827' }}>Pengaturan</h2>
  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
@@ -292,7 +292,7 @@ const SettingsPage = () => {
  {gsConnecting ? 'Menghubungkan...' : 'Hubungkan ke Google Sheets'}
  </Button>
  ) : (
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:10 }}>
  <Button onClick={handleSync} variant="success" fullWidth icon="refresh" loading={gsSyncing}>
  {gsSyncing ? 'Syncing...' : 'Push ke Sheets'}
  </Button>
@@ -489,7 +489,7 @@ const SettingsPage = () => {
  </button>
  </div>
  ) : (
- <label style={{ display:'block', padding:'20px', border:'2px dashed #BFDBFE', borderRadius:12, textAlign:'center', cursor:'pointer', background:'#EFF6FF', transition:'all 0.15s' }}>
+ <label style={{ display:'block', padding:'14px', border:'2px dashed #BFDBFE', borderRadius:12, textAlign:'center', cursor:'pointer', background:'#EFF6FF', transition:'all 0.15s' }}>
  <input type="file" accept="image/*" style={{ display:'none' }}
  onChange={e => {
  const file = e.target.files?.[0]
@@ -529,9 +529,9 @@ const SettingsPage = () => {
  <p style={{ margin:'0 0 4px', fontSize:14, fontWeight:700, color:'#111827' }}>Info Transfer Bank</p>
  <p style={{ margin:'0 0 14px', fontSize:12, color:'#6B7280' }}>Maksimal 2 rekening bank. Akan tampil saat kasir memilih metode Transfer.</p>
  {bankAccounts.map((bank, idx) => (
- <div key={idx} style={{ marginBottom:14, padding:'12px 14px', background:'#fff', borderRadius:10, border:'1.5px solid #E5E7EB' }}>
+ <div key={idx} style={{ marginBottom:14, padding:'14px', background:'#fff', borderRadius:10, border:'1.5px solid #E5E7EB' }}>
  <p style={{ margin:'0 0 10px', fontSize:12, fontWeight:700, color:'#374151' }}>Rekening {idx+1}</p>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:8 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:8, marginBottom:8 }}>
  <div>
  <label style={{ display:'block', fontSize:11, fontWeight:700, color:'#6B7280', marginBottom:4 }}>Nama Bank</label>
  <input value={bank.bankName} onChange={e=>setBankAccounts(prev=>prev.map((b,i)=>i===idx?{...b,bankName:e.target.value}:b))}
@@ -581,7 +581,7 @@ const SettingsPage = () => {
 
  {settings.loyaltyEnabled && (
  <>
- <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+ <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 14, marginBottom: 14 }}>
  <div>
  <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>1 Poin per Rp berapa?</label>
  <input type="number"
@@ -748,7 +748,7 @@ const SettingsPage = () => {
  </div>
 
  {showAddKasir && (
- <div style={{ background:'#fff', borderRadius:12, border:'1.5px solid #BFDBFE', padding:'16px 18px' }}>
+ <div style={{ background:'#fff', borderRadius:12, border:'1.5px solid #BFDBFE', padding:'14px' }}>
  <h4 style={{ margin:'0 0 12px', fontSize:13, fontWeight:800, color:'#111827' }}>Tambah Kasir Baru</h4>
  <input value={kasirForm.name} onChange={e=>setKasirForm(p=>({...p,name:e.target.value}))} placeholder="Nama lengkap" style={inp2} />
  <input value={kasirForm.username} onChange={e=>setKasirForm(p=>({...p,username:e.target.value.toLowerCase().replace(/\s/g,'')}))} placeholder="Username (contoh: budi)" style={inp2} />
@@ -794,7 +794,7 @@ const SettingsPage = () => {
  </div>
  </div>
 
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:12 }}>
  {[
  { label:'Username', value: user?.username },
  { label:'Role', value: user?.role },

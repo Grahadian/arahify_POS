@@ -6,10 +6,10 @@ import { useApp } from '@/context/AppContext'
 import { formatIDR } from '@/utils/format'
 
 const S = {
- page: { padding:'16px 20px', maxWidth:900, margin:'0 auto' },
+ page: { padding:'14px', margin:'0 auto' },
  card: { background:'#fff', border:'1px solid #F1F5F9', borderRadius:16, boxShadow:'0 1px 4px rgba(0,0,0,0.04)' },
- overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:20 },
- modal: { background:'#fff', borderRadius:20, padding:28, width:'100%', maxWidth:520, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'90vh', overflowY:'auto' },
+ overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 },
+ modal: { background:'#fff', borderRadius:'20px 20px 0 0', padding:'14px 20px 20px', width:'100%', maxWidth:520, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'92dvh', overflowY:'auto', WebkitOverflowScrolling:'touch' },
  label: { display:'block', fontSize:11, fontWeight:700, color:'#6B7280', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5 },
  inp: { width:'100%', padding:'10px 12px', border:'1.5px solid #E5E7EB', borderRadius:9, fontSize:13, fontFamily:'inherit', outline:'none', boxSizing:'border-box', background:'#FAFAFA' },
  btn: (v) => ({ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 18px', borderRadius:10, fontSize:13, fontWeight:800, fontFamily:'inherit', cursor:'pointer', border:'none', ...(v==='primary'?{background:'#2563EB',color:'#fff'}:v==='green'?{background:'#059669',color:'#fff'}:{background:'#F3F4F6',color:'#374151',border:'1px solid #E5E7EB'}) }),
@@ -129,12 +129,12 @@ export default function StockOpnamePage() {
  </select>
  </div>
 
- <div style={{ ...S.card, overflow:'hidden' }}>
- <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
+  <div style={{ ...S.card, overflow:'hidden', overflowX:'auto', WebkitOverflowScrolling:'touch' }}>
+  <table style={{ width:'100%', minWidth:480, borderCollapse:'collapse', fontSize:13 }}>
  <thead>
  <tr style={{ background:'#F8FAFC', borderBottom:'1px solid #F1F5F9' }}>
  {['Produk','SKU','Stok Sistem','Stok Fisik','Selisih','Nilai Selisih'].map(h=>(
- <th key={h} style={{ padding:'12px 14px', textAlign:'left', fontWeight:700, color:'#6B7280' }}>{h}</th>
+ <th key={h} style={{ padding:'14px', textAlign:'left', fontWeight:700, color:'#6B7280' }}>{h}</th>
  ))}
  </tr>
  </thead>
@@ -192,7 +192,7 @@ export default function StockOpnamePage() {
  <div style={{ fontWeight:700 }}>Belum ada riwayat opname</div>
  </div>
  ) : stockOpnames.map((op,i) => (
- <div key={i} style={{ ...S.card, padding:'16px 20px', marginBottom:12, cursor:'pointer', transition:'all 0.15s' }}
+ <div key={i} style={{ ...S.card, padding:'14px', marginBottom:12, cursor:'pointer', transition:'all 0.15s' }}
  onClick={()=>setDetailOpname(op)}
  onMouseEnter={e=>e.currentTarget.style.boxShadow='0 6px 20px rgba(0,0,0,0.1)'}
  onMouseLeave={e=>e.currentTarget.style.boxShadow='0 1px 4px rgba(0,0,0,0.04)'}>
@@ -220,7 +220,7 @@ export default function StockOpnamePage() {
  <h3 style={{ margin:'0 0 8px', fontSize:17, fontWeight:900 }}>Konfirmasi Stock Opname</h3>
  <p style={{ margin:'0 0 16px', fontSize:13, color:'#6B7280' }}>Stok akan disesuaikan untuk <strong>{differences.length}</strong> produk.</p>
  {totalLoss > 0 && (
- <div style={{ background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:10, padding:'12px 14px', marginBottom:16, fontSize:13, color:'#DC2626', fontWeight:600 }}>
+ <div style={{ background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:10, padding:'14px', marginBottom:16, fontSize:13, color:'#DC2626', fontWeight:600 }}>
  Estimasi kerugian stok: <strong>{formatIDR(totalLoss)}</strong>
  </div>
  )}
@@ -264,7 +264,8 @@ export default function StockOpnamePage() {
  </span>
  </div>
  <div style={{ maxHeight:280, overflowY:'auto', borderRadius:10, overflow:'hidden', border:'1px solid #F1F5F9' }}>
- <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
+  <div style={{ overflowX:'auto', WebkitOverflowScrolling:'touch' }}>
+  <table style={{ width:'100%', minWidth:400, borderCollapse:'collapse', fontSize:13 }}>
  <thead><tr style={{ background:'#F8FAFC', position:'sticky', top:0 }}>
  {['Produk','Sistem','Fisik','Selisih','Nilai'].map(h=><th key={h} style={{ padding:'9px 12px', textAlign:'left', fontWeight:700, color:'#6B7280' }}>{h}</th>)}
  </tr></thead>
@@ -279,6 +280,7 @@ export default function StockOpnamePage() {
  ))}</tbody>
  </table>
  </div>
+  </div>
  <button style={{ ...S.btn('ghost'), width:'100%', marginTop:16, justifyContent:'center' }} onClick={()=>setDetailOpname(null)}>Tutup</button>
  </div>
  </div>

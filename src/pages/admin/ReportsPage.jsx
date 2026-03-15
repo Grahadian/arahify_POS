@@ -487,14 +487,13 @@ ${days.length > 0 ? `
  ]
 
  return (
- <div style={{ padding:'16px 20px', maxWidth:960, margin:'0 auto' }}>
- <div style={{ marginBottom:16 }}>
- <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:10, marginBottom:14 }}>
- <div>
- <h2 style={{ margin:'0 0 4px', fontSize:20, fontWeight:800, color:'#111827' }}>Admin Insights</h2>
- <p style={{ margin:0, color:'#6B7280', fontSize:13 }}>Analitik mendalam untuk pengambilan keputusan bisnis</p>
- </div>
- </div>
+  <div style={{ display:'flex', flexDirection:'column', height:'100%', minHeight:0, background:'#F8FAFC' }}>
+  {/* Top Header */}
+  <div style={{ background:'#fff', borderBottom:'1px solid #E2E8F0', padding:'12px 20px', flexShrink:0 }}>
+  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:10, marginBottom:12 }}>
+  <h2 style={{ margin:'0 0 2px', fontSize:17, fontWeight:800, color:'#111827' }}>Laporan & Analitik</h2>
+  <p style={{ margin:0, color:'#6B7280', fontSize:12 }}>Analitik bisnis untuk pengambilan keputusan</p>
+   </div>
 
  {/* Date Range Picker — berlaku semua tab */}
  <div style={{ background:'#fff', border:'1px solid #F1F5F9', borderRadius:14, padding:'12px 16px', display:'flex', alignItems:'center', gap:10, flexWrap:'wrap', boxShadow:'0 1px 4px rgba(0,0,0,0.04)' }}>
@@ -546,22 +545,22 @@ ${days.length > 0 ? `
  {downloading ? 'Menyiapkan...' : `Download PDF${rangeTransactions.length > 0 ? ` (${rangeTransactions.length})` : ''}`}
  </button>
  </div>
- </div>
+  </div>{/* close header */}
 
- {/* Tabs */}
- <div style={{ display:'flex', gap:7, marginBottom:18, overflowX:'auto', paddingBottom:2 }}>
- {tabs.map(t => (
- <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
- padding:'7px 18px', borderRadius:20, border:'none', cursor:'pointer',
- fontFamily:'inherit', fontWeight:700, fontSize:13, whiteSpace:'nowrap',
- background: activeTab===t.id ? '#2563EB' : '#F3F4F6',
- color: activeTab===t.id ? '#fff' : '#6B7280',
- transition:'all 0.15s',
- }}>
- {t.label}
- </button>
- ))}
- </div>
+
+  {/* 2-col layout */}
+  <div style={{ display:'flex', flex:1, overflow:'hidden', minHeight:0 }}>
+  <div style={{ width:172, minWidth:172, background:'#fff', borderRight:'1px solid #E2E8F0', flexShrink:0, overflowY:'auto', paddingTop:6 }}>
+    {tabs.map(t => (
+      <button key={t.id} onClick={() => setActiveTab(t.id)}
+        style={{ width:'100%', textAlign:'left', padding:'10px 16px', border:'none', borderLeft:activeTab===t.id?'3px solid #2563EB':'3px solid transparent', background:activeTab===t.id?'#EFF6FF':'transparent', color:activeTab===t.id?'#2563EB':'#64748B', fontFamily:'inherit', fontSize:13, fontWeight:activeTab===t.id?700:500, cursor:'pointer', whiteSpace:'nowrap', transition:'all 0.12s', borderBottom:'1px solid #F8FAFC', display:'block' }}
+        onMouseEnter={e => { if(activeTab!==t.id){ e.currentTarget.style.background='#F8FAFC'; e.currentTarget.style.color='#374151' } }}
+        onMouseLeave={e => { e.currentTarget.style.background=activeTab===t.id?'#EFF6FF':'transparent'; e.currentTarget.style.color=activeTab===t.id?'#2563EB':'#64748B' }}
+      >{t.label}</button>
+    ))}
+  </div>
+  <div style={{ flex:1, overflowY:'auto', overflowX:'hidden', minWidth:0, padding:'18px 22px', WebkitOverflowScrolling:'touch' }}>
+
 
  {/* OVERVIEW TAB */}
  {activeTab === 'overview' && (
@@ -771,7 +770,7 @@ ${days.length > 0 ? `
  </div>
 
  {/* Summary stats */}
- <div style={{ marginTop:16, background:'#F9FAFB', borderRadius:10, padding:'12px 14px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:8 }}>
+ <div style={{ marginTop:16, background:'#F9FAFB', borderRadius:10, padding:'14px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:8 }}>
  <div style={{ textAlign:'center' }}>
  <p style={{ margin:'0 0 2px', fontSize:11, color:'#6B7280' }}>Total Revenue</p>
  <p style={{ margin:0, fontSize:16, fontWeight:900, color:'#2563EB' }}>{formatIDR(trendData.totalRev)}</p>
@@ -1126,7 +1125,7 @@ ${days.length > 0 ? `
  </div>
 
  {kasirList.map((kasir, idx) => (
- <div key={kasir.name} style={{ background:'#fff', border:'1px solid #F1F5F9', borderRadius:14, padding:'16px 18px', marginBottom:12 }}>
+ <div key={kasir.name} style={{ background:'#fff', border:'1px solid #F1F5F9', borderRadius:14, padding:'14px', marginBottom:12 }}>
  <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
  <div style={{ width:44, height:44, borderRadius:'50%', background:`linear-gradient(135deg,${['#2563EB','#059669','#7C3AED','#D97706','#EF4444'][idx%5]},${['#7C3AED','#2563EB','#EC4899','#EF4444','#D97706'][idx%5]})`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
  <span style={{ color:'#fff', fontWeight:900, fontSize:16 }}>{kasir.name.charAt(0).toUpperCase()}</span>
@@ -1222,7 +1221,7 @@ ${days.length > 0 ? `
  </div>
  {selShift?.id===sh.id && (
  <div style={{ marginTop:12, background:'#F9FAFB', borderRadius:10, padding:'10px 14px' }}>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:8 }}>
  {[
  ['Modal Awal', formatIDR(sh.openingBalance||0)],
  ['Penjualan', formatIDR(revenue)],
@@ -1267,7 +1266,7 @@ ${days.length > 0 ? `
  <p style={{ margin:'0 0 12px', fontSize:12, color:'#9CA3AF' }}>{filteredTrx.length} transaksi ditemukan</p>
  {pagedTrx.map(t => (
  <div key={t.id} onClick={() => openDetail(t)}
- style={{ background:'#fff', border:'1px solid #F1F5F9', borderRadius:12, padding:'12px 14px', marginBottom:8, cursor:'pointer', transition:'all 0.15s' }}
+ style={{ background:'#fff', border:'1px solid #F1F5F9', borderRadius:12, padding:'14px', marginBottom:8, cursor:'pointer', transition:'all 0.15s' }}
  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)'}
  onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:5 }}>
@@ -1310,7 +1309,7 @@ ${days.length > 0 ? `
  {selected.refundedAt && <p style={{ margin:'2px 0 0', fontSize:11, color:'#EF4444' }}>{formatDate(selected.refundedAt)}</p>}
  </div>
  )}
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:14 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:10, marginBottom:14 }}>
  {[
  ['ID Transaksi', selected.id],
  ['Tanggal', formatDate(selected.date||selected.createdAt)],
@@ -1337,7 +1336,7 @@ ${days.length > 0 ? `
  </div>
  ))}
  </div>
- <div style={{ background:'#F9FAFB', borderRadius:10, padding:'12px 14px', marginBottom:16 }}>
+ <div style={{ background:'#F9FAFB', borderRadius:10, padding:'14px', marginBottom:16 }}>
  {[
  ['Subtotal', formatIDR(selected.subtotal)],
  ...(selected.tax > 0 ? [['Pajak', '+'+formatIDR(selected.tax)]] : []),
@@ -1368,7 +1367,7 @@ ${days.length > 0 ? `
  <Modal open={showRefund} onClose={() => !refundConfirm && setShowRefund(false)} title="Proses Refund">
  {selected && (
  <div>
- <div style={{ background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:10, padding:'12px 14px', marginBottom:16 }}>
+ <div style={{ background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:10, padding:'14px', marginBottom:16 }}>
  <p style={{ margin:'0 0 4px', fontSize:13, fontWeight:700, color:'#991B1B' }}> Konfirmasi Refund</p>
  <p style={{ margin:0, fontSize:12, color:'#DC2626' }}>ID: {selected.id} · {formatIDR(selected.total)}</p>
  </div>
@@ -1397,7 +1396,9 @@ ${days.length > 0 ? `
  </div>
  )}
  </Modal>
- </div>
+  </div>
+  </div>
+  </div>
  )
 }
 

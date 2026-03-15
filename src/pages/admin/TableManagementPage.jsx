@@ -6,10 +6,10 @@ import { useApp } from '@/context/AppContext'
 import { formatIDR } from '@/utils/format'
 
 const S = {
- page: { padding:'16px 20px', maxWidth:960, margin:'0 auto' },
+ page: { padding:'14px', margin:'0 auto' },
  card: { background:'#fff', border:'1px solid #F1F5F9', borderRadius:16, boxShadow:'0 1px 4px rgba(0,0,0,0.04)' },
- overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:20 },
- modal: { background:'#fff', borderRadius:20, padding:28, width:'100%', maxWidth:440, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'90vh', overflowY:'auto' },
+ overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:1000, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 },
+ modal: { background:'#fff', borderRadius:'20px 20px 0 0', padding:'16px 20px 20px', width:'100%', maxWidth:440, boxShadow:'0 20px 60px rgba(0,0,0,0.25)', maxHeight:'92dvh', overflowY:'auto', WebkitOverflowScrolling:'touch' },
  label: { display:'block', fontSize:11, fontWeight:700, color:'#6B7280', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5 },
  inp: { width:'100%', padding:'11px 14px', border:'1.5px solid #E5E7EB', borderRadius:10, fontSize:14, fontFamily:'inherit', outline:'none', boxSizing:'border-box', background:'#FAFAFA' },
  btn: (v) => ({ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 18px', borderRadius:10, fontSize:13, fontWeight:800, fontFamily:'inherit', cursor:'pointer', border:'none', ...(v==='primary'?{background:'#2563EB',color:'#fff'}:v==='danger'?{background:'#EF4444',color:'#fff'}:{background:'#F3F4F6',color:'#374151',border:'1px solid #E5E7EB'}) }),
@@ -74,9 +74,9 @@ export default function TableManagementPage() {
  </div>
 
  {/* Stats */}
- <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:20 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(130px,1fr))', gap:12, marginBottom:20 }}>
  {[['Total',stats.total,'#374151','#F8FAFC'],['Tersedia',stats.available,'#166534','#DCFCE7'],['Terisi',stats.occupied,'#991B1B','#FEE2E2'],['Reserved',stats.reserved,'#92400E','#FEF3C7']].map(([l,v,c,bg])=>(
- <div key={l} style={{ ...S.card, padding:'16px 18px', background:bg }}>
+ <div key={l} style={{ ...S.card, padding:'14px', background:bg }}>
  <div style={{ fontSize:26, fontWeight:900, color:c }}>{v}</div>
  <div style={{ fontSize:12, color:'#6B7280', marginTop:3 }}>{l}</div>
  </div>
