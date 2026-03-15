@@ -38,13 +38,13 @@ export default function KasirSettingsPage() {
  const closePinModal = () => { setShowPinModal(false); setPinStep('old'); setPinOld(''); setPinNew(''); setPinConfirm(''); setPinError(''); setPinSuccess(false) }
 
  const pinInput = {
- width:'100%', padding:'12px 14px', border:'1.5px solid #E5E7EB', borderRadius:10,
+ width:'100%', padding:'14px', border:'1.5px solid #E5E7EB', borderRadius:10,
  fontSize:20, fontFamily:'monospace', outline:'none', textAlign:'center', letterSpacing:8,
  boxSizing:'border-box', marginBottom:8
  }
 
  return (
- <div style={{ padding:'20px', maxWidth:480, margin:'0 auto', fontFamily:"'DM Sans','Segoe UI',system-ui,sans-serif" }}>
+ <div style={{ padding:'14px', fontFamily:"'DM Sans','Segoe UI',system-ui,sans-serif" }}>
 
  {/* User info card */}
  <div style={{ background:'#fff', borderRadius:16, padding:'18px 20px', marginBottom:14, border:'1px solid #F1F5F9', boxShadow:'0 1px 4px rgba(0,0,0,0.04)', display:'flex', alignItems:'center', gap:14 }}>
@@ -81,7 +81,7 @@ export default function KasirSettingsPage() {
  <p style={{ margin:0, fontSize:13, fontWeight:800, color:'#166534' }}>Shift Sedang Aktif</p>
  <span style={{ fontSize:10, background:'#22C55E', color:'#fff', padding:'2px 8px', borderRadius:20, fontWeight:700 }}>LIVE</span>
  </div>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:6 }}>
  {[
  ['Dibuka', new Date(activeShift.openedAt||activeShift.startTime).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})],
  ['Modal Awal', `Rp ${(activeShift.openingBalance||0).toLocaleString('id-ID')}`],

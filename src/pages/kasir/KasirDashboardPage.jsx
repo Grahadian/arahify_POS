@@ -62,7 +62,7 @@ export default function KasirDashboardPage() {
   )
 
   return (
-    <div style={{ padding:'12px 14px', maxWidth:800, margin:'0 auto' }}>
+    <div style={{ padding:'14px' }}>
 
       {/* Welcome Banner */}
       <div style={{ background:'#1E293B', borderRadius:16, padding:'18px 20px', marginBottom:16, color:'#F1F5F9', position:'relative', overflow:'hidden' }}>

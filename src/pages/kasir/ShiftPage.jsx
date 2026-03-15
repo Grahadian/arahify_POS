@@ -16,8 +16,8 @@ const BTN = {
   danger  : { background:'#DC2626', color:'#fff', border:'none', borderRadius:10, padding:'11px 18px', fontSize:14, fontWeight:700, fontFamily:'inherit', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8 },
   ghost   : { background:'#F1F5F9', color:'#334155', border:'1.5px solid #E2E8F0', borderRadius:10, padding:'11px 18px', fontSize:14, fontWeight:700, fontFamily:'inherit', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8 },
 }
-const OVERLAY = { position:'fixed', inset:0, background:'rgba(15,23,42,0.6)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:20 }
-const MODAL   = { background:'#fff', borderRadius:18, padding:'24px', width:'100%', maxWidth:420, boxShadow:'0 24px 64px rgba(0,0,0,0.25)', maxHeight:'90vh', overflowY:'auto' }
+const OVERLAY = { position:'fixed', inset:0, background:'rgba(15,23,42,0.6)', zIndex:1000, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 }
+const MODAL   = { background:'#fff', borderRadius:'18px 18px 0 0', padding:'16px 20px 20px', width:'100%', maxWidth:420, boxShadow:'0 -8px 40px rgba(0,0,0,0.2)', maxHeight:'92dvh', overflowY:'auto', WebkitOverflowScrolling:'touch' }
 
 export default function ShiftPage() {
   const { shifts, activeShift, transactions, startShift, endShift } = useApp()
@@ -40,7 +40,7 @@ export default function ShiftPage() {
   const focusOff = e => { e.target.style.borderColor='#E2E8F0'; e.target.style.background='#F8FAFC' }
 
   return (
-    <div style={{ padding:'12px 14px', maxWidth:740, margin:'0 auto' }}>
+    <div style={{ padding:'14px', maxWidth:740, margin:'0 auto' }}>
       <div style={{ marginBottom:20 }}>
         <h2 style={{ margin:'0 0 3px', fontSize:20, fontWeight:800, color:'#0F172A', letterSpacing:-0.3 }}>Shift Kasir</h2>
         <p style={{ margin:0, color:'#64748B', fontSize:13 }}>Kelola shift kerja dan rekap kas harian</p>
@@ -158,7 +158,7 @@ export default function ShiftPage() {
                   <span style={{ fontSize:11, color:'#94A3B8' }}>{durasi(shift.startTime, shift.endTime)}</span>
                 </div>
               </div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:8 }}>
                 {[{l:'Penjualan',v:formatIDR(dSales),c:'#1D4ED8',bg:'#EFF6FF',bd:'#BFDBFE'},{l:'Transaksi',v:`${dTrx.length} trx`,c:'#334155',bg:'#F8FAFC',bd:'#E2E8F0'},{l:'Selisih',v:(dSel>=0?'+':'')+formatIDR(dSel),c:dSel===0?'#166534':dSel>0?'#1D4ED8':'#DC2626',bg:dSel===0?'#DCFCE7':dSel>0?'#DBEAFE':'#FEE2E2',bd:dSel===0?'#86EFAC':dSel>0?'#93C5FD':'#FCA5A5'}].map(x=>(
                   <div key={x.l} style={{ background:x.bg, border:`1px solid ${x.bd}`, borderRadius:9, padding:'7px 10px' }}>
                     <p style={{ margin:'0 0 2px', fontSize:10, color:'#94A3B8' }}>{x.l}</p>
@@ -233,7 +233,7 @@ export default function ShiftPage() {
               <div style={{ background:'#FEE2E2', borderRadius:10, padding:9 }}><Icon name="x" size={18} color="#DC2626" /></div>
               <div><h3 style={{ margin:0, fontSize:17, fontWeight:900, color:'#0F172A' }}>Tutup Shift</h3><p style={{ margin:0, fontSize:12, color:'#64748B' }}>Masukkan kas aktual untuk cek selisih</p></div>
             </div>
-            <div style={{ background:'#F8FAFC', borderRadius:11, padding:'12px 14px', marginBottom:14 }}>
+            <div style={{ background:'#F8FAFC', borderRadius:11, padding:'14px', marginBottom:14 }}>
               <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:9 }}><Icon name="user" size={13} color="#475569" /><span style={{ fontSize:14, fontWeight:800, color:'#334155' }}>{activeShift.kasirName}</span></div>
               {[['Modal Awal',formatIDR(activeShift.modalKas||0)],['Penjualan Tunai',formatIDR(shiftCash)],['Total Penjualan',formatIDR(shiftRevenue)]].map(([l,v])=>(
                 <div key={l} style={{ display:'flex', justifyContent:'space-between', fontSize:13, marginBottom:5 }}><span style={{ color:'#64748B' }}>{l}</span><span style={{ fontWeight:700 }}>{v}</span></div>

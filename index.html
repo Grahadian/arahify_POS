@@ -2,63 +2,44 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-
-    <!-- ============================================================
-         VIEWPORT: Prevents zoom (like a native app), fixes iOS issues
-         ============================================================ -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
-
-    <!-- ============================================================
-         PWA / App-like behavior
-         ============================================================ -->
-    <!-- iOS: run as fullscreen when added to home screen -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="MSME Grow POS" />
-
-    <!-- Android: fullscreen PWA -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#1E293B" />
-
-    <!-- Disable phone number detection (iOS auto-links numbers) -->
-    <meta name="format-detection" content="telephone=no" />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
+    <!-- CRITICAL: Prevent zoom like native app -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 
-    <!-- iOS home screen icons -->
+    <!-- PWA native-like behavior -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Arahify POS" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#1E293B" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Arahify - Sistem Point of Sale untuk UMKM Indonesia" />
+
+    <!-- PWA Manifest & Icons -->
+    <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
-    <title>MSME Grow POS</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- CSP for Midtrans -->
+    <meta http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-eval' https://app.sandbox.midtrans.com https://snap-assets.al-pc-id-b.cdn.gtflabs.io https://api.sandbox.midtrans.com;">
+
+    <title>Arahify.id</title>
 
     <style>
-      /* Prevent pull-to-refresh on mobile browsers */
-      html {
-        overscroll-behavior: none;
-      }
-      body {
-        overscroll-behavior: none;
-        /* Prevent text selection on double tap */
-        -webkit-user-select: none;
-        user-select: none;
-        /* Allow text selection for inputs */
-      }
+      /* Prevent pull-to-refresh & overscroll */
+      html, body { overscroll-behavior: none; }
+      /* Prevent text selection on UI (allow in inputs) */
+      * { -webkit-touch-callout: none; }
       input, textarea, [contenteditable] {
+        -webkit-touch-callout: default;
         -webkit-user-select: text;
         user-select: text;
-      }
-      /* Prevent callout on long press */
-      * {
-        -webkit-touch-callout: none;
-      }
-      input, textarea {
-        -webkit-touch-callout: default;
       }
     </style>
   </head>

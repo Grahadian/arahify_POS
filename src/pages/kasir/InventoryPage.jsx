@@ -198,7 +198,7 @@ const InventoryPage = () => {
  const focusOut = e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.background = '#FAFAFA'; e.target.style.boxShadow = 'none' }
 
  return (
- <div style={{ padding: '16px 20px', maxWidth: 960, margin: '0 auto' }}>
+ <div style={{ padding: '12px 14px', margin: '0 auto' }}>
 
  {/* Header */}
  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
@@ -396,7 +396,7 @@ const InventoryPage = () => {
  </div>
 
  {/* Kategori + Satuan */}
- <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+ <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 12 }}>
  <div>
  <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Kategori</label>
  <select value={form.category} onChange={e => setF('category')(e.target.value)} style={{ ...inp, cursor: 'pointer', appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }} onFocus={focusIn} onBlur={focusOut}>
@@ -424,7 +424,7 @@ const InventoryPage = () => {
 
  {/* Harga + HPP — only show if no variants */}
  {!form.hasVariants && (
- <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+ <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 12 }}>
  <div>
  <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Harga Jual *</label>
  <input type="number" value={form.price} onChange={e => setF('price')(e.target.value)} placeholder="25000" style={inp} onFocus={focusIn} onBlur={focusOut} />

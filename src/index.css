@@ -1,5 +1,5 @@
 /* ============================================================
-   MSME GROW POS - Global Styles (Responsive Fix)
+   MSME GROW POS - Global Styles (Mobile-First)
    ============================================================ */
 
 *, *::before, *::after {
@@ -43,14 +43,12 @@
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
   --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
   --shadow-primary: 0 4px 15px rgba(37,99,235,0.35);
-  /* Safe area for mobile notch/home indicator */
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
 }
 
 html {
   height: 100%;
-  /* CRITICAL FIX: allow scroll on mobile */
   overflow: auto;
   -webkit-text-size-adjust: 100%;
 }
@@ -63,15 +61,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  /* CRITICAL FIX: allow body scroll */
   overflow: auto;
-  /* Prevent pull-to-refresh */
   overscroll-behavior-y: none;
 }
 
 #root {
   height: 100%;
-  /* CRITICAL FIX: do NOT set overflow:hidden here */
 }
 
 /* Scrollbar Styling */
@@ -90,47 +85,27 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
-/* Prevent zoom on input focus on iOS */
+/* Prevent iOS zoom on input focus - CRITICAL */
 @media (max-width: 768px) {
   input, select, textarea {
     font-size: 16px !important;
   }
 }
 
+/* Touch improvements */
+button, a, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Animations */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
 .animate-fadeIn { animation: fadeIn 0.3s ease forwards; }
 .animate-slideUp { animation: slideUp 0.35s ease forwards; }
@@ -144,42 +119,244 @@ input[type="number"]::-webkit-outer-spin-button {
   .print-only { display: block !important; }
   body { background: white; }
 }
-
 .print-only { display: none; }
 
 /* Utility */
-.text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ============================================================
+   MOBILE RESPONSIVE UTILITIES
+   ============================================================ */
+
+/* Mobile tap targets */
+@media (max-width: 768px) {
+  button { min-height: 44px; }
+}
+
+/* Auth banner hide on mobile */
+@media (max-width: 640px) {
+  .auth-banner { display: none !important; }
+  .auth-banner + div { border-radius: 20px !important; }
+}
+
+/* Responsive grid helpers */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .grid-2col { grid-template-columns: 1fr; }
+}
+
+/* Horizontal scroll for tables on mobile */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+.table-scroll table {
+  min-width: 500px;
+}
+
+/* Form grid - 2 cols desktop, 1 col mobile */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 520px) {
+  .form-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
-   RESPONSIVE UTILITIES
+   PAGE CONTAINER - Consistent page padding across all pages
    ============================================================ */
 
-/* Mobile-safe tap targets */
-@media (max-width: 768px) {
+/* Standard page wrapper used by all content pages */
+.page-wrap {
+  padding: 16px 14px 24px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Wider pages (reports, etc) */
+.page-wrap-wide {
+  padding: 16px 14px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .page-wrap,
+  .page-wrap-wide {
+    padding: 20px 24px 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-wrap {
+    padding: 24px 32px 40px;
+  }
+  .page-wrap-wide {
+    padding: 24px 28px 40px;
+  }
+}
+
+/* Card component */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+  padding: 16px 18px;
+}
+
+/* Section header with action button */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Stat cards grid - responsive */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 2-col grid for forms */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Table wrapper with horizontal scroll */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid #F1F5F9;
+}
+
+.table-wrap table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+}
+
+/* ============================================================
+   MOBILE OPTIMIZATIONS v2 - Small screen improvements
+   ============================================================ */
+
+/* Ensure 16px minimum on all inputs to prevent iOS zoom */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Better tap targets on mobile */
+@media (max-width: 639px) {
   button {
-    min-height: 40px;
-    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Page padding - tighter on small screens */
+  .page-wrap,
+  .page-wrap-wide {
+    padding: 12px 12px 20px !important;
+  }
+
+  /* Stat cards - always 2 col on mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Tables always scroll on mobile */
+  .table-wrap {
+    border-radius: 10px;
+  }
+
+  /* Cards less padding on mobile */
+  .card {
+    padding: 12px 14px;
   }
 }
 
-/* Auth banner hide on small screens */
-@media (max-width: 640px) {
-  .auth-banner {
-    display: none !important;
+/* Very small phones (<360px) */
+@media (max-width: 360px) {
+  .page-wrap,
+  .page-wrap-wide {
+    padding: 10px 10px 16px !important;
   }
-  /* When banner is hidden, the sibling flex div takes full width automatically via flex:1 */
-  /* Also fix FloatCard to be full-screen card on mobile */
-  .auth-banner + div {
-    border-radius: 20px !important;
+
+  .stats-grid {
+    gap: 8px !important;
   }
 }
 
-/* Prevent double-tap zoom on buttons and interactive elements */
-button, a, [role="button"] {
-  touch-action: manipulation;
+/* Fix modals on mobile - always bottom sheet */
+@media (max-width: 639px) {
+  /* Ensure modal content is scrollable */
+  [role="dialog"] {
+    max-height: 92dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ============================================================
+   MOBILE-FIRST IMPROVEMENTS v2
+   ============================================================ */
+
+/* Prevent zoom on input focus - CRITICAL for iOS */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  /* Bigger tap targets */
+  button {
+    min-height: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Small phone (< 360px) adjustments */
+@media (max-width: 359px) {
+  /* Tighter padding on all pages */
+  .page-wrap, .page-wrap-wide {
+    padding: 10px 10px 20px !important;
+  }
+  /* Stats cards 2 col */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+
+/* Safe area padding for iPhone notch/home bar */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

@@ -71,10 +71,10 @@ const RegisterPage = () => {
  const { cart, subtotal, taxAmount, taxRate, total, totalItems, isEmpty, cartAdd, cartUpdateQty, cartRemove, cartClear } = useCart()
 
  // Mobile detection
- const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
+ const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 640)
  const [mobileTab, setMobileTab] = useState('products')
  useEffect(() => {
-   const handler = () => setIsMobile(window.innerWidth < 768)
+   const handler = () => setIsMobile(window.innerWidth < 640)
    window.addEventListener('resize', handler)
    return () => window.removeEventListener('resize', handler)
  }, [])
@@ -357,7 +357,7 @@ const RegisterPage = () => {
   }
 
  return (
- <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row', height:'100%', overflow:'hidden', maxHeight:'100%' }}>
+ <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row', height:'100%', overflow:'hidden' }}>
  {/* Mobile Tab switcher */}
  {isMobile && (
    <div style={{ display:'flex', background:'#fff', borderBottom:'1.5px solid #F1F5F9', flexShrink:0, zIndex:10 }}>
@@ -432,7 +432,7 @@ const RegisterPage = () => {
  </div>
  </div>
 
- <div style={{ flex:1, overflowY:'auto', padding:'12px 14px' }}>
+ <div style={{ flex:1, overflowY:'auto', padding:'14px' }}>
  {filteredProducts.length===0 ? (
  <div style={{ textAlign:'center', padding:'40px 20px', color:'#9CA3AF' }}>
  <Icon name="inventory" size={36} color="#E5E7EB" />
@@ -502,7 +502,7 @@ const RegisterPage = () => {
  </div>
  )}
  {/* RIGHT: 2-step panel */}
- <div style={{ width: isMobile ? '100%' : cartWidth, flex: isMobile ? '1' : 'none', flexShrink: isMobile ? 1 : 0, minHeight:0, maxHeight:'100%', display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
+ <div style={{ width: isMobile ? '100%' : cartWidth, flex: isMobile ? '1' : 'none', flexShrink: isMobile ? 1 : 0, minHeight:0, display: isMobile && mobileTab==='products' ? 'none' : 'flex', flexDirection:'column', background:'#fff', overflow:'hidden' }}>
 
  {/* Step tabs */}
  <div style={{ display:'flex', flexShrink:0, borderBottom:'1px solid #F1F5F9' }}>
@@ -549,7 +549,7 @@ const RegisterPage = () => {
  </div>
 
  {/* Cart items */}
- <div style={{ flex:1, overflowY:'auto', padding:'8px 12px', minHeight:0, WebkitOverflowScrolling:'touch' }}>
+ <div style={{ overflowY:'auto', padding:'8px 12px', minHeight:0, WebkitOverflowScrolling:'touch', maxHeight:'calc(100dvh - 360px)' }}>
  {isEmpty?(
  <div style={{ textAlign:'center', padding:'40px 20px', color:'#D1D5DB' }}>
  <Icon name="register" size={40} color="#E5E7EB" />
@@ -586,8 +586,7 @@ const RegisterPage = () => {
 
  {/* Footer order */}
  {!isEmpty&&(
- <div style={{ display:'flex', flexDirection:'column', flexShrink:0 }}>
-  <div style={{ padding:'12px 14px 0', overflowY:'auto', maxHeight:'35vh', WebkitOverflowScrolling:'touch', borderTop:'1px solid #F1F5F9' }}>
+ <div style={{ padding:'14px', borderTop:'1px solid #F1F5F9', flexShrink:0, overflowY:'auto', maxHeight:'52vh', WebkitOverflowScrolling:'touch' }}>
  {/* Diskon manual */}
  <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
  <span style={{ fontSize:12, color:'#6B7280', flexShrink:0 }}>Diskon (Rp)</span>
@@ -632,9 +631,6 @@ const RegisterPage = () => {
  </div>
  </div>
 
-  </div>
-  {/* Sticky CTA */}
-  <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0 }}>
  <button onClick={goToPayment} style={{ width:'100%', padding:'13px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:'inherit', boxShadow:'0 4px 14px rgba(37,99,235,0.3)', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
  Lanjut ke Pembayaran →
  </button>
@@ -643,7 +639,6 @@ const RegisterPage = () => {
  style={{ width:'100%', marginTop:6, padding:'9px', background:'#FFFBEB', color:'#D97706', border:'1.5px solid #FCD34D', borderRadius:12, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
  ⏸ Tahan Pesanan
  </button>
-  </div>
  </div>
  )}
  </div>
@@ -651,10 +646,10 @@ const RegisterPage = () => {
 
  {/* PEMBAYARAN */}
   {step==='payment'&&(
-  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0, maxHeight:'100%' }}>
+  <div style={{ display:'flex', flexDirection:'column', flex:1, overflow:'hidden', minHeight:0 }}>
 
     {/* ── Header ── */}
-    <div style={{ padding:'12px 14px', borderBottom:'1px solid #F1F5F9', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
+    <div style={{ padding:'14px', borderBottom:'1px solid #F1F5F9', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
       <button onClick={goBackToOrder} style={{ background:'#F3F4F6', border:'none', borderRadius:8, width:32, height:32, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, WebkitTapHighlightColor:'transparent' }}>
         <Icon name="chevronLeft" size={15} color="#374151" />
       </button>
@@ -665,15 +660,7 @@ const RegisterPage = () => {
     </div>
 
     {/* ── Scrollable content ── */}
-    <div style={{
-      flex: 1,
-      overflowY: 'auto',
-      overflowX: 'hidden',
-      minHeight: 0,
-      WebkitOverflowScrolling: 'touch',
-      // Fallback for when flex height chain breaks (inside overflow:auto parent)
-      maxHeight: 'calc(100dvh - 220px)',
-    }}>
+    <div style={{ flex:1, overflowY:'auto', minHeight:0, WebkitOverflowScrolling:'touch' }}>
 
       {/* Total Banner */}
       <div style={{ background:'linear-gradient(135deg,#1E293B,#334155)', padding:'14px 16px', borderBottom:'1px solid #F1F5F9' }}>
@@ -695,7 +682,7 @@ const RegisterPage = () => {
 
         {/* Online channel info */}
         {onlineChannel && (
-          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'12px 14px', marginBottom:14, display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'14px', marginBottom:14, display:'flex', alignItems:'center', gap:10 }}>
             <div style={{ width:36, height:36, background:'#2563EB', borderRadius:10, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
               <Icon name="register" size={16} color="#fff" />
             </div>
@@ -710,7 +697,7 @@ const RegisterPage = () => {
         {!onlineChannel && (
           <div style={{ marginBottom:14 }}>
             <p style={{ margin:'0 0 10px', fontSize:12, fontWeight:800, color:'#374151' }}>Metode Pembayaran</p>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:8 }}>
               {Object.values(PAYMENT_METHODS).map(method => {
                 const isActive = paymentMethod === method
                 const icons = { Cash:'cash', Card:'card', QRIS:'qris', Transfer:'transfer' }
@@ -758,7 +745,7 @@ const RegisterPage = () => {
             </div>
             {/* Kembalian */}
             {cashNum >= grandTotal && (
-              <div style={{ marginTop:10, padding:'12px 14px', background:'#F0FDF4', border:'2px solid #86EFAC', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <div style={{ marginTop:10, padding:'14px', background:'#F0FDF4', border:'2px solid #86EFAC', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                 <span style={{ fontSize:14, fontWeight:700, color:'#166534' }}>Kembalian</span>
                 <span style={{ fontSize:22, fontWeight:900, color:'#16A34A' }}>{formatIDR(changeAmount)}</span>
               </div>
@@ -789,7 +776,7 @@ const RegisterPage = () => {
 
         {/* Transfer info */}
         {!onlineChannel && paymentMethod===PAYMENT_METHODS.TRANSFER && (
-          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'12px 14px', marginBottom:14 }}>
+          <div style={{ background:'#EFF6FF', border:'1.5px solid #BFDBFE', borderRadius:12, padding:'14px', marginBottom:14 }}>
             <p style={{ margin:0, fontSize:12, color:'#1E40AF', fontWeight:700 }}>Info rekening akan tampil saat konfirmasi</p>
           </div>
         )}
@@ -801,13 +788,12 @@ const RegisterPage = () => {
           </div>
         )}
 
-        {/* Extra bottom padding so content clears the sticky button */}
-        <div style={{ height: 80 }} />
+        <div style={{ height: 16 }} />
       </div>
     </div>
 
     {/* ── Sticky Pay Button ── */}
-    <div style={{ padding:'12px 14px', borderTop:'1px solid #F1F5F9', flexShrink:0, background:'#fff' }}>
+    <div style={{ padding:'14px', borderTop:'1px solid #F1F5F9', flexShrink:0, background:'#fff' }}>
       <Button
         onClick={processPayment}
         variant="primary"
@@ -836,7 +822,7 @@ const RegisterPage = () => {
  return (
  <button key={v.id} onClick={()=>{ cartAdd(variantProduct,v); setVariantProduct(null) }}
  disabled={v.stock<=0}
- style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 14px', border:`1.5px solid ${inCartQty>0?'#2563EB':'#E5E7EB'}`, borderRadius:12, background:inCartQty>0?'#EFF6FF':v.stock<=0?'#F9FAFB':'#fff', cursor:v.stock<=0?'not-allowed':'pointer', fontFamily:'inherit', transition:'all 0.15s', opacity:v.stock<=0?0.5:1 }}>
+ style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px', border:`1.5px solid ${inCartQty>0?'#2563EB':'#E5E7EB'}`, borderRadius:12, background:inCartQty>0?'#EFF6FF':v.stock<=0?'#F9FAFB':'#fff', cursor:v.stock<=0?'not-allowed':'pointer', fontFamily:'inherit', transition:'all 0.15s', opacity:v.stock<=0?0.5:1 }}>
  <div style={{ textAlign:'left' }}>
  <p style={{ margin:0, fontSize:14, fontWeight:700, color:'#111827' }}>{v.name} {inCartQty>0&&`(${inCartQty} di keranjang)`}</p>
  <p style={{ margin:'2px 0 0', fontSize:11, color:isLow?'#EF4444':'#9CA3AF' }}>Stok: {v.stock}{isLow?' (menipis!)':''}</p>
@@ -867,7 +853,7 @@ const RegisterPage = () => {
  ):(
  filteredMembers.map(m=>(
  <div key={m.id} onClick={()=>{setSelectedMember(m);setShowMemberModal(false);setMemberSearch('')}}
- style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 14px', borderRadius:12, border:'1.5px solid #F1F5F9', marginBottom:8, cursor:'pointer', transition:'all 0.15s', background:'#fff' }}
+ style={{ display:'flex', alignItems:'center', gap:12, padding:'14px', borderRadius:12, border:'1.5px solid #F1F5F9', marginBottom:8, cursor:'pointer', transition:'all 0.15s', background:'#fff' }}
  onMouseEnter={e=>e.currentTarget.style.background='#EFF6FF'}
  onMouseLeave={e=>e.currentTarget.style.background='#fff'}>
  <div style={{ width:40, height:40, borderRadius:'50%', background:'linear-gradient(135deg,#2563EB,#7C3AED)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><span style={{ fontSize:15, fontWeight:900, color:'#fff' }}>{m.name.charAt(0).toUpperCase()}</span></div>
@@ -931,7 +917,7 @@ const RegisterPage = () => {
  {(settings.bankAccounts||[]).filter(b=>b.bankName).map((bank,idx)=>(
  <div key={idx} style={{ background:'#F9FAFB', border:'1.5px solid #E5E7EB', borderRadius:14, padding:'14px 16px', textAlign:'left' }}>
  <p style={{ margin:'0 0 6px', fontSize:14, fontWeight:800, color:'#111827' }}>{bank.bankName}</p>
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:6 }}>
  <div style={{ background:'#fff', border:'1px solid #E5E7EB', borderRadius:8, padding:'8px 10px' }}>
  <p style={{ margin:'0 0 2px', fontSize:10, color:'#9CA3AF', fontWeight:700 }}>NO. REKENING</p>
  <p style={{ margin:0, fontSize:15, fontWeight:900, color:'#111827', fontFamily:'monospace', letterSpacing:1 }}>{bank.noRek}</p>
@@ -964,7 +950,7 @@ const RegisterPage = () => {
       {confirmModal && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.55)', zIndex:9999, display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0 }}
           onClick={()=>setConfirmModal(false)}>
-          <div style={{ background:'#fff', borderRadius:'20px 20px 0 0', padding:'16px 20px', width:'100%', maxWidth:520, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
+          <div style={{ background:'#fff', borderRadius:'20px 20px 0 0', padding:'14px', width:'100%', maxWidth:520, boxShadow:'0 20px 60px rgba(0,0,0,0.25)' }}
             onClick={e=>e.stopPropagation()}>
             {/* Drag handle */}
             <div style={{ display:'flex', justifyContent:'center', marginBottom:12 }}>
@@ -980,7 +966,7 @@ const RegisterPage = () => {
             </div>
 
             {/* Detail */}
-            <div style={{ background:'#F8FAFC', borderRadius:14, padding:'12px 14px', marginBottom:14, display:'flex', flexDirection:'column', gap:10 }}>
+            <div style={{ background:'#F8FAFC', borderRadius:14, padding:'14px', marginBottom:14, display:'flex', flexDirection:'column', gap:10 }}>
               {/* Items */}
               <div style={{ maxHeight:140, overflowY:'auto', display:'flex', flexDirection:'column', gap:6 }}>
                 {cart.map(item => (
@@ -1040,14 +1026,14 @@ const RegisterPage = () => {
 
  <Modal open={successModal} onClose={()=>setSuccessModal(false)} title="Pembayaran Berhasil">
  {lastTrx&&(
- <div style={{ display:'flex', flexDirection:'column' }}>
+ <div>
  <div style={{ textAlign:'center', marginBottom:16 }}>
- <div style={{ width:56, height:56, background:'#DCFCE7', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 10px' }}><Icon name="check" size={24} color="#16A34A" strokeWidth={3} /></div>
- <h3 style={{ margin:'0 0 3px', fontSize:18, fontWeight:900, color:'#111827' }}>Pembayaran Berhasil!</h3>
- <p style={{ margin:'0 0 2px', color:'#6B7280', fontSize:11 }}>ID: <strong>{lastTrx.id}</strong></p>
- <p style={{ fontSize:24, fontWeight:900, color:'#111827', margin:'0 0 2px' }}>{formatIDR(lastTrx.total)}</p>
- {lastTrx.memberName&&<p style={{ margin:0, fontSize:12, color:'#6B7280' }}> {lastTrx.memberName}</p>}
- {settings?.loyaltyEnabled&&lastTrx.pointsEarned>0&&<p style={{ margin:'3px 0 0', fontSize:11, color:'#D97706', fontWeight:700 }}> +{lastTrx.pointsEarned} poin</p>}
+ <div style={{ width:64, height:64, background:'#DCFCE7', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 12px' }}><Icon name="check" size={28} color="#16A34A" strokeWidth={3} /></div>
+ <h3 style={{ margin:'0 0 4px', fontSize:20, fontWeight:900, color:'#111827' }}>Pembayaran Berhasil!</h3>
+ <p style={{ margin:'0 0 2px', color:'#6B7280', fontSize:12 }}>ID: <strong>{lastTrx.id}</strong></p>
+ <p style={{ fontSize:27, fontWeight:900, color:'#111827', margin:'0 0 3px' }}>{formatIDR(lastTrx.total)}</p>
+ {lastTrx.memberName&&<p style={{ margin:0, fontSize:13, color:'#6B7280' }}> {lastTrx.memberName}</p>}
+ {settings?.loyaltyEnabled&&lastTrx.pointsEarned>0&&<p style={{ margin:'4px 0 0', fontSize:12, color:'#D97706', fontWeight:700 }}> +{lastTrx.pointsEarned} poin diterima member</p>}
  </div>
 
  <div style={{ background:'#F9FAFB', borderRadius:12, padding:'10px 14px', marginBottom:12 }}>
@@ -1069,19 +1055,25 @@ const RegisterPage = () => {
  </div>
 
  {/* Action buttons */}
- <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
- <button onClick={handlePrint} style={{ padding:'13px 8px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
- Cetak Struk
+ {/* Row 1: Primary action - Cetak full width */}
+ <button onClick={handlePrint} style={{ width:'100%', padding:'14px', background:'#2563EB', color:'#fff', border:'none', borderRadius:12, fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:8, boxShadow:'0 2px 8px rgba(37,99,235,0.35)' }}>
+   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+   Cetak Struk
  </button>
- <button onClick={handleSavePDF} style={{ padding:'13px 8px', background:'#fff', color:'#374151', border:'1.5px solid #E5E7EB', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
- Simpan PDF
- </button>
- <button onClick={handleSendWA} style={{ padding:'13px 8px', background:'#ECFDF5', color:'#059669', border:'1.5px solid #A7F3D0', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
- Kirim WA
- </button>
- <button onClick={()=>{setSuccessModal(false)}} style={{ padding:'13px 8px', background:'#1E293B', color:'#fff', border:'none', borderRadius:12, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', WebkitTapHighlightColor:'transparent', touchAction:'manipulation' }}>
- Transaksi Baru
- </button>
+ {/* Row 2: Secondary actions */}
+ <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8 }}>
+   <button onClick={handleSavePDF} style={{ padding:'12px 6px', background:'#F8FAFC', color:'#374151', border:'1.5px solid #E2E8F0', borderRadius:11, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation', display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+     PDF
+   </button>
+   <button onClick={handleSendWA} style={{ padding:'12px 6px', background:'#ECFDF5', color:'#059669', border:'1.5px solid #A7F3D0', borderRadius:11, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation', display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+     WhatsApp
+   </button>
+   <button onClick={()=>{setSuccessModal(false)}} style={{ padding:'12px 6px', background:'#1E293B', color:'#fff', border:'none', borderRadius:11, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation', display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+     Baru
+   </button>
  </div>
  </div>
  )}
@@ -1103,7 +1095,7 @@ const RegisterPage = () => {
  <Modal open={showHoldModal && heldOrders.length > 0 && !isEmpty} onClose={()=>setShowHoldModal(false)} title={`Pesanan Ditahan (${heldOrders.length})`}>
  <div style={{ marginBottom:12 }}>
  {heldOrders.map(h => (
- <div key={h.id} style={{ background:'#F9FAFB', borderRadius:12, padding:'12px 14px', marginBottom:8, border:'1.5px solid #F1F5F9' }}>
+ <div key={h.id} style={{ background:'#F9FAFB', borderRadius:12, padding:'14px', marginBottom:8, border:'1.5px solid #F1F5F9' }}>
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:6 }}>
  <p style={{ margin:0, fontSize:13, fontWeight:800, color:'#111827' }}>{h.note}</p>
  <span style={{ fontSize:11, color:'#9CA3AF' }}>{new Date(h.savedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>

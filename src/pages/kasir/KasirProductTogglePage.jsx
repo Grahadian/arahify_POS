@@ -46,7 +46,7 @@ export default function KasirProductTogglePage() {
   }
 
   return (
-    <div style={{ padding:'16px 20px', maxWidth:860, margin:'0 auto', fontFamily:"'DM Sans','Segoe UI',system-ui,sans-serif" }}>
+    <div style={{ padding:'14px', margin:'0 auto', fontFamily:"'DM Sans','Segoe UI',system-ui,sans-serif" }}>
 
       {/* Header */}
       <div style={{ marginBottom:18 }}>
@@ -63,7 +63,7 @@ export default function KasirProductTogglePage() {
           { label:'Nonaktif',      value: inactiveCount, color:'#6B7280', bg:'#F9FAFB', border:'#E5E7EB' },
           { label:'Total Produk',  value: products.length, color:'#2563EB', bg:'#DBEAFE', border:'#BFDBFE' },
         ].map(s => (
-          <div key={s.label} style={{ flex:1, background:s.bg, border:`1px solid ${s.border}`, borderRadius:12, padding:'12px 14px' }}>
+          <div key={s.label} style={{ flex:1, background:s.bg, border:`1px solid ${s.border}`, borderRadius:12, padding:'14px' }}>
             <p style={{ margin:'0 0 2px', fontSize:22, fontWeight:900, color:s.color }}>{s.value}</p>
             <p style={{ margin:0, fontSize:11, color:'#6B7280', fontWeight:600 }}>{s.label}</p>
           </div>

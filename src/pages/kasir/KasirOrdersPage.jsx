@@ -74,7 +74,7 @@ export default function KasirOrdersPage() {
  }
 
  return (
- <div style={{ padding: '16px 20px', maxWidth: 860, margin: '0 auto' }}>
+ <div style={{ padding: '12px 14px', margin: '0 auto' }}>
 
  {/* Header */}
  <div style={{ marginBottom: 18 }}>
@@ -107,12 +107,12 @@ export default function KasirOrdersPage() {
 
  {/* Stats Cards */}
  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 12, marginBottom: 18 }}>
- <div style={{ background: '#EFF6FF', borderRadius: 14, padding: '16px 18px', border: '1px solid #BFDBFE' }}>
+ <div style={{ background: '#EFF6FF', borderRadius: 14, padding: '12px 14px', border: '1px solid #BFDBFE' }}>
  <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#2563EB', textTransform: 'uppercase', letterSpacing: 0.5 }}> Total Penjualan Hari Ini</p>
  <p style={{ margin: '0 0 3px', fontSize: 24, fontWeight: 900, color: '#1D4ED8', lineHeight: 1.1 }}>{formatIDR(totalPenjualan)}</p>
  <p style={{ margin: 0, fontSize: 12, color: '#3B82F6' }}>{completedToday.length} transaksi selesai</p>
  </div>
- <div style={{ background: '#F0FDF4', borderRadius: 14, padding: '16px 18px', border: '1px solid #BBF7D0' }}>
+ <div style={{ background: '#F0FDF4', borderRadius: 14, padding: '12px 14px', border: '1px solid #BBF7D0' }}>
  <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: 0.5 }}> Total Transaksi Hari Ini</p>
  <p style={{ margin: '0 0 3px', fontSize: 24, fontWeight: 900, color: '#047857', lineHeight: 1.1 }}>{totalTrxHariIni}</p>
  <p style={{ margin: 0, fontSize: 12, color: '#10B981' }}>semua status transaksi</p>
@@ -193,7 +193,7 @@ export default function KasirOrdersPage() {
  <p style={{ margin: 0, fontSize: 12, color: '#991B1B' }}>Alasan: {selected.refundReason}</p>
  </div>
  )}
- <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+ <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 10, marginBottom: 14 }}>
  {[
  ['ID Transaksi', selected.id],
  ['Tanggal', formatDate(selected.date || selected.createdAt)],

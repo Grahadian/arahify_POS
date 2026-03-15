@@ -77,7 +77,7 @@ export default function MembersPage() {
  }
 
  return (
- <div style={{ padding:'16px 20px', maxWidth:860, margin:'0 auto' }}>
+ <div style={{ padding:'14px', margin:'0 auto' }}>
 
  {/* Header */}
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
@@ -89,7 +89,7 @@ export default function MembersPage() {
  </div>
 
  {/* Stats */}
- <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:18 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:12, marginBottom:18 }}>
  {[
  { label:'Total Member', value: members.length, color:'#1D4ED8', bg:'#DBEAFE' },
  { label:'Member Aktif', value: activeMembersCount, color:'#166534', bg:'#DCFCE7' },
@@ -128,40 +128,31 @@ export default function MembersPage() {
  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'}
  onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
  >
- <div style={{ display:'flex', alignItems:'center', gap:14 }}>
- {/* Avatar */}
- <div style={{ width:48, height:48, borderRadius:'50%', background:'linear-gradient(135deg,#2563EB,#7C3AED)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
- <span style={{ fontSize:20, fontWeight:900, color:'#fff' }}>{m.name.charAt(0).toUpperCase()}</span>
- </div>
- {/* Info */}
- <div style={{ flex:1, minWidth:0 }}>
- <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:3 }}>
- <p style={{ margin:0, fontSize:15, fontWeight:800, color:'#111827' }}>{m.name}</p>
- {memberTrx.length > 0 && <Badge color="blue">{memberTrx.length}x transaksi</Badge>}
- <span style={{ fontSize:11, fontWeight:700, padding:'2px 8px', borderRadius:20, background:tier.bg, color:tier.color, border:`1px solid ${tier.border}` }}>{tier.emoji} {tier.name}</span>
- </div>
- <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
- {m.phone && <span style={{ fontSize:12, color:'#6B7280' }}> {m.phone}</span>}
- {m.email && <span style={{ fontSize:12, color:'#6B7280' }}> {m.email}</span>}
- {m.address && <span style={{ fontSize:12, color:'#6B7280' }}> {m.address}</span>}
- </div>
- <p style={{ margin:'4px 0 0', fontSize:11, color:'#9CA3AF' }}>Daftar {formatRelativeTime(m.createdAt)}</p>
- </div>
- {/* Stats */}
- <div style={{ textAlign:'right', flexShrink:0 }}>
- <p style={{ margin:'0 0 2px', fontSize:15, fontWeight:900, color:'#1D4ED8' }}>{formatIDR(totalSpent)}</p>
- <p style={{ margin:0, fontSize:11, color:'#9CA3AF' }}>total belanja</p>
- </div>
- {/* Actions */}
- <div style={{ display:'flex', gap:6, flexShrink:0 }}>
- <button onClick={() => openDetail(m)} style={{ padding:'7px 12px', background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:8, color:'#1D4ED8', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
- Detail
- </button>
- <button onClick={() => openEdit(m)} style={{ padding:'7px 12px', background:'#F9FAFB', border:'1px solid #E5E7EB', borderRadius:8, color:'#374151', fontSize:11, fontWeight:700, cursor:'pointer', fontFamily:'inherit' }}>
- Edit
- </button>
- </div>
- </div>
+            {/* Row 1: Avatar + Info + Total */}
+            <div style={{ display:'flex', alignItems:'flex-start', gap:12 }}>
+              <div style={{ width:44, height:44, borderRadius:'50%', background:'linear-gradient(135deg,#2563EB,#7C3AED)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <span style={{ fontSize:18, fontWeight:900, color:'#fff' }}>{m.name.charAt(0).toUpperCase()}</span>
+              </div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap', marginBottom:3 }}>
+                  <p style={{ margin:0, fontSize:14, fontWeight:800, color:'#111827' }}>{m.name}</p>
+                  {memberTrx.length > 0 && <Badge color="blue">{memberTrx.length}x trx</Badge>}
+                  <span style={{ fontSize:10, fontWeight:700, padding:'2px 7px', borderRadius:20, background:tier.bg, color:tier.color, border:`1px solid ${tier.border}` }}>{tier.name}</span>
+                </div>
+                {m.phone && <p style={{ margin:0, fontSize:12, color:'#6B7280' }}>{m.phone}</p>}
+                {m.email && <p style={{ margin:0, fontSize:11, color:'#9CA3AF', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{m.email}</p>}
+                <p style={{ margin:'2px 0 0', fontSize:11, color:'#9CA3AF' }}>{formatRelativeTime(m.createdAt)}</p>
+              </div>
+              <div style={{ textAlign:'right', flexShrink:0 }}>
+                <p style={{ margin:'0 0 1px', fontSize:14, fontWeight:900, color:'#1D4ED8' }}>{formatIDR(totalSpent)}</p>
+                <p style={{ margin:0, fontSize:10, color:'#9CA3AF' }}>total belanja</p>
+              </div>
+            </div>
+            {/* Row 2: Actions */}
+            <div style={{ display:'flex', gap:8, marginTop:10, paddingTop:10, borderTop:'1px solid #F3F4F6' }}>
+              <button onClick={() => openDetail(m)} style={{ flex:1, padding:'9px', background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:9, color:'#1D4ED8', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation' }}>Detail</button>
+              <button onClick={() => openEdit(m)} style={{ flex:1, padding:'9px', background:'#F9FAFB', border:'1px solid #E5E7EB', borderRadius:9, color:'#374151', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', touchAction:'manipulation' }}>Edit</button>
+            </div>
  {m.notes && <p style={{ margin:'10px 0 0', fontSize:12, color:'#6B7280', fontStyle:'italic', paddingTop:10, borderTop:'1px solid #F9FAFB' }}> {m.notes}</p>}
  </div>
  )
@@ -215,7 +206,7 @@ export default function MembersPage() {
  </div>
 
  {/* Contact info */}
- <div style={{ background:'#F9FAFB', borderRadius:12, padding:'12px 14px', marginBottom:16 }}>
+ <div style={{ background:'#F9FAFB', borderRadius:12, padding:'14px', marginBottom:16 }}>
  {[
  [' Telepon', selected.phone || '-'],
  [' Email', selected.email || '-'],
@@ -230,7 +221,7 @@ export default function MembersPage() {
  </div>
 
  {/* Stats */}
- <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
+ <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:10, marginBottom:16 }}>
  {[
  { label:'Total Transaksi', value: memberTrx.length, color:'#1D4ED8' },
  { label:'Total Belanja', value: formatIDR(totalSpent), color:'#166534' },

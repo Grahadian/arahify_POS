@@ -24,7 +24,7 @@ export default function KasirInventoryPage() {
  })
 
  return (
- <div style={{ padding:'16px 20px', maxWidth:900, margin:'0 auto' }}>
+ <div style={{ padding:'14px', margin:'0 auto' }}>
  {/* Header */}
  <div style={{ marginBottom:18, display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
  <div>

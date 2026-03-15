@@ -29,7 +29,7 @@ export default function MemberPointsPage() {
   const selectedMember = selected ? membersWithStats.find(m => m.id === selected) : null
 
   return (
-    <div style={{ padding:'16px 20px', maxWidth:800, margin:'0 auto' }}>
+    <div style={{ padding:'14px' }}>
       <div style={{ marginBottom:18 }}>
         <h2 style={{ margin:'0 0 3px', fontSize:20, fontWeight:800, color:'#0F172A' }}>Riwayat Poin Member</h2>
         <p style={{ margin:0, color:'#64748B', fontSize:13 }}>Kelola dan pantau poin reward setiap member</p>
@@ -37,13 +37,13 @@ export default function MemberPointsPage() {
 
       {/* Summary */}
       {settings?.loyaltyEnabled && (
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:10, marginBottom:16 }}>
           {[
             { label:'Total Member',    value: members.length,                                          color:'#1D4ED8', bg:'#DBEAFE', icon:'members' },
             { label:'Total Poin Aktif',value: members.reduce((s,m)=>s+(m.points||0),0).toLocaleString(), color:'#92400E', bg:'#FEF3C7', icon:'loyalty' },
             { label:'Nilai Poin',      value: formatIDR(members.reduce((s,m)=>s+(m.points||0),0) * (settings?.pointsRedeemRate||1)), color:'#166534', bg:'#DCFCE7', icon:'profit' },
           ].map(s => (
-            <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'12px 14px', display:'flex', alignItems:'center', gap:10 }}>
+            <div key={s.label} style={{ background:s.bg, borderRadius:12, padding:'14px', display:'flex', alignItems:'center', gap:10 }}>
               <div style={{ background:'#fff', borderRadius:8, padding:7, flexShrink:0 }}><Icon name={s.icon} size={16} color={s.color} /></div>
               <div>
                 <p style={{ margin:'0 0 2px', fontSize:10, color:s.color, fontWeight:700, textTransform:'uppercase' }}>{s.label}</p>
@@ -55,7 +55,7 @@ export default function MemberPointsPage() {
       )}
 
       {!settings?.loyaltyEnabled && (
-        <div style={{ background:'#FFFBEB', border:'1px solid #FDE68A', borderRadius:12, padding:'12px 14px', marginBottom:16, display:'flex', gap:10, alignItems:'center' }}>
+        <div style={{ background:'#FFFBEB', border:'1px solid #FDE68A', borderRadius:12, padding:'14px', marginBottom:16, display:'flex', gap:10, alignItems:'center' }}>
           <Icon name="warning" size={16} color="#D97706" />
           <p style={{ margin:0, fontSize:13, color:'#92400E', fontWeight:600 }}>Fitur Loyalty belum diaktifkan. Aktifkan di Pengaturan &rarr; Poin Reward.</p>
         </div>
@@ -99,7 +99,7 @@ export default function MemberPointsPage() {
               {m.id === selected && (
                 <div>
                   {/* Stats */}
-                  <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginBottom:14 }}>
+                  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))', gap:8, marginBottom:14 }}>
                     {[
                       { label:'Total Belanja', value:formatIDR(m.totalSpend), color:'#1D4ED8', bg:'#DBEAFE' },
                       { label:'Poin Diperoleh', value:m.totalEarned.toLocaleString(), color:'#166534', bg:'#DCFCE7' },
